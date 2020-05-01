@@ -1,0 +1,49 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Edit</title>
+{% endblock %}
+
+{% block header %}
+
+<div class="container-header">
+    
+    <header class="header-admin">
+       <div class="logo">
+            <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
+        </div>
+    </header>
+
+</div>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="forms">
+
+        <h2>Editar receita</h2>
+        
+        <form id="form-delete" method="POST" action="/admin/recipes/?_method=DELETE">
+            
+            <button type="submit" class="button-delete">Deletar</button>
+            
+            <input type="hidden" name="index" value="{{ recipes.index }}">
+
+        </form>
+
+        
+        <form class= "form-update" method="POST" action="/admin/recipes/?_method=PUT">
+            <input type="hidden" name="index" value="{{ recipes.index }}">
+            
+            <button class="button-save">Salvar receita</button>
+        
+            {% include 'recipesAdmin/fields.njk' %} 
+        </form>
+
+    </div>
+
+    <script src="/admin.js"></script>
+
+{% endblock %}

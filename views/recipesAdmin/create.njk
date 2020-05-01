@@ -1,0 +1,34 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Create</title>
+{% endblock %}
+
+{% block header %}
+
+  <div class="container-header">
+    
+    <header class="header-admin">
+       <div class="logo">
+            <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
+        </div>
+    </header>
+
+</div>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <form method="POST" action="/admin/recipes">
+        <div class="title-buttons">
+            <h2>Criando receita</h2>
+            <button class="button-save">Salvar receita</button>
+        </div>
+
+        {% include 'recipesAdmin/fields.njk' %}
+    </form>
+
+    <script src="/admin.js"></script>
+{% endblock %}

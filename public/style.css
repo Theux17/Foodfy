@@ -1,0 +1,546 @@
+@import "https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap";
+
+*{
+    padding: 0;
+    margin: 0;
+    border: 0;
+    text-decoration: none;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
+header.main{
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+nav a img,
+.header a img {
+    text-align: left;
+    margin-top: 36.1px;
+    position: relative;
+}
+
+nav .links {
+    position: absolute;
+    text-align: left;  
+    margin-left: 163.1px;
+    top: 38px;
+}
+
+
+nav a {
+    text-align: center;
+    margin: 0px 10px;
+    font-weight: normal;
+    color: #111111;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+
+.short-presentation {
+    background: #FBDFDB;
+    width: 940px;
+    margin: 0 auto;
+    margin-top: 30px;
+    border-radius: 30px;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+
+.short-presentation h1 {
+    padding: 117px 575px 211px 60px;
+    font-weight: bold;
+    color: #111111;
+    font-size: 32px;
+    line-height: 38px;
+    position: absolute;
+}
+
+.short-presentation img {
+    padding-top: 60px;
+    margin-left: 624px;
+}
+
+
+.short-presentation p {
+    max-width: 300px;
+    font-family: 'Roboto-Regular', sans-serif;
+    padding: 165px 564px 117px 60px;
+    position: absolute;
+    margin-bottom: 10px;
+    top: 0;
+}
+
+main h2 {
+    text-align: left;   
+    max-width: 940px;
+    margin: 0 auto;
+    color: #111111;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.revenue{ 
+    width: 940px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+.recipe{
+    display: grid;
+    grid-template-columns: 1fr ;
+}
+
+.recipe img {
+    width: 300px;
+    height: 140px;
+    border-radius: 15px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.recipe__name p{
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-family: 'Roboto-Regular', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #111111;
+}
+
+.recipe .recipe__creator p {
+    text-align: left;
+    font-size: 14px;
+    line-height: 16px;
+    font-family: 'Roboto-Regular',sans-serif;
+    color: #777777;
+}
+
+
+footer{
+    border: 1px solid #EEEEEE;
+    margin-top: 50px;
+    max-width: 100%;
+    position: relative;
+
+}
+
+footer p{
+    background: #EEEEEE;
+    margin: 0 auto;
+    text-align: center;
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 14px;
+    line-height: 16px;
+    color: #999999;
+    padding: 23px;
+    width: 100%;
+    position: absolute;
+}
+
+
+ /*=== SOBRE ===*/
+
+.about{
+    font-family: 'Roboto-Bold', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
+    color: #111111;
+}
+
+.foodfy__content{
+    max-width: 940px;
+    margin: 0 auto;
+ }
+
+
+.foodfy__content h1 {
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 24px;
+    line-height: 28px;
+    color: #111111;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.foodfy__content h2{
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    color: #111111;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+
+.foodfy__content p {
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    color: #444444;
+    margin-bottom: 30px;
+
+}
+
+
+/*=== RECEITAS ===*/
+.revenues{
+    font-family: 'Roboto-Bold', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
+    color: #111111;
+}
+
+
+/*=== INFORMATION ==== */
+
+.recipe__information,
+.recipe-show {
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+.recipe__information img,
+.recipe-show img {
+    width: 940px;
+    height: 280px;
+    border-radius: 15px;
+    margin-top: 56px;
+    margin-bottom: 50px;
+}
+
+.recipe__name h2 {
+    text-align: center;
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 36px;
+    line-height: 42px;
+}
+
+.recipe__creator p{
+    text-align: center;
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    margin-top: 4px;
+    margin-bottom: 50px;
+    color: #777777;
+}
+
+.ingredients h3 {
+    text-align: left;
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+
+.button1 {
+    position: absolute;
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+    color: #999999;
+    margin-top: -38px;
+    margin-left: 150px;
+    margin-bottom: 20px;
+    cursor: pointer;
+
+}
+
+.ingredients ul{
+    margin-left: 18px;
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 18px;
+    color: #444444;
+    line-height: 28px;
+}
+
+.preparation h3{
+    text-align: left;
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 24px;
+    line-height: 28px;
+    margin-top: 39px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.button2 {
+    position: absolute;
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+    color: #999999;
+    margin-top: -38px;
+    margin-left: 202px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.preparation ul{
+    margin-left: 18px;
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 18px;
+    color: #444444;
+    line-height: 28px;
+}
+
+.additional-information h3 {
+    text-align: left;
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 24px;
+    line-height: 28px;
+    margin-top: 39px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.button3 {
+    position: absolute;
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+    color: #999999;
+    margin-top: -38px;
+    margin-left: 273px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.text p{
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 18px;
+    color: #444444;
+    line-height: 28px;
+
+}
+
+
+.remove{
+    visibility: hidden;
+}
+
+
+.add{
+    visibility: visible;
+}
+
+
+/*=== Admin Foodfy ===*/
+
+.container-header {
+    background-color: #111111;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+header.header-admin {
+    margin: 0 auto;
+    max-width: 940px;
+}
+header.header-admin .logo{
+    display: flex;
+    justify-content: left; 
+}
+
+.title-admin {
+    width: 940px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.recipes-admin {
+    width: 940px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 30px;
+}
+
+.recipe-admin {
+    display:grid;
+    grid-template-columns: auto 1fr;
+    margin-top: 20px;
+}
+
+.recipe-admin img {
+    width: 172px;
+    height: 80px;
+    border-radius: 15px;
+}
+
+.recipes-admin .recipe-content {
+    margin-left: 20px;
+}
+
+.recipe-admin .recipe-content .title {
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 18px;
+    margin-bottom: 5px; 
+    color: #111111;
+}
+
+.recipe-admin .recipe-content .author {
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 14px;
+    color: #777777;
+    margin-bottom: 10px;
+} 
+
+.recipes-admin .recipe-content span a{
+    font-family: 'Roboto-bold', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    color: #6558C3;
+    opacity: 0.9;
+}
+
+.recipe-show .title-button, .buttons { 
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+.title-button > h2,
+.title-button > a{
+    margin-top: 55px;
+}
+
+.recipe-show ul li {
+    list-style: none;
+}
+
+.title-button > a,
+.forms .button-save,
+.forms .button-delete,
+.title-buttons button{
+    display: block;
+    background: #6558C3;
+    padding: 9px 20px;
+    box-sizing: border-box;
+    font-family: "Roboto-Bold", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: #FFFFFF;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.recipe-show img {
+    margin-top: 22px;
+}    
+
+
+/*Form recipe*/
+.title-buttons{ 
+    display: grid;
+    grid-template-columns: 1fr auto;    
+}
+
+.title-buttons h2,
+.title-buttons button {
+    margin-top: 59px;
+    margin-bottom: 30px;
+}
+
+.forms {
+    position: relative;
+}
+
+form,
+.forms {
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+.forms h2 {
+    margin-top: 55px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.forms form button.button-delete {
+    position: absolute;
+    top: 0;
+    right: 160px;
+    background: #DC4747;
+    box-sizing: border-box;
+    font-family: "Roboto-Bold", sans-serif;
+}
+
+.forms button.button-save {
+    position: absolute;
+    top: 0;
+    right: -1px;
+    text-align: right;
+    margin-bottom: 30px;
+    margin-right: 10px;
+}
+
+form .item h4{
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    color: #111111;
+    margin-bottom: 10px;
+}
+
+input,
+textarea{
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 16px;
+    color: #111111;
+/*    margin: 15px auto 15px 20px;  */
+    padding: 15px 43px 0px 20px;
+    box-sizing: border-box;
+}
+
+input[type="text"],
+input[type="url"],
+textarea {
+    background: #FFFFFF;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    border-radius: 4px;
+}
+
+form input[type="url"]{
+    margin-bottom: 30px;
+}
+
+form textarea[name="information"]{
+    height: 257px;
+}
+
+input::placeholder{
+    color: #444444;
+    font-size: 16px;
+}
+
+button.add-ingredient,
+button.add-preparation {
+    background: none;
+    font-family: 'Roboto-Bold', sans-serif;
+    font-size: 16px;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #6558C3;
+    text-align: right;
+    cursor: pointer;
+}

@@ -1,0 +1,54 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Receitas</title>
+{% endblock %}
+
+{% block header %}
+
+    <header class="main">
+
+        <nav>
+            <a href="/"><img src="images/logo.png " alt="Logo"></a>
+
+            <div class="links">
+                <a href="/about" target="blank">Sobre</a>
+                <a class="revenues" href="/revenues" target="blank">Receitas</a>
+            </div>
+        </nav>
+
+    </header>
+
+{% endblock %}
+
+{% block content %}
+
+    <main>
+        <article class="revenue">
+            {% for recipe in recipes%}
+
+                <div class="recipe" id="{{loop.index0}}">
+                    <img src="{{recipe.image}}" alt="{{receita.title}}">
+
+                    <div class="recipe__name">
+                        <p>{{recipe.title}}</p>
+                    </div>
+
+                    <div class="recipe__creator">
+                        <p>por {{recipe.author}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </article>
+    </main>
+
+    <script src="/script.js"></script>
+
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <p>Todos direitos reservados, receitas Foodfy.</p>
+    </footer>
+{% endblock %}
