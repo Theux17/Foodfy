@@ -1,4 +1,4 @@
-const recipe = require("../data")
+const recipe = require("../../data")
 
 exports.home = function(req, res){
     return res.render("recipes/home", { recipes: recipe})

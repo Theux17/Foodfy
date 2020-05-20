@@ -1,6 +1,6 @@
 const express = require('express')
-const recipes = require("./controllers/recipes")
-const recipesAdmin = require("./controllers/recipesAdmin")
+const recipes = require("./app/controllers/recipes")
+const recipesAdmin = require("./app/controllers/recipesAdmin")
 const routes =  express.Router()
 
 routes.get("/", recipes.home) // rota principal
