@@ -1,0 +1,43 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Chef - Foodfy</title>
+{% endblock %}
+
+{% block header %}
+
+<div class="container-header">
+    
+    <header class="header-admin">
+        <div class="logo">
+            <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
+        </div>
+            <ul class="menu">
+                <li><a href="">Receitas</a></li>
+                <li><a href="/chefs">Chefs</a></li>
+            
+            </ul>
+    </header>
+
+</div>
+    
+
+{% endblock %}
+
+{% block content %}
+
+<section class="create-chef">
+    <form class="chef-form" method="POST" action="/chefs">
+        <div class="title-buttons">
+            <h2>Criando chef</h2>
+            <button type="submit">Salvar chef</button>
+        </div>
+        <span>Nome</span>
+        <input type="text" name="name" value= "{{ name }}" >
+        <span>Avatar</span>
+        <input type="text" name="avatar_url" value= "{{ avatar_url }}" >
+    </form>
+
+</section>
+    
+{% endblock %}

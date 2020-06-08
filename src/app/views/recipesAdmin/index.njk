@@ -6,16 +6,24 @@
 
 {% block header %}
 
-<div class="container-header">
-    
-    <header class="header-admin">
-       <div class="logo">
-            <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
-        </div>
-    </header>
+    <div class="container-header">
 
-</div>
-    
+        <header class="header-admin">
+            <div class="logo">
+                <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
+            </div>
+            <ul class="menu">
+                <li>
+                    <a href="/admin/recipes">Receitas</a>
+                </li>
+                <li>
+                    <a href="/chefs">Chefs</a>
+                </li>
+
+            </ul>
+        </header>
+
+    </div>
 
 {% endblock %}
 
@@ -23,20 +31,28 @@
 
     <h2 class="title-admin">Gerenciar receitas</h2>
     <section class="recipes-admin">
-    
-            {% for recipe in recipes %}
+
+        {% for recipe in recipes %}
             <div class="recipe-admin" id="{{loop.index0}}">
-        
-                <img src="{{ recipe.img_recipe }}" alt="{{recipe.title}}">
+
+                <img src="{{ recipe.image }}" alt="{{recipe.title}}">
 
                 <div class="recipe-content">
                     <p class="title">{{recipe.title}}</p>
-                    <p class="author">por {{recipe.author}}</p>
-                    <span><a href="/admin/recipes/{{ loop.index0 }}">Visualizar</a></span>
+                    <p class="author">por
+                        {{recipe.chef_name}}</p>
+                    <span>
+                        <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+                    </span>
                 </div>
-                
+
             </div>
         {% endfor %}
+        
     </section>
+
+    <div class="pagination" data-page="{{ pagination.page }} " data-total="{{ pagination.total }} "></div>
+
+    <script src="/scripts/script.js"></script>
 
 {% endblock %}

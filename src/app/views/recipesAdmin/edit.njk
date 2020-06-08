@@ -29,13 +29,13 @@
             
             <button type="submit" class="button-delete">Deletar</button>
             
-            <input type="hidden" name="index" value="{{ recipes.index }}">
+            <input type="hidden" name="id" value="{{ recipe.id }}">
 
         </form>
 
         
         <form class= "form-update" method="POST" action="/admin/recipes/?_method=PUT">
-            <input type="hidden" name="index" value="{{ recipes.index }}">
+            <input type="hidden" name="id" value="{{ recipe.id }}">
             
             <button class="button-save">Salvar receita</button>
         
@@ -44,6 +44,6 @@
 
     </div>
 
-    <script src="/admin.js"></script>
+    <script src="/scripts/script.js"></script>
 
 {% endblock %}

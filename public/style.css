@@ -8,6 +8,7 @@
 }
 
 body{
+    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -40,6 +41,42 @@ nav a {
     line-height: 19px;
 }
 
+.filter { 
+    position: absolute;
+    top: 31px;
+    right: 227px;
+}
+
+
+.filter form {
+    display: flex;
+}
+
+.filter form input {
+    margin-right: 8px;
+    width: 246px;
+    height: 37px;
+
+    font-size: 14px;
+    color: #999999;
+
+}
+
+.filter form button {
+    background: #6558C3;
+    width: 91px;
+    height: 37px;
+    border-radius: 4px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+
+    
+    font-weight: bold;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+ 
 
 .short-presentation {
     background: #FBDFDB;
@@ -150,7 +187,6 @@ footer p{
  /*=== SOBRE ===*/
 
 .about{
-    font-family: 'Roboto-Bold', sans-serif;
     font-weight: bold;
     font-size: 16px;
     line-height: 18px;
@@ -348,31 +384,55 @@ footer p{
 
 header.header-admin {
     margin: 0 auto;
-    max-width: 940px;
+    width: 940px;
 }
-header.header-admin .logo{
+
+header.header-admin .logo,
+header.header-admin {
     display: flex;
-    justify-content: left; 
+    align-items: center;
 }
+
+header.header-admin .menu,
+header.header-admin ul li a {
+    display: flex;
+    color: #999999;
+    list-style: none;
+    margin: 0 30px;
+}
+
 
 .title-admin {
     width: 940px;
     margin: 0 auto;
     margin-top: 50px;
+    margin-bottom: 30px;
 }
 
 .recipes-admin {
-    width: 940px;
-    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin-top: 30px;
+    gap: 20px;
+
+    width: 940px;
+    margin: 0 auto;
+}
+
+.details-chef h3 {
+    margin-bottom: 30px;
+}
+
+.recipes-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px;
+    margin: 0 auto;
+    width: 940px;
 }
 
 .recipe-admin {
-    display:grid;
-    grid-template-columns: auto 1fr;
-    margin-top: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .recipe-admin img {
@@ -381,8 +441,8 @@ header.header-admin .logo{
     border-radius: 15px;
 }
 
-.recipes-admin .recipe-content {
-    margin-left: 20px;
+.recipe-admin .recipe-content {
+    margin: 0 20px;
 }
 
 .recipe-admin .recipe-content .title {
@@ -392,19 +452,18 @@ header.header-admin .logo{
     color: #111111;
 }
 
-.recipe-admin .recipe-content .author {
+.recipe-admin .recipe-content .author,
+.details-chef .info span {
     font-family: 'Roboto-Regular', sans-serif;
     font-size: 14px;
     color: #777777;
     margin-bottom: 10px;
 } 
 
-.recipes-admin .recipe-content span a{
-    font-family: 'Roboto-bold', sans-serif;
+.recipe-admin .recipe-content span a{
     font-weight: bold;
     font-size: 14px;
     color: #6558C3;
-    opacity: 0.9;
 }
 
 .recipe-show .title-button, .buttons { 
@@ -424,7 +483,9 @@ header.header-admin .logo{
 .title-button > a,
 .forms .button-save,
 .forms .button-delete,
-.title-buttons button{
+.button-delete,
+.title-buttons button,
+.chef-form button{
     display: block;
     background: #6558C3;
     padding: 9px 20px;
@@ -443,13 +504,17 @@ header.header-admin .logo{
 
 
 /*Form recipe*/
-.title-buttons{ 
+.title-buttons,
+.chef-form h2,
+.chef-form button{ 
     display: grid;
     grid-template-columns: 1fr auto;    
 }
 
 .title-buttons h2,
-.title-buttons button {
+.title-buttons button,
+.button-delete,
+.chef-form h2 {
     margin-top: 59px;
     margin-bottom: 30px;
 }
@@ -470,7 +535,8 @@ form,
     text-align: left;
 }
 
-.forms form button.button-delete {
+.forms form button.button-delete,
+.button-delete {
     position: absolute;
     top: 0;
     right: 160px;
@@ -497,7 +563,8 @@ form .item h4{
 }
 
 input,
-textarea{
+textarea,
+select{
     font-family: 'Roboto-Regular', sans-serif;
     font-size: 16px;
     color: #111111;
@@ -508,7 +575,8 @@ textarea{
 
 input[type="text"],
 input[type="url"],
-textarea {
+textarea,
+select {
     background: #FFFFFF;
     width: 100%;
     padding-top: 15px;
@@ -527,7 +595,8 @@ form textarea[name="information"]{
     height: 257px;
 }
 
-input::placeholder{
+input::placeholder,
+select{
     color: #444444;
     font-size: 16px;
 }
@@ -543,4 +612,138 @@ button.add-preparation {
     color: #6558C3;
     text-align: right;
     cursor: pointer;
+}
+
+/* CHEF */
+
+.title-buttons {
+    display: grid;
+    align-items: center;
+}
+
+.chef-form span,
+.form-update span {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.chef-form ,
+.form-update input {
+    margin-top: 10px;
+}
+
+.details-chef {
+    margin: 0 auto;
+    max-width: 940px;
+}
+
+.details-chef .info {
+    text-align: center;
+}
+.details-chef .info img {
+    margin: 0 auto;
+}
+
+.details-chef .info h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 36px;
+}
+
+.details-chef .info span {
+    font-size: 20px;
+}
+
+
+.details-chef .info img {
+    display: flex;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%    
+    
+}
+
+.details-chef .recipes {
+    display: grid;
+    grid-template-columns: 1fr 1fr
+}
+
+.button-delete {
+    margin: 0
+}
+
+.chefs-listing {
+    margin: 0 auto;
+    max-width: 940px;
+}
+
+.chefs-listing .chefs  {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.chefs-listing .chef {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.chefs-listing h2{
+    margin-top: 50px;
+    margin-bottom: 39px;
+}
+
+.chefs-listing .chefs .info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.chefs-listing .chefs .info h3 {
+    margin: 10px 0;
+    
+    font-size: 18px;
+    font-weight: 400;
+    color: #111111;
+}
+
+.chefs-listing .chefs .info:nth-child(2) {
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 14px;
+
+    color: #666666;
+}
+
+.chefs-listing .chefs .info span a {
+    font-weight: bold;
+    color: #6558C3;
+    font-size: 14px;
+}
+
+.chefs-listing .chefs img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+/*PAGES*/
+
+.pagination { 
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.pagination a,
+.pagination span {
+    background-color: #6558C3;
+    margin: 0 10px; 
+    padding: 8px;
+    border-radius: 14px;
+    color: white;
+
+}
+
+.pagination a:hover {
+    color: #111111
 }

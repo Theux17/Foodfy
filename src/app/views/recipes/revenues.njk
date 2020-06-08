@@ -25,9 +25,9 @@
 
     <main>
         <article class="revenue">
-            {% for recipe in recipes%}
+            {% for recipe in recipes %}
 
-                <div class="recipe" id="{{loop.index0}}">
+                <div class="recipe" id="{{ recipe.id }}">
                     <img src="{{recipe.image}}" alt="{{receita.title}}">
 
                     <div class="recipe__name">
@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="recipe__creator">
-                        <p>por {{recipe.author}}</p>
+                        <p>por {{recipe.chef_name}}</p>
                     </div>
                 </div>
             {% endfor %}
@@ -43,7 +43,7 @@
         </article>
     </main>
 
-    <script src="/script.js"></script>
+    <script src="/scripts/script.js"></script>
 
 {% endblock %}
 

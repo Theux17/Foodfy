@@ -17,14 +17,12 @@
                 <a class="link" href="/listing/chefs" target="blank">Chefs</a>
             </div>
         </nav>
-        
+
         <div class="filter">
             <form action="/home/filter" method="get">
-                <input type="text" name="filter" placeholder = "Buscar uma receita" value="{{ filter }}">
-                <button type="submit" >Buscar</button>
+                <input type="text" name="filter" value="{{ filter }}">
             </form>
         </div>
-
 
 
     </header>
@@ -32,22 +30,12 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="short-presentation">
-        <h1>As melhores receitas</h1>
-        <img src="images/chef.png" alt="Chef">
-        <p>Aprenda a construir os melhores pratos
-            com receitas criadas por profissionais
-            do mundo inteiro.
-        </p>
-    </div>
-
     <main>
-        <h2>Mais acessadas</h2>
+        <h2>Buscando por "{{ filter }}"</h2>
 
         <section class="revenue">
         {% for recipe in recipes %}
-            <div class="recipe" id="{{ recipe.id }}">
+            <div class="recipe" id="">
                 <img src="{{recipe.image}}" alt="{{recipe.title}}">
 
                 <div class="recipe__name">
@@ -73,3 +61,4 @@
     </footer>
     <script src="/scripts/script.js"></script>
 {% endblock %}
+

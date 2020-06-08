@@ -2,9 +2,9 @@
     <h4>Imagem da receita</h4>
     <input 
         type="url" 
-        name="img_recipe" 
+        name="image" 
         placeholder="insira a url da receita"
-        value="{{ recipes.img_recipe }}"
+        value="{{ recipe.image }}"
     >            
 </div>
 
@@ -14,31 +14,33 @@
         type="text" 
         name="title" 
         placeholder="insira um título para receita"
-        value="{{ recipes.title }}"
+        value="{{ recipe.title }}"
     >            
 </div>
 
 
 <div class="item">
-    <h4>Autor da receita</h4>
-    <input 
-        type="text" 
-        name="author" 
-        value="{{ recipes.author }}"
-    >        
+    <h4>Chef</h4>
+    <select name="chef">
+    {% for chef in chefsOptions %}
+        <option placeholder="Selecione um chef" value="{{chef.id}}" {% if recipe.chef_id == chef.id %} selected {%endif%}}>
+            {{ chef.name }}
+        </option>
+    {% endfor %}
+    </select>
 </div>
 
 <div class="item"> 
     <h4>Ingredientes</h4>
-    {% if recipes %}
+    {% if recipe %}
         <div id="ingredients"> 
-            {% for ingredient in recipes.ingredients %}
+            {% for ingredient in recipe.ingredients %}
                 <div class="ingredient">
                     <input  
                         type="text"     
                         name="ingredients[]"    
                         value="{{ ingredient }}"     
-                        placeholder="Ingredient" 
+                        placeholder="Ingredientes"  
                     />
                 </div>
             {% endfor %}
@@ -47,27 +49,25 @@
         <div class="ingredient" id="ingredients">
             <input  
                 type="text"     
-                name="ingredients[]"    
-                placeholder="Ingredient" 
-            />
+                name="ingredients[]"   
+            /> 
         </div>
     {% endif %}
     <button type="button" class="add-ingredient">adicionar novo ingrediente</button>
 
 </div>
             
-
 <div class="item">
     <h4>Modo de preparo</h4>
-    {% if recipes %}
+    {% if recipe %}
         <div id="preparations">
-            {% for preparation in recipes.preparations %}
+            {% for preparation in recipe.preparation %}
                 <div class="preparation">
                     <input 
                         type="text" 
-                        name="preparations[]" 
-                        value="{{ preparation }}"  
-                    > 
+                        name="preparation[]" 
+                        value="{{ preparation }}" 
+                     > 
                 </div>
             {% endfor %}
         </div>
@@ -75,8 +75,8 @@
         <div class="preparation" id="preparations">
             <input 
                 type="text" 
-                name="preparations[]" 
-            > 
+                name="preparation[]" 
+            >         
         </div>     
     {% endif %}
 
@@ -90,8 +90,8 @@
         name="information" 
         icols="30" 
         rows="10"
-        value="{{ recipes.information }}"
-    >{{ recipes.information }}
+        value="{{ recipe.information }}"
+    >{{ recipe.information }}
 
     </textarea>
 

@@ -1,0 +1,72 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Chef - Foodfy</title>
+{% endblock %}
+
+{% block header %}
+
+    <div class="container-header">
+
+        <header class="header-admin">
+            <div class="logo">
+                <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
+            </div>
+            <ul class="menu">
+                <li>
+                    <a href="/admin/recipes">Receitas</a>
+                </li>
+                <li>
+                    <a href="/chefs">Chefs</a>
+                </li>
+
+            </ul>
+        </header>
+
+    </div>
+
+{% endblock %}
+
+{% block content %}
+
+    <section class="details-chef">
+
+        <div class="title-buttons">
+            <h2>Chef:
+                {{chef.name}}</h2>
+            <a href="/chefs/edit/{{ chef.id }}">
+                <button type="submit">Editar chef</button>
+            </a>
+        </div>
+
+        <div class="info">
+            <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
+            <h2>{{chef.name}}</h2>
+            <span>{{chef.total_recipes}}
+                receitas
+            </span>
+        </div>
+
+        <h3>Receitas</h3>
+
+        <div class="recipes-details">
+
+            {% for recipe in recipes %}
+                <div class="recipe-admin">
+                    <img src="{{ recipe.image }}" alt="{{recipe.img_title}}">
+                    <div class="recipe-content">
+                        <p class="title">{{ recipe.title }}</p>
+                        <p class="author">por
+                            {{chef.name}}</p>
+                        <span>
+                            <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+{% endblock %}

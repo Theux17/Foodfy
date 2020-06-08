@@ -1,0 +1,65 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Chef - Foodfy</title>
+{% endblock %}
+
+{% block header %}
+
+<div class="container-header">
+    
+    <header class="header-admin">
+        <div class="logo">
+            <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
+        </div>
+            <ul class="menu">
+                <li><a href="/admin/recipes">Receitas</a></li>
+                <li><a href="/admin/chefs">Chefs</a></li>
+            
+            </ul>
+    </header>
+
+</div>
+    
+
+{% endblock %}
+
+{% block content %}
+
+<section class="edit-chef">
+
+    <div class="forms">
+    
+        <h2>Editando chef</h2>
+
+        <form id="form-delete" method="POST" action="/chefs?_method=DELETE">
+            
+            <button type="submit" class="button-delete">Deletar</button>
+    
+            <input type="hidden" name="id" value="{{ chef.id }}">
+            
+            <!-- Pega o total de receita para utilizar no front-end -->
+            <div id="chef"
+                data-total_recipes = "{{ chef.total_recipes }} "
+            ></div>
+        </form>
+
+        
+        <form class= "form-update" method="POST" action="/chefs?_method=PUT">
+           
+            <input type="hidden" name="id" value="{{ chef.id }}">
+
+            <span>Nome</span>
+            <input type="text" name="name" value= "{{ chef.name }}" >
+            <span>Avatar</span>
+            <input type="text" name="avatar_url" value= "{{chef.avatar_url }}" >
+            <button class="button-save">Salvar chef</button>
+ 
+        </form>
+    
+    </div>
+    
+</section>
+    
+<script src="/scripts/script.js"></script> 
+{% endblock %}

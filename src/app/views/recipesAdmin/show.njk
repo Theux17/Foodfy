@@ -9,9 +9,14 @@
   <div class="container-header">
     
     <header class="header-admin">
-       <div class="logo">
+        <div class="logo">
             <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
         </div>
+            <ul class="menu">
+                <li><a href="/admin/recipes">Receitas</a></li>
+                <li><a href="/chefs">Chefs</a></li>
+            
+            </ul>
     </header>
 
 </div>
@@ -23,18 +28,18 @@
 
     <div class="recipe-show">
         <div class="title-button">
-            <h2>Receita: {{recipes.title}}</h2>
-            <a class="edit-button" href="/admin/recipes/{{ recipes.index }}/edit">Editar receita</a>
+            <h2>Receita: {{recipe.title}}</h2>
+            <a class="edit-button" href="/admin/recipes/{{ recipe.id }}/edit">Editar receita</a>
         </div>
 
-        <img src="{{recipes.img_recipe}}" alt="{{recipes.title}}">
+        <img src="{{recipe.image}}" alt="{{recipe.title}}">
 
         <div class="recipe__name">
-            <h2>{{recipes.title}}</h2>
+            <h2>{{recipe.title}}</h2>
         </div>
 
         <div class="recipe__creator">
-            <p>por {{recipes.author}}</p>
+            <p>por {{recipe.chef_name}}</p>
         </div>
 
         <div class="ingredients">
@@ -43,7 +48,7 @@
             </div>
 
             <ul>
-                {% for ingredient in recipes.ingredients %}
+                {% for ingredient in recipe.ingredients %}
                     <li>- {{ ingredient }}</li>
                 {%endfor%}
                 </ul>
@@ -55,7 +60,7 @@
                 </div>
 
                 <ul>
-                    {% for preparation in recipes.preparations %}
+                    {% for preparation in recipe.preparation %}
                         <li>- {{preparation}}</li>
                         {%endfor%}
                     </ul>
@@ -68,7 +73,7 @@
                     </div>
 
                     <div class="text">
-                        <p>{{recipes.information}}</p>
+                        <p>{{recipe.information}}</p>
                     </div>
                 </div>
 

@@ -1,0 +1,46 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Chef - Foodfy</title>
+{% endblock %}
+
+{% block header %}
+
+    <header class="main">
+
+        <nav>
+            <a href="/"><img src="/images/logo.png " alt="Logo"></a>
+
+            <div class="links">
+                <a class="link" href="/about" target="blank">Sobre</a>
+                <a class="link" href="/revenues" target="blank">Receitas</a>
+                <a class="link" href="/listing/chefs" target="blank">Chefs</a>
+            </div>
+        </nav>
+
+    </header>
+
+{% endblock %}
+
+{% block content %}
+
+    <section class="chefs-listing">
+
+        <h2>Gerenciar chefs</h2>
+
+        <div class="chefs" id="{{loop.index0}}">
+
+            {% for chef in chefs %}
+                <div class="chef">
+                    <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
+
+                    <div class="info">
+                        <h3>{{chef.name}}</h3>
+                        <span>{{chef.total_recipes}} receitas </span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+{% endblock %}
