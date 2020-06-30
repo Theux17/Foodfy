@@ -4,41 +4,33 @@
     <title>Sobre</title>
 {% endblock %}
 
-{% block header %}
+{% block container %}
+<div id="main-container">
 
-    <header class="main">
+    {% block header %}
+        {%include "recipes/parts/header.njk"%}
+    {% endblock %}
 
-        <nav>
-            <a href="/"><img src="images/logo.png " alt="Logo"></a>
+    {% block content %}
+        
+        <div class="foodfy-content">
+            <h1>{{about.foodfyTitle}}</h1>
+            <p>{{about.foodfyParagraph1}}</p>
+            <p>{{about.foodfyParagraph2}}</p>
 
-            <div class="links">
-                <a class="about" href="/about" target="blank">Sobre</a>
-                <a href="/revenues" target="blank">Receitas</a>
-            </div>
-        </nav>
+            <h2>{{about.subtitle1}}</h2>
+            <p>{{about.subtitleParagraph1}}</p>
+            <p>{{about.subtitleParagraph2}}</p>
 
-    </header>
+            <h2>{{about.subtitle2}}</h2>
+            <p>{{about.subheadingParagraph2}}</p>
+        </div>
 
-{% endblock %}
+    {% endblock %}
 
-{% block content %}
-    <div class="foodfy__content">
-        <h1>{{about.foodfyTitle}}</h1>
-        <p>{{about.foodfyParagraph1}}</p>
-        <p>{{about.foodfyParagraph2}}</p>
-
-        <h2>{{about.subtitle1}}</h2>
-        <p>{{about.subtitleParagraph1}}</p>
-        <p>{{about.subtitleParagraph2}}</p>
-
-        <h2>{{about.subtitle2}}</h2>
-        <p>{{about.subheadingParagraph2}}</p>
-    </div>
-
-{% endblock %}
+</div>
+{% endblock container %}
 
 {% block footer %}
-    <footer>
-        <p>Todos direitos reservados, receitas Foodfy.</p>
-    </footer>
+    {%include "recipes/parts/footer.njk"%}
 {% endblock %}

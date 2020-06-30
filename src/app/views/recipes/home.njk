@@ -4,72 +4,59 @@
     <title>Home</title>
 {% endblock %}
 
+{% block container %}
+<div id="main-container">
 
-{% block header %}
-    <header class="main">
+    {% block header %}
+        <div class="header-container">
 
-        <nav>
-            <a href="/"><img src="/images/logo.png " alt="Logo"></a>
+            {%include "recipes/parts/header.njk"%}
+            
+            {%include "recipes/parts/filter.njk"%}
+            
+        </div>
+    {% endblock %}
 
-            <div class="links">
-                <a class="link" href="/about" target="blank">Sobre</a>
-                <a class="link" href="/revenues" target="blank">Receitas</a>
-                <a class="link" href="/listing/chefs" target="blank">Chefs</a>
-            </div>
-        </nav>
-        
-        <div class="filter">
-            <form action="/home/filter" method="get">
-                <input type="text" name="filter" placeholder = "Buscar uma receita" value="{{ filter }}">
-                <button type="submit" >Buscar</button>
-            </form>
+    {% block content %}
+
+        <div class="short-presentation">
+
+            <h1>As melhores receitas</h1>
+            <img src="images/chef.png" alt="Chef">
+            <p>Aprenda a construir os melhores pratos
+                com receitas criadas por profissionais
+                do mundo inteiro.
+            </p>
         </div>
 
+        <main>
+            <h2>Mais acessadas</h2>
 
+            <section class="recipe-container">
+            {% for recipe in recipes %}
+                <div class="recipe" id="{{ recipe.id }}">
+                    <img src="{{recipe.image}}" alt="{{recipe.title}}">
 
-    </header>
+                    <div class="recipe-name">
+                        <p>{{recipe.title}}</p>
+                    </div>
 
-{% endblock %}
+                    <div class="recipe-creator">
+                        <p>por {{recipe.chef_name}}</p>
+                    </div>
 
-{% block content %}
-
-    <div class="short-presentation">
-        <h1>As melhores receitas</h1>
-        <img src="images/chef.png" alt="Chef">
-        <p>Aprenda a construir os melhores pratos
-            com receitas criadas por profissionais
-            do mundo inteiro.
-        </p>
-    </div>
-
-    <main>
-        <h2>Mais acessadas</h2>
-
-        <section class="revenue">
-        {% for recipe in recipes %}
-            <div class="recipe" id="{{ recipe.id }}">
-                <img src="{{recipe.image}}" alt="{{recipe.title}}">
-
-                <div class="recipe__name">
-                    <p>{{recipe.title}}</p>
                 </div>
-
-                <div class="recipe__creator">
-                    <p>por {{recipe.chef_name}}</p>
-                </div>
-
-            </div>
-        {% endfor %}
-        </section>
+            {% endfor %}
+            </section>
 
 
-    </main>
+        </main>
 
-{% endblock  %}
+    {% endblock  %}
+
+</div>
+{% endblock container %}
 
 {% block footer %}
-    <footer>
-        <p>Todos direitos reservados, receitas Foodfy.</p>
-    </footer>
-    <script src="/scripts/script.js"></script>
+    {%include "recipes/parts/footer.njk"%}
 {% endblock %}

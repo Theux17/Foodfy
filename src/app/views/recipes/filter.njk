@@ -5,60 +5,49 @@
 {% endblock %}
 
 
-{% block header %}
-    <header class="main">
+{% block container %}
+    <div id="main-container">
 
-        <nav>
-            <a href="/"><img src="/images/logo.png " alt="Logo"></a>
+        {% block header %}
+            <div class="header-container">
 
-            <div class="links">
-                <a class="link" href="/about" target="blank">Sobre</a>
-                <a class="link" href="/revenues" target="blank">Receitas</a>
-                <a class="link" href="/listing/chefs" target="blank">Chefs</a>
+                {%include "recipes/parts/header.njk"%}
+                
+                {%include "recipes/parts/filter.njk"%}
+                
             </div>
-        </nav>
+        {% endblock %}
 
-        <div class="filter">
-            <form action="/home/filter" method="get">
-                <input type="text" name="filter" value="{{ filter }}">
-            </form>
-        </div>
+        {% block content %}
+            <main>
+                <h2>Buscando por "{{ filter }}"</h2>
 
+                <section class="recipe-container">
+                    {% for recipe in recipes %}
+                        <div class="recipe" id="">
+                            <img src="{{recipe.image}}" alt="{{recipe.title}}">
 
-    </header>
+                            <div class="recipe-name">
+                                <p>{{recipe.title}}</p>
+                            </div>
 
-{% endblock %}
+                            <div class="recipe-creator">
+                                <p>por {{recipe.chef_name}}</p>
+                            </div>
 
-{% block content %}
-    <main>
-        <h2>Buscando por "{{ filter }}"</h2>
-
-        <section class="revenue">
-        {% for recipe in recipes %}
-            <div class="recipe" id="">
-                <img src="{{recipe.image}}" alt="{{recipe.title}}">
-
-                <div class="recipe__name">
-                    <p>{{recipe.title}}</p>
-                </div>
-
-                <div class="recipe__creator">
-                    <p>por {{recipe.chef_name}}</p>
-                </div>
-
-            </div>
-        {% endfor %}
-        </section>
+                        </div>
+                    {% endfor %}
+                </section>
 
 
-    </main>
+            </main>
 
-{% endblock  %}
+        {% endblock  %}
+        
+    </div>
+
+{% endblock container %}
 
 {% block footer %}
-    <footer>
-        <p>Todos direitos reservados, receitas Foodfy.</p>
-    </footer>
-    <script src="/scripts/script.js"></script>
+    {%include "recipes/parts/footer.njk"%}
 {% endblock %}
-

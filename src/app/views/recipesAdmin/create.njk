@@ -4,31 +4,28 @@
     <title>Create</title>
 {% endblock %}
 
-{% block header %}
+{% block container %}
 
-  <div class="container-header">
+    {% block header %}
+
+        {% include "recipesAdmin/parts/header.njk" %}
+
+    {% endblock %}
     
-    <header class="header-admin">
-       <div class="logo">
-            <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
-        </div>
-    </header>
+    <div id="main-container">
 
-</div>
+        {% block content %}
 
+            <form method="POST" action="/admin/recipes">
+                <div class="title-button">
+                    <h2>Criando receita</h2>
+                    <button class="button">Salvar receita</button>
+                </div>
 
-{% endblock %}
+                {% include 'recipesAdmin/fields.njk' %}
+            </form>
 
-{% block content %}
-
-    <form method="POST" action="/admin/recipes">
-        <div class="title-buttons">
-            <h2>Criando receita</h2>
-            <button class="button-save">Salvar receita</button>
-        </div>
-
-        {% include 'recipesAdmin/fields.njk' %}
-    </form>
-
-    <script src="/scripts/script.js"></script>
-{% endblock %}
+        {% endblock %}
+        
+    </div>
+{% endblock container %}

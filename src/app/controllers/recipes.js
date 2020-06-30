@@ -39,7 +39,7 @@ module.exports = {
     revenues(req, res){
         Recipe.all(function (recipes) {
           
-            return res.render("recipes/revenues", { recipes })
+            return res.render("recipes/recipes", { recipes })
         })
     },
     

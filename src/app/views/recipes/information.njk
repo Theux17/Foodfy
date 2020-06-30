@@ -4,83 +4,67 @@
     <title>Receita - {{recipes.title}}</title>
 {% endblock %}
 
-{% block header %}
+{% block container %}
+    <div id="main-container">
 
-    <header class="main">
+        {% block header %}
+            {%include "recipes/parts/header.njk"%}
+        {% endblock %}
 
-        <nav>
-            <a href="/"><img src="/images/logo.png " alt="Logo"></a>
+        {% block content %}
 
-            <div class="links">
-                <a href="/about" target="blank">Sobre</a>
-                <a class="revenues" href="/revenues" target="blank">Receitas</a>
-            </div>
-        </nav>
+            <div class="recipe-information">
+                <img src="{{recipes.image}}" alt="{{recipes.title}}">
 
-    </header>
-
-{% endblock %}
-
-{% block content %}
-
-    <div class="recipe__information">
-        <img src="{{recipes.image}}" alt="{{recipes.title}}">
-
-        <div class="recipe__name">
-            <h2>{{recipes.title}}</h2>
-        </div>
-
-        <div class="recipe__creator">
-            <p>por {{recipes.chef_name}}</p>
-        </div>
-
-        <div class="ingredients">
-            <div class="title__ingredients">
-                <h3>Ingredientes</h3>
-            </div>
-
-            <div class="button1">ESCONDER</div>
-
-            <ul class=" ">
-                {% for ingredient in recipes.ingredients %}
-                    <li>{{ingredient}}</li>
-                {%endfor%}
-            </ul>
-        </div>
-
-            <div class="preparation">
-                <div class="title__preparation">
-                    <h3>Modo de preparo</h3>
+                <div class="recipe-name">
+                    <h2>{{recipes.title}}</h2>
                 </div>
 
-                <div class="button2">MOSTRAR</div>
-
-                <ul class="remove ">
-                    {% for preparation in recipes.preparation %}
-                        <li>{{preparation}}</li>
-                    {%endfor%}
-                </ul>
-
-            </div>
-
-            <div class="additional-information" >
-                <div class="title__information">
-                    <h3>Informações adicionais</h3>
+                <div class="recipe-creator">
+                    <span>por {{recipes.chef_name}}</span>
                 </div>
 
-                <div class="button3">ESCONDER</div>
+                <div class="ingredients">
+                    <div class="title-button-information">
+                        <h3>Informações adicionais</h3>
+                        <span class="button1">ESCONDER</span>
+                    </div>
 
-                <div class="text">
-                    <p>{{recipes.information}}</p>
+                    <ul class="">
+                        {% for ingredient in recipes.ingredients %}
+                            <li><span>{{ingredient}}</span></li>
+                        {%endfor%}
+                    </ul>
+                </div>
+
+                <div class=" preparation">
+                    <div class="title-button-information">
+                        <h3>Modo de preparo</h3>
+                        <span class="button2">MOSTRAR</span>
+                    </div>
+
+                    <ul class="remove">
+                        {% for preparation in recipes.preparation %}
+                            <li><span>{{preparation}}</span></li>
+                        {%endfor%}
+                    </ul>
+                </div>
+
+                <div class="additional-information">
+                    <div class="title-button-information">
+                        <h3>Informações adicionais</h3>
+                        <span class="button3">ESCONDER</span>
+                    </div>
+
+                    <div class="text">
+                        <p>{{recipes.information}}</p>
+                    </div>
                 </div>
             </div>
-    
+        {% endblock %}
     </div>
 {% endblock %}
 
 {% block footer %}
-    <footer>
-        <p>Todos direitos reservados, receitas Foodfy.</p>
-    </footer>
-    <script src="/scripts/script.js"></script>
+    {%include "recipes/parts/footer.njk"%}
 {% endblock %}

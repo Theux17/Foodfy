@@ -6,10 +6,11 @@ const routes =  express.Router()
 
 routes.get("/", recipes.home) // rota principal
 routes.get("/about", recipes.about) // rota sobre
-routes.get("/revenues", recipes.revenues) // rota de todas as receitas
+routes.get("/recipes", recipes.revenues) // rota de todas as receitas
 routes.get("/recipe/:id", recipes.recipes) // rota de mostrar a receita
 routes.get("/listing/chefs", recipes.chefs) // rota de listagem de chefs
-routes.get("/home/filter", recipes.filter)
+
+routes.get("/search/", recipes.filter)
 
 routes.get("/admin/recipes", recipesAdmin.index); // Mostrar a lista de receitas
 

@@ -4,43 +4,37 @@
     <title>Chef - Foodfy</title>
 {% endblock %}
 
-{% block header %}
+{% block container %}
+    <div id="main-container">
 
-    <header class="main">
+        {% block header %}
+            {%include "recipes/parts/header.njk"%}
+        {% endblock %}
 
-        <nav>
-            <a href="/"><img src="/images/logo.png " alt="Logo"></a>
 
-            <div class="links">
-                <a class="link" href="/about" target="blank">Sobre</a>
-                <a class="link" href="/revenues" target="blank">Receitas</a>
-                <a class="link" href="/listing/chefs" target="blank">Chefs</a>
-            </div>
-        </nav>
+        {% block content %}
 
-    </header>
+            <section class="chefs-listing">
 
-{% endblock %}
+                <div class="chefs" id="{{loop.index0}}">
 
-{% block content %}
+                    {% for chef in chefs %}
+                        <div class="chef">
+                            <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
 
-    <section class="chefs-listing">
-
-        <h2>Gerenciar chefs</h2>
-
-        <div class="chefs" id="{{loop.index0}}">
-
-            {% for chef in chefs %}
-                <div class="chef">
-                    <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
-
-                    <div class="info">
-                        <h3>{{chef.name}}</h3>
-                        <span>{{chef.total_recipes}} receitas </span>
-                    </div>
+                            <div class="info">
+                                <h3>{{chef.name}}</h3>
+                                <span>{{chef.total_recipes}} receitas </span>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
-    </section>
+            </section>
 
+        {% endblock %}
+    </div>
+{% endblock container %}
+
+{% block footer %}
+    {%include "recipes/parts/footer.njk"%}
 {% endblock %}

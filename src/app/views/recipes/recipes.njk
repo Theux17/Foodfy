@@ -1,0 +1,46 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Receitas</title>
+{% endblock %}
+
+{% block container %}
+<div id="main-container">
+
+    {% block header %}
+        <div class="header-container">
+        
+            {%include "recipes/parts/header.njk"%}  
+            {%include "recipes/parts/filter.njk"%}
+            
+        </div>
+    {% endblock %}
+
+    {% block content %}
+
+        <main>
+            <section class="all-recipes">
+                {% for recipe in recipes %}
+
+                    <div class="recipe" id="{{ recipe.id }}">
+                        <img src="{{recipe.image}}" alt="{{receita.title}}">
+
+                        <div class="recipe-name">
+                            <p>{{recipe.title}}</p>
+                        </div>
+
+                        <div class="recipe-creator">
+                            <p>por {{recipe.chef_name}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </section>
+        </main>
+
+    {% endblock %}
+</div>
+{%endblock%}
+{% block footer %}
+    {%include "recipes/parts/footer.njk"%}
+{% endblock %}

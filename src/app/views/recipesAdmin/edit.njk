@@ -4,46 +4,42 @@
     <title>Edit</title>
 {% endblock %}
 
-{% block header %}
+{% block container %}
 
-<div class="container-header">
-    
-    <header class="header-admin">
-       <div class="logo">
-            <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
-        </div>
-    </header>
+    {% block header %}
 
-</div>
+        {% include "recipesAdmin/parts/header.njk" %}
 
+    {% endblock %}
 
-{% endblock %}
+    <div id="main-container">
 
-{% block content %}
+        {% block content %}
 
-    <div class="forms">
+            <div class="forms">
 
-        <h2>Editar receita</h2>
-        
-        <form id="form-delete" method="POST" action="/admin/recipes/?_method=DELETE">
+                <h2>Editando receita</h2>
+                
+                <form class="form-delete" method="POST" action="/admin/recipes/?_method=DELETE">
+                    
+                    <button type="submit" class="button delete">Deletar</button>
+                    
+                    <input type="hidden" name="id" value="{{ recipe.id }}">
+
+                </form>
+
+                
+                <form class= "form-update" method="POST" action="/admin/recipes/?_method=PUT">
+                    <input type="hidden" name="id" value="{{ recipe.id }}">
+                    
+                    <button class="button save">Salvar receita</button>
+                
+                    {% include 'recipesAdmin/fields.njk' %} 
+                </form>
+
+            </div>
+
+        {% endblock %}
             
-            <button type="submit" class="button-delete">Deletar</button>
-            
-            <input type="hidden" name="id" value="{{ recipe.id }}">
-
-        </form>
-
-        
-        <form class= "form-update" method="POST" action="/admin/recipes/?_method=PUT">
-            <input type="hidden" name="id" value="{{ recipe.id }}">
-            
-            <button class="button-save">Salvar receita</button>
-        
-            {% include 'recipesAdmin/fields.njk' %} 
-        </form>
-
     </div>
-
-    <script src="/scripts/script.js"></script>
-
-{% endblock %}
+{% endblock container %}

@@ -1,57 +1,47 @@
 {%extends "layout.njk"%}
 
 {% block head %}
-    <title>Chef - Foodfy</title>
+    <title>chefs - Foodfy</title>
 {% endblock %}
 
-{% block header %}
+{% block container %}
 
-    <div class="container-header">
+    {% block header %}
 
-        <header class="header-admin">
-            <div class="logo">
-                <a href="/"><img src="/images/logo-admin.png " alt="Logo"></a>
-            </div>
-            <ul class="menu">
-                <li>
-                    <a href="/admin/recipes">Receitas</a>
-                </li>
-                <li>
-                    <a href="/chefs">Chefs</a>
-                </li>
+        {% include "recipesAdmin/parts/header.njk" %}
 
-            </ul>
-        </header>
+    {% endblock %}
 
-    </div>
+    <div id="main-container">
 
-{% endblock %}
+        {% block content %}
 
-{% block content %}
+            <section class="chefs-listing index">
 
-    <section class="chefs-listing">
+                <h2>Gerenciar chefs</h2>
 
-        <h2>Gerenciar chefs</h2>
+                <div class="chefs" id="{{loop.index0}}">
 
-        <div class="chefs" id="{{loop.index0}}">
+                    {% for chef in chefs %}
+                        <div class="chef">
+                            <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
 
-            {% for chef in chefs %}
-                <div class="chef">
-                    <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
+                            <div class="info">
+                                <h3 class="name">{{chef.name}}</h3>
+                                <span>
+                                    <a href="/chefs/details/{{ chef.id }}">Visualizar</a>
+                                </span>
+                            </div>
+                        </div>
+                    {% endfor %}
 
-                    <div class="info">
-                        <h3 class="name">{{chef.name}}</h3>
-                        <span>
-                            <a href="/chefs/details/{{ chef.id }}">Visualizar</a>
-                        </span>
-                    </div>
                 </div>
-            {% endfor %}
 
-        </div>
+                </div>
+            </section>
 
+
+        {% endblock %}
     </div>
 
-</section>
-
-{% endblock %}
+{%endblock container%}
