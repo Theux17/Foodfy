@@ -1,6 +1,6 @@
 const currentMenuPage = location.pathname
 
-function addClassToTheMenuItem (){
+function addClassToTheMenuItem() {
 
     const menuItemsHome = document.querySelectorAll("header .links a")
     const menuItemsAdmin = document.querySelectorAll("header .admin a")
@@ -13,19 +13,18 @@ function addClassToTheMenuItem (){
 
     for (item of menuItemsAdmin) {
         if (currentMenuPage.includes(item.getAttribute("href"))) {
-            item.classList.add("bold-admin") 
+            item.classList.add("bold-admin")
         }
     }
 }
 
-if (currentMenuPage){
+if (currentMenuPage) {
     addClassToTheMenuItem()
 }
 
 // Direciona para a receita selecionada
+function leadstoTheSelectedRecipe() {
 
-function leadstoTheSelectedRecipe(){
-    
     for (let recipe of recipes) {
         recipe.addEventListener("click", function () {
             const id = recipe.getAttribute("id")
@@ -36,13 +35,13 @@ function leadstoTheSelectedRecipe(){
 
 const recipes = document.querySelectorAll(".recipe")
 
-if(recipes){
+if (recipes) {
     leadstoTheSelectedRecipe()
 }
 
-    
+
 // Mostrar/Esconder informações da receita
-const ingredient = document.querySelector(".ingredients ul")
+const ingredient = document.querySelector(".ingredients ul ")
 const preparation = document.querySelector(".preparation ul")
 const information = document.querySelector(".text")
 
@@ -51,24 +50,24 @@ function ShowAndHide(button1, button2, button3) {
     button1.addEventListener("click", function () {
         const removeIngredient = ingredient.classList.toggle('remove')
 
-        if(removeIngredient) return button1.innerHTML = 'MOSTRAR'
-        if(!removeIngredient) return button1.innerHTML = 'ESCONDER'
-        
+        if (removeIngredient) return button1.innerHTML = 'MOSTRAR'
+        if (!removeIngredient) return button1.innerHTML = 'ESCONDER'
+
     })
 
     button2.addEventListener("click", function () {
         const removePreparation = preparation.classList.toggle('add')
 
-        if(removePreparation) return button2.innerHTML = 'ESCONDER'
-        if(!removePreparation) return button2.innerHTML = 'MOSTRAR'
+        if (removePreparation) return button2.innerHTML = 'ESCONDER'
+        if (!removePreparation) return button2.innerHTML = 'MOSTRAR'
     })
 
     button3.addEventListener("click", function () {
         const removeInformation = information.classList.toggle('remove')
 
-        if(removeInformation) return button3.innerHTML = 'MOSTRAR'
-        if(!removeInformation) return button3.innerHTML = 'ESCONDER'
-        
+        if (removeInformation) return button3.innerHTML = 'MOSTRAR'
+        if (!removeInformation) return button3.innerHTML = 'ESCONDER'
+
     })
 
 }
@@ -140,7 +139,6 @@ if (pagination) {
 }
 
 //Confirma se quer deletar o chef e a receita
-
 const formDelete = document.querySelector(".form-delete")
 
 function checkBeforeDeletingTheRecipe(event) {
@@ -152,11 +150,10 @@ if (formDelete) {
     formDelete.addEventListener("submit", checkBeforeDeletingTheRecipe)
 }
 
-
 // Verifica se o chef tem receita
 const chef = document.querySelector("#chef")
 
-function checksTheTotalRecipes (totalRecipes){ 
+function checksTheTotalRecipes(totalRecipes) {
     if (totalRecipes >= 1) {
         formDelete.addEventListener("submit", function () {
             return event.preventDefault(alert("O chef não pode ser deletado pois ainda possui receitas cadastradas! Delete as receitas antes de deletar o chef."))
@@ -164,8 +161,114 @@ function checksTheTotalRecipes (totalRecipes){
     }
 }
 
-const totalRecipes = +chef.dataset.total_recipes
 
-if (totalRecipes){
-    checksTheTotalRecipes()
+if (chef) {
+    const totalRecipes = +chef.dataset.total_recipes
+    checksTheTotalRecipes(totalRecipes)
 }
+
+
+// Upload de imagens
+const PhotosUpload = {
+    input: "",
+    uploadLimit: 5,
+    files: [],
+    preview: document.querySelector('#photos-preview'),
+    handleFileInput(event) {
+        const { files: fileList } = event.target
+        PhotosUpload.input = event.target
+
+        if (PhotosUpload.hasLimit(event)) return
+
+
+        Array.from(fileList).forEach(file => {
+
+            PhotosUpload.files.push(file)
+
+            const reader = new FileReader()
+
+            reader.onload = () => {
+                const image = new Image()
+                image.src = String(reader.result)
+
+                const div = PhotosUpload.getContainer(image)
+                PhotosUpload.preview.appendChild(div)
+
+            }
+
+            reader.readAsDataURL(file)
+        })
+
+        PhotosUpload.input.files = PhotosUpload.getAllFiles()
+
+    },
+    hasLimit(event) {
+        const { uploadLimit, input, preview } = PhotosUpload
+        const { files: fileList } = input
+
+
+        if (fileList.length > uploadLimit) {
+            alert(`Envie no máximo ${uploadLimit} fotos!`)
+            event.preventDefault()
+            return true
+        }
+
+        const photosDiv = []
+
+        preview.childNodes.forEach(item => {
+            if (item.classList && item.classList.value == "photo") {
+                photosDiv.push(item)
+            
+            }
+            
+        })
+        const totalPhotos = fileList.length + photosDiv.length
+        
+        if (totalPhotos > uploadLimit){
+            alert(`Você só pode enviar no máximo ${uploadLimit} fotos.`)
+            event.preventDefault()
+            return true
+        }
+
+        return false
+    },
+
+    getAllFiles() {
+        const dataTransfer = new ClipboardEvent("").clipboardData || new DataTransfer()
+
+        PhotosUpload.files.forEach(file => dataTransfer.items.add(file))
+
+        return dataTransfer.files
+    },
+
+    getContainer(image) {
+        const div = document.createElement('div')
+
+        div.classList.add('photo')
+
+        div.onclick = PhotosUpload.removePhoto
+
+        div.appendChild(image)
+        div.appendChild(PhotosUpload.getRemoveButton())
+
+        return div
+    },
+
+    getRemoveButton() {
+        const button = document.createElement('i')
+        button.classList.add('material-icons')
+        button.innerHTML = 'close'
+        return button
+    },
+
+    removePhoto(event) {
+        const photosDiv = event.target.parentNode
+        const photosArray = Array.from(PhotosUpload.preview.children)
+        const index = photosArray.indexOf(photosDiv)
+
+        PhotosUpload.files.splice(index, 1)
+        PhotosUpload.input.files = PhotosUpload.getAllFiles()
+
+        photosDiv.remove()
+    }
+} 

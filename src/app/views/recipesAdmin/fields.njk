@@ -1,11 +1,27 @@
 <div class="item">
     <h4>Imagem da receita</h4>
-    <input 
-        type="url" 
-        name="image" 
-        placeholder="insira a url da receita"
-        value="{{ recipe.image }}"
-    >            
+
+
+    <div class="photos-container">
+
+        <div id="photos-upload">
+
+            <input 
+                id="photos-input"
+                type="file" 
+                name="photos" 
+                multiple
+                accept="image/*"
+                onchange="PhotosUpload.handleFileInput(event)"
+            >
+            <i class="material-icons">add</i> 
+
+
+        </div>
+        <div id= "photos-preview">
+        </div>
+    </div>
+
 </div>
 
 <div class="item">

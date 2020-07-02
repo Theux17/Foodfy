@@ -352,7 +352,7 @@ main h2 {
     opacity: 1;
 }
 
-/*=== Admin Recipes ===*/
+/*=== Admin da receitas ===*/
 .container-header {
     background-color: var(--title-color);
 
@@ -482,7 +482,7 @@ form .item h4{
 }
 
 input[type="text"],
-input[type="url"],
+#photos-upload,
 textarea,
 select {
     background: #FFFFFF;
@@ -493,13 +493,8 @@ select {
     font-size: 16px;
     color: var(--title-color);
     line-height: 24px;
-    
     border: 1px solid #DDDDDD;
     border-radius: 4px;
-}
-
-form input[type="url"]{
-    margin-bottom: 30px;
 }
 
 form textarea[name="information"]{
@@ -645,7 +640,7 @@ button.add-preparation {
     border-radius: 50%;
 }
 
-/*PAGES*/
+/* PAGES */
 
 .pagination { 
     margin-top: 80px;
@@ -656,7 +651,7 @@ button.add-preparation {
   
 .pagination a,
 .pagination span {
-    background-color: #6558C3;
+    background-color: var(--button-color);
     margin: 0 10px; 
     padding: 8px;
     border-radius: 14px;
@@ -665,5 +660,77 @@ button.add-preparation {
 }
 
 .pagination a:hover {
-    color: #111111
+    color: var(--title-color);
+}
+
+/* Photos Upload */
+
+.item .photos-container {
+    display: flex
+}
+
+#photos-upload {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 149px;
+    height: 149px;
+    border-radius: 3.5px;
+}
+
+#photos-input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#photos-upload i {
+    font-size: 28px;
+    font-weight: bold;
+    color: #777777;
+}
+
+#photos-preview {
+    display: flex;
+    justify-content: center;
+}
+
+#photos-preview .photo {
+    position: relative;
+    margin-left: 10px;
+}
+
+#photos-preview img {
+    width: 150px;
+    height: 150px;
+    border-radius: 3.5px;
+    object-fit: cover;
+}
+
+#photos-preview .photo i {
+    background: rgba(255, 255, 255, 80%) ;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 39.6px;
+    font-weight: bold;
+    color: #FF0000;
+
+    transition: opacity 400ms;
+
+    opacity: 0;
+    cursor: pointer;
+}
+
+#photos-preview .photo i:hover {
+    opacity: 1;
 }
