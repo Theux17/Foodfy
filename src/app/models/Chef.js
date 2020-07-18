@@ -2,105 +2,96 @@ const db = require('../../config/db')
 const { date } = require("../../lib/utils")
 
 module.exports = {
-    all(callback) {
-        db.query(`
+    async all() {
+        return db.query(`
         SELECT chefs.*, count(recipes) AS total_recipes
         FROM chefs 
         LEFT JOIN recipes ON (chefs.id = recipes.chef_id)
-        GROUP BY chefs.id `, function (err, results) {
-            if (err) throw `Database Error! ${err}`
-
-            callback(results.rows)
-        })
+        GROUP BY chefs.id `)
 
     },
-    create(data, callback) {
+    async create({name, fileId}) {
+
+
         const query = `
             INSERT INTO chefs(
                 name,
-                avatar_url,
+                file_id,
                 created_at
             ) VALUES($1, $2, $3 )
             RETURNING id 
-        `
+            `
 
         const values = [
-            data.name,
-            data.avatar_url,
+            name,
+            fileId,
             date(Date.now()).iso
         ]
 
-        db.query(query, values, function (err, results) {
-            if (err) throw `Database Error! ${err}`
+        return db.query(query, values)
 
-            callback(results.rows[0])
-
-        })
     },
-    find(id, callback){
+    async find(id) {
 
-        db.query(`
+        return db.query(`
         SELECT chefs. *, count(recipes) AS total_recipes 
         FROM chefs
         LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
         WHERE chefs.id = $1 
-        GROUP BY chefs.id `, [ id], function(err, results){
-            if (err) throw `Database Error! ${err}`
-            
-            callback(results.rows[0])
-        })
+        GROUP BY chefs.id `, [id])
     },
 
-    recipesAll(id, callback){
+    async recipesAll(id) {
 
-        db.query(`
+        return db.query(`
         SELECT *
         FROM recipes
-        WHERE recipes.chef_id = $1`, [ id ], function(err, results){
-            if (err) throw `Database Error! ${err}`
-            
-            callback(results.rows)
-        })
+        WHERE recipes.chef_id = $1`, [id])
     },
 
-    update(data, callback){
+    async update({name, fileId, id}) {
+
         const query = ` 
-            UPDATE chefs SET 
+        UPDATE chefs SET 
             name=($1),
-            avatar_url=($2)
+            file_id=($2)
             WHERE id = $3
         `
         const values = [
-            data.name,
-            data.avatar_url,
-            data.id
+            name,
+            fileId,
+            id
         ]
-
-        db.query(query, values, function(err, results){
-            if (err) throw `Database Error! ${err}`
-            callback()            
-        })
+        
+        return db.query(query, values)
 
     },
 
-    searchByTotalRecipes(total_recipes, callback){
+    searchByTotalRecipes(total_recipes, callback) {
         db.query(`
         SELECT chefs. *, count(recipes) AS total_recipes 
         FROM chefs
         LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
         WHERE chefs.total_recipes = $1
-        GROUP BY chefs.id `, [ total_recipes ], function(err, results){
+        GROUP BY chefs.id `, [total_recipes], function (err, results) {
             if (err) throw `Database Error! ${err}`
-            
+
             callback(results.rows[0])
         })
     },
 
-    delete(id, callback){
-        db.query(`DELETE FROM chefs WHERE id = $1`, [ id ], function(err, results){
-            if (err) throw `Database Error! ${err}`
-            callback()            
-        })
+    async delete(id) {
 
-    }
+        return db.query(`DELETE FROM chefs WHERE id = $1`, [id])
+
+    },
+
+    async files(id) {
+        return db.query(`
+            SELECT *
+            FROM chefs
+            LEFT JOIN files ON (files.id = chefs.file_id)
+            WHERE chefs.id = $1  
+        `, [id])
+    },
 }
