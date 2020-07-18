@@ -1,97 +1,172 @@
-//const recipe = require('../data')
 const Recipe = require("../models/Recipe")
-//const data = require('../../../data.json')
+const File = require('../models/File')
+
 
 module.exports = {
-    index(req, res) {
+    async index(req, res) {
         let { page, limit } = req.query
 
         page = page || 1
         limit = limit || 4
-        let offset =  limit * (page - 1)
+        let offset = limit * (page - 1)
 
         const params = {
-            page, 
-            limit, 
-            offset, 
-            callback(recipes){
-                const pagination = {
-                    total: Math.ceil(recipes[0].total / limit),
-                    page
-                }
-                return res.render("recipesAdmin/index", { recipes, pagination, params })
-            
+            page,
+            limit,
+            offset,
+        }
+
+        let results = await Recipe.paginate(params)
+        const recipes = results.rows
+
+        const pagination = {
+            total: Math.ceil(recipes[0].total / limit),
+            page
+        }
+
+        const filesPromise = recipes.map(recipe => Recipe.files(recipe.id))
+        results = await Promise.all(filesPromise)
+
+        let recipesImage = results.map(result => result.rows[0])
+
+        recipesImage = recipesImage.map(file => ({
+            ...file,
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+        }))
+
+        return res.render("admin/recipes/index", { recipes, pagination, params, recipesImage })
+    },
+
+    async create(req, res) {
+
+        let results = await Recipe.chefsSelectOptions()
+        const chefsOptions = results.rows
+
+        return res.render("admin/recipes/create", { chefsOptions })
+    },
+
+    async post(req, res) {
+        const keys = Object.keys(req.body)
+
+        for (key of keys) {
+            if (req.body[key] == "") {
+                return res.send("Please fill in all fields! ")
             }
         }
 
-        Recipe.paginate(params)
- 
+        if (req.files.length == 0)
+            return res.send("Please, send at least one image")
+
+
+        let results = await Recipe.create(req.body)
+        const recipeId = results.rows[0].id
+
+        const filesPromise = req.files.map(file => File.create({ ...file, recipeId }))
+        results = await Promise.all(filesPromise)
+
+        //pega o id dos arquivos
+        for (file of results) {
+            Recipe.sendDataToRecipeFiles({ recipeId, fileId: file.rows[0].id })
+        }
+
+        return res.redirect(`/admin/recipes/${recipeId}`)
     },
 
-    create(req, res) {
-        Recipe.chefsSelectOptions(function(options){  
-            return res.render("recipesAdmin/create", { chefsOptions: options })
-        })
+    async show(req, res) {
+
+        let results = await Recipe.find(req.params.id)
+        const recipe = results.rows[0]
+
+        results = await Recipe.files(recipe.id)
+
+        let recipeImage = results.rows
+
+        recipeImage = recipeImage.map(file => ({
+            ...file,
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+        }))
+
+        return res.render("admin/recipes//show", { recipe, recipeImage })
     },
 
-    post(req, res) {
+    async edit(req, res) {
+
+        let results = await Recipe.find(req.params.id)
+        const recipe = results.rows[0]
+
+        // envia os chefs para a edição
+        results = await Recipe.chefsSelectOptions()
+        const chefsOptions = results.rows
+
+        results = await Recipe.files(recipe.id)
+
+        let files = results.rows
+
+        files = files.map(file => ({
+            ...file,
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+        }))
+
+        return res.render("admin/recipes/edit", { recipe, chefsOptions, files })
+    },
+
+    async put(req, res) {
         const keys = Object.keys(req.body)
 
         for (key of keys) {
-            if (req.body[key] == "")
+            if (req.body[key] == "" && key != "removed_files") {
                 return res.send("Please fill in all fields! ")
+            }
         }
 
-        Recipe.create(req.body, function (recipe) {
-            return res.redirect(`/admin/recipes/${recipe.id}`)
+        const removedFiles = req.body.removed_files.split(",")
+        if (req.body.removed_files) {
+            const lastIndex = removedFiles.length - 1
+            removedFiles.splice(lastIndex, 1)
 
-        })
+            // remove o id da foto da tabela recipe_files/files
+            let removedFilesPromise = removedFiles.map(id => Recipe.deleteDataToRecipeFiles(id))
+            removedFilesPromise = removedFiles.map(id => File.delete(id))
 
+            await Promise.all(removedFilesPromise)
+        }
 
-    },
-
-    show(req, res) {
-
-        Recipe.find(req.params.id, function (recipe) {
-            if (!recipe) return res.send("Recipe is not found!")
-
-            return res.render("recipesAdmin/show", { recipe })
-        })
-
-    },
-
-    edit(req, res) {
-        Recipe.find(req.params.id, function (recipe) {
-
-            if (!recipe) return res.send("Recipe is not found!")
+        const oldFiles = await Recipe.files(req.body.id)
         
-            Recipe.chefsSelectOptions(function(options){  
-                return res.render("recipesAdmin/edit", {recipe, chefsOptions: options })
-            })
-        })
-    },
+        if (removedFiles.length <= 5 && req.files.length == 0 && oldFiles.rows.length == 0) return res.send("Please, send at least one image")
+        
 
+        if (req.files.length || removedFiles.length && oldFiles.rows.length != 0) {
+            
+            // verifica se não existem 5 imagens no total
+            const totalFiles = oldFiles.rows.length + req.files.length
 
-    put(req, res) {
-        const keys = Object.keys(req.body)
+            if (totalFiles <= 5 ) {
+                const filesPromise = req.files.map(file => File.create({ ...file, recipeId: req.body.id }))
+                const files = await Promise.all(filesPromise)
 
-        for (key of keys) {
-            if (req.body[key] == "")
-                return res.send("Please fill in all fields! ")
+                // Pega o id dos files
+                const filesId = files.map(file => Recipe.sendDataToRecipeFiles({ recipeId: req.body.id, fileId: file.rows[0].id }))
+                await Promise.all(filesId)
+            }
         }
 
-        Recipe.update(req.body, function () {
+        await Recipe.update(req.body)
 
-            return res.redirect(`/admin/recipes/${req.body.id}`)
-        })
-
+        return res.redirect(`/admin/recipes/${req.body.id}`)
     },
 
-    delete(req, res) {
-        Recipe.delete(req.body.id, function () {
+    async delete(req, res) {
 
-            return res.redirect("/admin/recipes")
-        })
+        const files = await Recipe.files(req.body.id)
+
+        for (file of files.rows) {
+            await Recipe.deleteAllOfRecipeFiles(req.body.id)
+            await File.delete(file.id)
+            await Recipe.delete(req.body.id)
+        }
+
+        return res.redirect("/admin/recipes")
 
     }
 }

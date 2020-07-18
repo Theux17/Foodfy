@@ -2,35 +2,29 @@ const db = require('../../config/db')
 const { date } = require("../../lib/utils")
 
 module.exports = {
-    all(callback) {
-        db.query(`
+    async all() {
+        return db.query(`
         SELECT recipes.*, chefs.name AS chef_name 
         FROM recipes 
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-        ORDER BY title ASC `, function (err, results) {
-            if (err) throw `Database Error! ${err}`
-
-            callback(results.rows)
-        })
+        ORDER BY title ASC `)
 
     },
-    create(data, callback) {
+    async create(data) {
         const query = `
             INSERT INTO recipes(
                 chef_id,
-                image,
                 title,
                 ingredients,
                 preparation,
                 information,
                 created_at
-            ) VALUES($1, $2, $3, $4, $5, $6, $7)
+            ) VALUES($1, $2, $3, $4, $5, $6)
             RETURNING id 
         `
 
         const values = [
             data.chef,
-            data.image,
             data.title,
             data.ingredients,
             data.preparation,
@@ -38,23 +32,14 @@ module.exports = {
             date(Date.now()).iso
         ]
 
-        db.query(query, values, function (err, results) {
-            if (err) throw `Database Error! ${err}`
-
-            callback(results.rows[0])
-
-        })
+        return db.query(query, values)
     },
-    find(id, callback){
-        db.query(`
+    async find(id){
+        return db.query(`
         SELECT recipes. *, chefs.name AS chef_name 
         FROM recipes 
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id )
-        WHERE recipes.id = $1`, [ id ], function(err, results){
-            if (err) throw `Database Error! ${err}`
-            
-            callback(results.rows[0])
-        })
+        WHERE recipes.id = $1`, [ id ] )
     },
     chefsAll(id, callback){
 
@@ -67,33 +52,27 @@ module.exports = {
             callback(results.rows)
         })
     },
-    findBy(filter, callback){
-        db.query(`
+    async findBy(filter){
+        return db.query(`
         SELECT recipes.*, chefs.name AS chef_name
         FROM recipes 
         LEFT JOIN chefs ON (chefs.id = recipes.chef_id)
         WHERE recipes.title ILIKE '%${filter}%'
-        `, function (err, results) {
-            if (err) throw `Database Error! ${err}`
-
-            callback(results.rows)
-        })
+        `)
     },
 
-    update(data, callback){
+    async update(data){
         const query = ` 
             UPDATE recipes SET 
             chef_id=($1),
-            image=($2),
-            title=($3),
-            ingredients=($4),
-            preparation=($5),
-            information=($6)
-            WHERE id = $7
+            title=($2),
+            ingredients=($3),
+            preparation=($4),
+            information=($5)
+            WHERE id = $6
         `
         const values = [
             data.chef,
-            data.image,
             data.title,
             data.ingredients,
             data.preparation,
@@ -101,30 +80,18 @@ module.exports = {
             data.id
         ]
 
-        db.query(query, values, function(err, results){
-            if (err) throw `Database Error! ${err}`
-            
-            callback(results.rows)            
-        })
+        return db.query(query, values )
+    },
+    async delete(id){
+        return db.query(`DELETE FROM recipes WHERE id = $1`, [ id ])
 
     },
-    delete(id, callback){
-        db.query(`DELETE FROM recipes WHERE id = $1`, [ id ], function(err, results){
-            if (err) throw `Database Error! ${err}`
-            callback()            
-        })
-
-    },
-    chefsSelectOptions (callback){
-        db.query(`SELECT name, id FROM chefs`, function(err, results){
-            if(err) throw `Database Error! ${err}`
-
-            callback(results.rows)
-        })
+    async chefsSelectOptions (){
+        return db.query(`SELECT name, id FROM chefs`)
     },
 
-    paginate(params){
-        const { limit, offset, callback } = params
+    async paginate(params){
+        const { limit, offset } = params
 
         let query = "",
         totalQuery = "(SELECT count(*) FROM recipes) AS total"
@@ -136,10 +103,43 @@ module.exports = {
         LIMIT $1 OFFSET $2
         `
         
-        db.query(query, [limit, offset], function(err, results){
-            if(err) throw `Database Error! ${err}`
+        return db.query(query, [limit, offset])
+    },
 
-            callback(results.rows)
-        })
+    async sendDataToRecipeFiles({ recipeId, fileId }) {
+        const query = `
+            INSERT INTO recipe_files (
+                recipe_id,
+                file_id
+            ) 
+            VALUES($1, $2)
+            RETURNING id`
+        
+            const value = [
+            recipeId,
+            fileId
+        ]
+
+        return db.query(query, value)
+    },
+
+    async files(id) {
+        return db.query(`
+        SELECT * 
+        FROM recipe_files
+        LEFT JOIN files ON (recipe_files.file_id = files.id)
+        WHERE recipe_files.recipe_id = $1
+    `, [id])},
+
+    async deleteDataToRecipeFiles(id){
+        return db.query(`
+            DELETE FROM recipe_files WHERE recipe_files.file_id = $1`, [id])
+    },
+
+    async deleteAllOfRecipeFiles(id){
+        return db.query(`
+            DELETE FROM recipe_files WHERE recipe_files.recipe_id = $1`, [id])
     }
+  
+    
 }
