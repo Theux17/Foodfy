@@ -1,0 +1,58 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Chef - Foodfy</title>
+{% endblock %}
+
+{% block container %}
+
+    {% block header %}
+
+        {% include "admin/recipes/parts/header.njk" %}
+
+    {% endblock %}
+
+    <div id="main-container">
+
+        {% block content %}
+
+            <section class="create-chef">
+                
+                <form class="chef-form" method="POST" action="/chefs" enctype="multipart/form-data">
+                    <div class="title-button">
+                        <h2>Criando chef</h2>
+                        <button class="button" type="submit">Salvar chef</button>
+                    </div>
+
+                    <span>Nome</span>
+
+                    <input 
+                        type="text" 
+                        name="name" 
+                        value= "{{ name }}" 
+                    >
+                
+                    <span>Avatar</span>
+                
+                    <div id="avatar-upload">
+
+                        <input 
+                            id="avatar-input"
+                            name="avatar"
+                            multiple 
+                            type="file"
+                            accept="image/*"
+                            onchange="PhotosUpload.handleFileInput(event)"
+                        >
+
+                        <span class="button"> Enviar Avatar</span>
+                    </div>
+                    
+                </form>
+
+            </section>
+            
+        {% endblock %}
+
+    </div>
+{% endblock container%}

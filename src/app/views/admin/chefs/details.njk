@@ -8,7 +8,7 @@
 
     {% block header %}
 
-        {% include "recipesAdmin/parts/header.njk" %}
+        {% include "admin/recipes/parts/header.njk" %}
 
     {% endblock %}
 
@@ -20,14 +20,15 @@
             <section class="details-chef">
 
                 <div class="title-button">
-                    <h2>Chef:{{chef.name}}</h2>
+                    <h2>Chef: {{chef.name}}</h2>
                     <a href="/chefs/edit/{{ chef.id }}"><button class="button"> Editar chef </button> </a>
                 </div>
-
                 <div class="info">
-                    <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
-                    <h2>{{chef.name}}</h2>
-                    <span>{{chef.total_recipes}} receitas</span>
+                    {% for image in chefAvatar %}
+                        <img src="{{image.src}}" alt="Foto do chef {{data.name}}">
+                        <h2>{{chef.name}}</h2>
+                        <span>{{chef.total_recipes}} receitas</span>
+                    {% endfor %}
                 </div>
 
                 <h3>Receitas</h3>
@@ -36,7 +37,11 @@
 
                     {% for recipe in recipes %}
                         <div class="recipe-admin">
-                            <img src="{{ recipe.image }}" alt="{{recipe.img_title}}">
+                            {% for image in recipeImage %}
+                                {% if image.recipe_id == recipe.id %}
+                                    <img src="{{ image.src }}" alt="{{recipe.img_title}}" id="{{ image.id }}">
+                                {% endif %}
+                            {% endfor %}
                             
                             <div class="recipe-content">
                                 <span class="title">{{ recipe.title }}</span>

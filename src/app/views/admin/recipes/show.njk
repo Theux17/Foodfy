@@ -8,7 +8,7 @@
 
     {% block header %}
             
-        {% include "recipesAdmin/parts/header.njk" %}
+        {% include "admin/recipes/parts/header.njk" %}
             
     {% endblock %}
 
@@ -22,8 +22,33 @@
                     <a href="/admin/recipes/{{ recipe.id }}/edit"><button class="button" > Editar receita </button></a>
                 </div>
                 
-                <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                <div class="gallery">
 
+                    <div class="highlight">
+                        <img src="{{recipeImage[0].src}}" alt="{{recipeImage[0].src}}">
+                    </div>
+                    
+
+                    <div class="preview-container">
+
+                        <div class="gallery-preview">
+                            {% for image in recipeImage %}
+                                <img 
+                                    src="{{ image.src }}" 
+                                    alt="{{ image.name }}"
+                                    {% if  loop.index0 == 0 %}
+                                        class="active"
+                                    {% endif %}
+                                    onclick="ImageGallery.setImage(event)"
+                                >
+                            {% endfor %}
+                        </div>
+                        
+                    </div>
+                
+                
+                </div>
+                
                 <div class="recipe-name">
                     <h2>{{recipe.title}}</h2>
                 </div>

@@ -20,7 +20,11 @@
 
                     {% for chef in chefs %}
                         <div class="chef">
-                            <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
+                            {% for image in chefsAvatar %}
+                                {% if chef.file_id == image.id %}
+                                    <img src="{{image.src}}" alt="Foto do chef {{chef.name}}">
+                                {% endif %}
+                            {% endfor %}
 
                             <div class="info">
                                 <h3>{{chef.name}}</h3>

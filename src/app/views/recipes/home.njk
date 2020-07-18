@@ -22,7 +22,7 @@
         <div class="short-presentation">
 
             <h1>As melhores receitas</h1>
-            <img src="images/chef.png" alt="Chef">
+            <img src="assets/chef.png" alt="Chef">
             <p>Aprenda a construir os melhores pratos
                 com receitas criadas por profissionais
                 do mundo inteiro.
@@ -35,7 +35,11 @@
             <section class="recipe-container">
             {% for recipe in recipes %}
                 <div class="recipe" id="{{ recipe.id }}">
-                    <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                    {% for image in recipesImage %}
+                        {% if recipe.id == image.recipe_id %}
+                            <img src="{{image.src}}" alt="{{image.name}}">
+                        {% endif %}
+                    {% endfor %}
 
                     <div class="recipe-name">
                         <p>{{recipe.title}}</p>

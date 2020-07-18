@@ -14,14 +14,37 @@
         {% block content %}
 
             <div class="recipe-information">
-                <img src="{{recipes.image}}" alt="{{recipes.title}}">
+                <div class="gallery">
+
+                    <div class="highlight">
+                        <img src="{{recipeImages[0].src}}" alt="{{recipeImage[0].src}}">
+                    </div>
+                    
+
+                    <div class="preview-container">
+
+                        <div class="gallery-preview">
+                            {% for image in recipeImages %}
+                                <img 
+                                    src="{{ image.src }}" 
+                                    alt="{{ image.name }}"
+                                    {% if  loop.index0 == 0 %}
+                                        class="active"
+                                    {% endif %}
+                                    onclick="ImageGallery.setImage(event)"
+                                >
+                            {% endfor %}
+                        </div>
+                        
+                    </div>
+                </div>
 
                 <div class="recipe-name">
-                    <h2>{{recipes.title}}</h2>
+                    <h2>{{recipe.title}}</h2>
                 </div>
 
                 <div class="recipe-creator">
-                    <span>por {{recipes.chef_name}}</span>
+                    <span>por {{recipe.chef_name}}</span>
                 </div>
 
                 <div class="ingredients">
@@ -31,7 +54,7 @@
                     </div>
 
                     <ul class="">
-                        {% for ingredient in recipes.ingredients %}
+                        {% for ingredient in recipe.ingredients %}
                             <li><span>{{ingredient}}</span></li>
                         {%endfor%}
                     </ul>
@@ -44,7 +67,7 @@
                     </div>
 
                     <ul class="remove">
-                        {% for preparation in recipes.preparation %}
+                        {% for preparation in recipe.preparation %}
                             <li><span>{{preparation}}</span></li>
                         {%endfor%}
                     </ul>
@@ -57,7 +80,7 @@
                     </div>
 
                     <div class="text">
-                        <p>{{recipes.information}}</p>
+                        <p>{{recipe.information}}</p>
                     </div>
                 </div>
             </div>

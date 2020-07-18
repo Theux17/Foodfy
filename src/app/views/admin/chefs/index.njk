@@ -8,7 +8,7 @@
 
     {% block header %}
 
-        {% include "recipesAdmin/parts/header.njk" %}
+        {% include "admin/recipes/parts/header.njk" %}
 
     {% endblock %}
 
@@ -18,13 +18,20 @@
 
             <section class="chefs-listing index">
 
-                <h2>Gerenciar chefs</h2>
+                <div class="title-button index">
+                    <h2 class="title-admin">Gerenciar chefs</h2>
+                    <a href="/chefs/create"><button class="button" > Criar Chef </button></a>
+                </div>
 
-                <div class="chefs" id="{{loop.index0}}">
+                <div class="chefs">
 
                     {% for chef in chefs %}
-                        <div class="chef">
-                            <img src="{{chef.avatar_url}}" alt="Foto do chef {{chef.name}}">
+                        <div class="chef" id="{{chef.id}}">
+                                {% for image in chefsAvatar %}
+                                    {% if image.id == chef.file_id%}
+                                        <img src="{{image.src}}" alt="Foto do chef {{chef.name}}">
+                                    {% endif %}
+                                {% endfor %}
 
                             <div class="info">
                                 <h3 class="name">{{chef.name}}</h3>
