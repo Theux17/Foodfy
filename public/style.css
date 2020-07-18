@@ -191,6 +191,7 @@ main h2 {
     height: 140px;
     border-radius: 15px;
     cursor: pointer;
+    object-fit: cover;
 }
 
 .recipe-name p {
@@ -270,12 +271,39 @@ main h2 {
 }
 
 /*=== Informação da Receita ==== */
-.recipe-information img,
+.recipe-information .gallery .highlight img,
 .recipe-show img {
     width: 940px;
     height: 280px;
+    object-position: 50% 50%;
     border-radius: 15px;
-    margin: 0px 0 50px 0;
+    margin: 0px 0 8px 0;
+}
+
+/* Galeria das imagens da informação da receita  */
+.recipe-information .gallery .highlight img{
+    cursor: zoom-in;
+}
+
+.recipe-information .gallery .preview-container  {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.recipe-information .gallery .preview-container img {
+    width: 50px;
+    height: 50px;
+    border-radius: 3.5px;
+    object-fit: cover;
+    opacity: 0.5;
+    cursor: pointer;
+
+    transition: opacity 400ms; 
+}
+
+.recipe-information .gallery .preview-container .gallery-preview .active,
+.recipe-information .gallery .preview-container img:hover {
+    opacity: 1;
 }
 
 .recipe-name h2 {
@@ -389,6 +417,7 @@ main h2 {
     height: 80px;
     margin-bottom: 20px;
     border-radius: 15px;
+    object-fit: cover;
 }
 
 .recipe-admin .recipe-content {
@@ -415,6 +444,7 @@ main h2 {
 }
 
 form .title-button, 
+.title-button.index,
 .recipe-information .title-button,
 .create-chef .title-button,
 .details-chef .title-button { 
@@ -519,11 +549,10 @@ button.add-preparation {
 }
 
 /* CHEF */
-
-.title-button {
+/* .title-button {
     display: grid;
     align-items: center;
-}
+} */
 
 .create-chef .chef-form span,
 .form-update span {
@@ -733,4 +762,41 @@ button.add-preparation {
 
 #photos-preview .photo i:hover {
     opacity: 1;
+}
+
+/*CHEF AVATAR*/
+#avatar-upload {
+    position: relative;
+    
+    display: block;
+    overflow: hidden;
+
+    width: 139px;
+    height: 37px;
+}
+
+#avatar-upload input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: block;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#avatar-upload span {
+    padding: 9px 16px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+#chef-src::placeholder, input[name="src"] {
+    opacity: 0.36;
+    font-size: 16px;
+    color: #111111;
 }
