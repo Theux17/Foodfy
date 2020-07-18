@@ -1,0 +1,45 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Edit</title>
+{% endblock %}
+
+{% block container %}
+
+    {% block header %}
+
+        {% include "admin/recipes/parts/header.njk" %}
+
+    {% endblock %}
+
+    <div id="main-container">
+
+        {% block content %}
+
+            <div class="forms">
+
+                <h2>Editando receita</h2>
+                
+                <form class= "form-update" method="POST" action="/admin/recipes/?_method=PUT" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="{{ recipe.id }}">
+                    
+                    <button class="button save">Salvar receita</button>
+                
+                    {% include 'admin/recipes/fields.njk' %} 
+                </form>
+
+                <form class="form-delete" method="POST" action="/admin/recipes/?_method=DELETE">
+                    
+                    <button type="submit" class="button delete">Deletar</button>
+                    
+                    <input type="hidden" name="id" value="{{ recipe.id }}">
+
+                </form>
+  
+
+            </div>
+
+        {% endblock %}
+            
+    </div>
+{% endblock container %}

@@ -1,0 +1,31 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Create</title>
+{% endblock %}
+
+{% block container %}
+
+    {% block header %}
+
+        {% include "admin/recipes/parts/header.njk" %}
+
+    {% endblock %}
+    
+    <div id="main-container">
+
+        {% block content %}
+
+            <form method="POST" action="/admin/recipes" enctype="multipart/form-data">
+                <div class="title-button">
+                    <h2>Criando receita</h2>
+                    <button class="button">Salvar receita</button>
+                </div>
+
+                {% include 'admin/recipes/fields.njk' %}
+            </form>
+
+        {% endblock %}
+        
+    </div>
+{% endblock container %}
