@@ -42,7 +42,11 @@ module.exports = {
         let results = await Recipe.chefsSelectOptions()
         const chefsOptions = results.rows
 
-        return res.render("admin/recipes/create", { chefsOptions })
+        const checkThatThereIsNoImage = req.files
+        
+        if(checkThatThereIsNoImage) return res.send("Please, send at least one image")
+
+        return res.render("admin/recipes/create", { chefsOptions, checkThatThereIsNoImage })
     },
 
     async post(req, res) {
@@ -53,11 +57,9 @@ module.exports = {
                 return res.send("Please fill in all fields! ")
             }
         }
-
-        if (req.files.length == 0)
-            return res.send("Please, send at least one image")
-
-
+        
+        if(req.files.length == 0) return res.send("Please, send at least one image")
+        
         let results = await Recipe.create(req.body)
         const recipeId = results.rows[0].id
 
@@ -65,9 +67,8 @@ module.exports = {
         results = await Promise.all(filesPromise)
 
         //pega o id dos arquivos
-        for (file of results) {
-            Recipe.sendDataToRecipeFiles({ recipeId, fileId: file.rows[0].id })
-        }
+        const filesId = results.map(file => Recipe.sendDataToRecipeFiles({ recipeId, fileId: file.rows[0].id }))
+        await Promise.all(filesId)
 
         return res.redirect(`/admin/recipes/${recipeId}`)
     },
@@ -132,10 +133,10 @@ module.exports = {
         }
 
         const oldFiles = await Recipe.files(req.body.id)
-        
-        if (removedFiles.length <= 5 && req.files.length == 0 && oldFiles.rows.length == 0) return res.send("Please, send at least one image")
-        
 
+        const checkThatThereIsNoImage = removedFiles.length <= 5 && req.files.length == 0 && oldFiles.rows.length == 0
+        if (checkThatThereIsNoImage) return res.send("Please, send at least one image")
+        
         if (req.files.length || removedFiles.length && oldFiles.rows.length != 0) {
             
             // verifica se não existem 5 imagens no total

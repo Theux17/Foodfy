@@ -25,7 +25,22 @@
                 <div class="gallery">
 
                     <div class="highlight">
-                        <img src="{{recipeImage[0].src}}" alt="{{recipeImage[0].src}}">
+                        <img 
+                            src="{{recipeImage[0].src}}" 
+                            alt="{{recipeImage[0].src}}"
+                            onclick="Lightbox.open()"                            
+                            >
+                    
+                        <div class="lightbox-target">
+                            <img src="{{recipeImage[0].src}}" alt="{{ recipeImage[0].name }}">
+                            <a 
+                                class="lightbox-close" 
+                                href="#"
+                                onclick="Lightbox.close()"
+                            >
+                                <i class="material-icons">close</i>
+                            </a>
+                        </div>
                     </div>
                     
 

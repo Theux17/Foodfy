@@ -1,7 +1,7 @@
 {%extends "layout.njk"%}
 
 {% block head %}
-    <title>Receita - {{recipes.title}}</title>
+    <title>Receita - {{recipe.title}}</title>
 {% endblock %}
 
 {% block container %}
@@ -17,7 +17,22 @@
                 <div class="gallery">
 
                     <div class="highlight">
-                        <img src="{{recipeImages[0].src}}" alt="{{recipeImage[0].src}}">
+                        <img 
+                            src="{{recipeImages[0].src}}" 
+                            alt="{{recipeImage[0].name}}"
+                            onclick="Lightbox.open()"
+                        >
+
+                        <div class="lightbox-target">
+                            <img src="{{recipeImages[0].src}}" alt="{{ recipeImages[0].name }}">
+                            <a 
+                                class="lightbox-close" 
+                                href="#"
+                                onclick="Lightbox.close()"
+                            >
+                                <i class="material-icons">close</i>
+                            </a>
+                        </div>
                     </div>
                     
 
@@ -53,14 +68,14 @@
                         <span class="button1">ESCONDER</span>
                     </div>
 
-                    <ul class="">
+                    <ul class="ingredient">
                         {% for ingredient in recipe.ingredients %}
                             <li><span>{{ingredient}}</span></li>
                         {%endfor%}
                     </ul>
                 </div>
 
-                <div class=" preparation">
+                <div class="preparation">
                     <div class="title-button-information">
                         <h3>Modo de preparo</h3>
                         <span class="button2">MOSTRAR</span>
