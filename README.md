@@ -3,9 +3,9 @@
 <img width="110px" src="./public/assets/logo.png">
 </h1>
 
-<h2 align="center">
+<h2 align="center" style="">
     <a 
-        href="https://www.loom.com/share/63c00d2c72354fc48494adbf413daefa">Foodfy - Veja o vídeo completo <p></p> <img style="max-width:600px;" src="https://cdn.loom.com/sessions/thumbnails/63c00d2c72354fc48494adbf413daefa-with-play.gif"> 
+        href="https://www.loom.com/share/63c00d2c72354fc48494adbf413daefa">Foodfy - Veja o vídeo completo <p></p> <img style="max-width:600px; border-radius: 2%;" src="https://cdn.loom.com/sessions/thumbnails/63c00d2c72354fc48494adbf413daefa-with-play.gif"> 
     </a>
 </h2>
 
