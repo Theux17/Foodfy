@@ -7,7 +7,7 @@ module.exports = {
         SELECT recipes.*, chefs.name AS chef_name 
         FROM recipes 
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-        ORDER BY title ASC `)
+        ORDER BY created_at DESC `)
 
     },
     async create(data) {
@@ -58,6 +58,7 @@ module.exports = {
         FROM recipes 
         LEFT JOIN chefs ON (chefs.id = recipes.chef_id)
         WHERE recipes.title ILIKE '%${filter}%'
+        ORDER BY updated_at 
         `)
     },
 
@@ -99,7 +100,7 @@ module.exports = {
         query = `SELECT recipes.*, ${totalQuery}, chefs.name AS chef_name 
         FROM recipes 
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-        ORDER BY title ASC 
+        ORDER BY created_at DESC 
         LIMIT $1 OFFSET $2
         `
         

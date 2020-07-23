@@ -46,7 +46,9 @@ module.exports = {
         return db.query(`
         SELECT *
         FROM recipes
-        WHERE recipes.chef_id = $1`, [id])
+        WHERE recipes.chef_id = $1
+        ORDER BY created_at DESC
+        `, [id])
     },
 
     async update({name, fileId, id}) {

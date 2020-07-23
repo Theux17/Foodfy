@@ -8,6 +8,14 @@ module.exports = {
         let results = await Recipe.all()
         const recipes = results.rows
 
+        let lastRecipes = []
+
+        for(recipe of recipes ){
+            if(lastRecipes.length < 6){
+                lastRecipes.push(recipe)
+            }
+        }    
+        
         const filesPromise = recipes.map(recipe => Recipe.files(recipe.id))
         results = await Promise.all(filesPromise)
 
@@ -18,7 +26,7 @@ module.exports = {
 
         }))
 
-        return res.render("recipes/home", { recipes, recipesImage })
+        return res.render("recipes/home", { recipes: lastRecipes, recipesImage })
     },
 
     async filter(req, res) {
