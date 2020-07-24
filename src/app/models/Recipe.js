@@ -58,7 +58,7 @@ module.exports = {
         FROM recipes 
         LEFT JOIN chefs ON (chefs.id = recipes.chef_id)
         WHERE recipes.title ILIKE '%${filter}%'
-        ORDER BY updated_at 
+        ORDER BY updated_at DESC
         `)
     },
 
