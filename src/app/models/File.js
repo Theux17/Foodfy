@@ -1,7 +1,6 @@
 const db = require("../../config/db")
 const fs = require("fs")
 
-
 module.exports = {
     async create({ filename, path }) {
         const query = `
@@ -56,7 +55,6 @@ module.exports = {
         } catch(err){
             console.log(err)
         }
-
 
     }
 

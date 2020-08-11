@@ -2,7 +2,6 @@ const Chef = require("../models/Chef")
 const Recipe = require("../models/Recipe")
 const File = require("../models/File")
 
-
 module.exports = {
     async index(req, res) {
         let results = await Chef.all()
@@ -27,15 +26,6 @@ module.exports = {
 
     async post(req, res) {
 
-        const keys = Object.keys(req.body)
-
-        for (key of keys) {
-            if (req.body[key] == "")
-                return res.send("Please fill in all fields! ")
-        }
-
-        if (req.files == 0) return res.send("Please, send at least one image")
-
         const { filename, path } = req.files[0]
 
         const file = await File.create({ filename, path })
@@ -51,9 +41,7 @@ module.exports = {
     },
 
     async show(req, res) {
-        let results = await Chef.find(req.params.id)
-        const chef = results.rows[0]
-        if (!chef) return res.send("Chef is not found!")
+        const { chef } = req
 
         results = await Chef.files(chef.id)
         let chefAvatar = results.rows
@@ -81,11 +69,9 @@ module.exports = {
     },
 
     async edit(req, res) {
-
-        let results = await Chef.find(req.params.id)
-        const chef = results.rows[0]
-        if (!chef) return res.send("Chef is not found!")
-
+        
+        const { chef } = req
+        
         results = await Chef.files(chef.id)
 
         let chefsData = results.rows
@@ -100,20 +86,7 @@ module.exports = {
 
 
     async put(req, res) {
-        const keys = Object.keys(req.body)
-
-        for (key of keys) {
-            if (req.body[key] == "") return res.send("Please fill in all fields! ")
-        }
-
-        let result = await Chef.files(req.body.id)
-        const avatarId = result.rows[0].id
-
-        if (req.files[0]) {
-            const { filename, path } = req.files[0]
-            await File.update({ filename, path, id: avatarId })
-        }
-
+        const avatarId = req.files.id
         await Chef.update({ ...req.body, fileId: avatarId })
 
         return res.redirect(`/chefs/details/${req.body.id}`)

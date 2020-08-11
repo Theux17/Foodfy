@@ -1,7 +1,6 @@
 const Recipe = require("../models/Recipe")
 const Chef = require("../models/Chef")
 
-
 module.exports = {
     async home(req, res) {
 
@@ -26,32 +25,7 @@ module.exports = {
 
         }))
 
-        return res.render("recipes/home", { recipes: lastRecipes, recipesImage })
-    },
-
-    async filter(req, res) {
-        let { filter } = req.query
-
-        if (filter) {
-            let results = await Recipe.findBy(filter)
-            const recipes = results.rows
-
-            const filesPromise = recipes.map(recipe => Recipe.files(recipe.id))
-            results = await Promise.all(filesPromise)
-
-            let recipesImage = results.map(result => result.rows[0])
-            recipesImage = recipesImage.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-
-            }))
-
-            return res.render("recipes/filter", { filter, recipes, recipesImage })
-
-        } else {
-
-            return res.redirect("/")
-        }
+        return res.render("home-pages/home", { recipes: lastRecipes, recipesImage })
     },
 
     about(req, res) {
@@ -66,7 +40,7 @@ module.exports = {
             subheadingParagraph2: "Fusce nec pulvinar nunc. Duis porttitor tincidunt accumsan. Quisque pulvinar mollis ipsum ut accumsan. Proin ligula lectus, rutrum vel nisl quis, efficitur porttitor nisl. Morbi ut accumsan felis, eu ultrices lacus. Integer in tincidunt arcu, et posuere ligula. Morbi cursus facilisis feugiat. Praesent euismod nec nisl at accumsan. Donec libero neque, vulputate semper orci et, malesuada sodales eros. Nunc ut nulla faucibus enim ultricies euismod."
         }
 
-        return res.render("recipes/about", { about })
+        return res.render("home-pages/about", { about })
     },
 
     async recipesAll(req, res) {
@@ -84,17 +58,13 @@ module.exports = {
 
         }))
 
-        return res.render("recipes/recipes", { recipes, recipesImage })
+        return res.render("home-pages/recipes", { recipes, recipesImage })
     },
 
     async recipes(req, res) {
+        const { recipe } = req
 
-        let result = await Recipe.find(req.params.id)
-        
-        const recipe = result.rows[0]
-        if (!recipe) return res.send("Recipe is not found!")
-
-        result = await Recipe.files(recipe.id)
+        let result = await Recipe.files(recipe.id)
         
         let recipeImages = result.rows
         recipeImages = recipeImages.map(file => ({
@@ -103,7 +73,7 @@ module.exports = {
         }))
         
 
-        return res.render("recipes/information", { recipe, recipeImages })
+        return res.render("home-pages/information", { recipe, recipeImages })
 
     },
 
@@ -121,6 +91,6 @@ module.exports = {
             src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`            
         }))
 
-        return res.render("recipes/chefs", { chefs, chefsAvatar })
+        return res.render("home-pages/chefs", { chefs, chefsAvatar })
     }
 }
