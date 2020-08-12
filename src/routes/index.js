@@ -9,7 +9,7 @@ const chefsRoutes = require('./chefs')
 
 routes.use('/', homePageRoutes)
 routes.use('/admin', recipesAdminRoutes)
-routes.use('/chefs', chefsRoutes)
+routes.use('/admin', chefsRoutes)
 
 routes.get("/search", searchController.filter)
 
