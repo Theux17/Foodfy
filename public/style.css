@@ -5,7 +5,10 @@
     --title-color: #111111;
     --creator-color: #777777;
     --button-color: #6558C3;
+    --dark-button:  #5543c9;
     --admin-header-letter-color: #999999;
+    --color-white: #FFFFFF;
+    --color-error: #DC4747;
 }
 
 
@@ -74,18 +77,26 @@ header.admin-header a img{
     margin-right: 50.4px;
 }
 
-header.admin-header .admin a{
-    margin: 0 30px ;
-    font-weight: bold;
+header.admin-header .admin a {
+    margin-right: 30px;
     text-transform: uppercase;
     font-size: 15px;
     color: var(--admin-header-letter-color);
 }
 
-header.admin-header .admin .bold-admin {
+header.admin-header .admin .bold-admin{
     font-weight: bold;
     font-size: 16px;
-    color: #FFFFFF;
+    color: var(--color-white);
+}
+
+header.admin-header li form button{
+    background: none;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--color-white);
+    text-transform: uppercase;
+    cursor: pointer;
 }
 
 /* Filtro de Busca*/
@@ -110,7 +121,7 @@ header.admin-header .admin .bold-admin {
 
     font-weight: bold;
     font-size: 16px;
-    color: #FFFFFF;
+    color: var(--color-white);
 }
  
 .short-presentation {
@@ -530,7 +541,7 @@ form .title-button,
 
     font-weight: bold;
     font-size: 16px;
-    color: #FFFFFF;
+    color: var(--color-white);
     border-radius: 4px;
     cursor: pointer;
 }
@@ -554,7 +565,7 @@ form .title-button,
     top: 0;
     right: 125px;
     margin-right: 10px;
-    background: #DC4747;
+    background: var(--color-error);
 }
 
 .forms form .button.save {
@@ -572,11 +583,13 @@ form .item h4{
     margin-bottom: 10px;
 }
 
+input[type="email"],
 input[type="text"],
+input[type="password"],
 #photos-upload,
 textarea,
 select {
-    background: #FFFFFF;
+    background: var(--color-white);
     width: 100%;
     margin-bottom: 15px;
     padding: 15px 43px 15px 20px;
@@ -861,3 +874,149 @@ button.add-preparation {
     font-size: 16px;
     color: var(--title-color);
 }
+
+/* Users Create*/
+.title-button .buttons {
+    display: flex;
+}
+
+.title-button .buttons button {
+    margin-right: 16px;
+    transition: 400ms
+}
+
+.title-button .buttons button:hover {
+    background-color: var(--dark-button);
+}
+
+.title-button .buttons a button {
+    background-color: #8A8A8A;
+    color: var(--color-white);
+}
+
+.title-button .buttons a button:hover {
+    background-color: #858383c7;
+}
+
+.fields-container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+}
+
+.fields-container input[name="name"],
+.fields-container input[name="email"] {
+    width: 450px;
+    margin: 0 40px 0 0;
+    
+}
+
+.fields-container input[name="is_admin"] {
+    margin-top: 33px;
+}
+
+.fields-container label {
+    color: var(--title-color);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.item .error {
+    background: var(--color-error);
+    max-width: 450px;
+    width: 100%;
+    margin: 8px 0;
+    border-radius: 4px;
+    padding: 2px 2px 2px 4px;
+}
+
+/* User Login */
+.logo-login  {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    margin: 35px 0 146px 0;
+}
+
+#main-container .login h2 {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+#main-container .login .input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#main-container .login .input-container .item{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+}
+
+#main-container .login .item input{
+    width: 450px;
+}
+
+#main-container .login .link-button  {
+    display: flex;
+    justify-content: center;
+}
+
+#main-container .login .link-button .items {
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 48%;
+}
+
+#main-container .login .link-button .items a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #969696;
+}
+
+#main-container .login .link-button .items button:hover {
+    background: var(--dark-button);
+}
+
+#main-container .login .link-button .items a:hover {
+    color: #504e4e8d;
+}
+
+#main-container .form-create .link-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@keyframes hidemessage {
+    to {
+        opacity: 0;
+        right: 20;
+    }
+}
+
+.message {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 344px;
+    height: 135px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #FFFFFF;
+    text-align: center;
+    padding-top: 55px;
+    opacity: 1;
+
+    animation: hidemessage 400ms 5s ease-out forwards;
+}
+
+.message.error {
+    background: var(--color-error);
+}
+

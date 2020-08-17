@@ -1,0 +1,34 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Create Users</title>
+{% endblock %}
+
+{% block container %}
+
+    {% block header %}
+
+        {% include "admin/parts/header.njk" %}
+
+    {% endblock %}
+    
+    <div id="main-container">
+
+        {% block content %}
+
+            <form class="form-create" method="POST" action="/admin/users">
+                <div class="title-button">
+                    <h2>Criando Usuário</h2>
+                    <div class="buttons">
+                        <button class="button">Salvar</button>
+                        <a><button class="button">Cancelar</button></a>
+                    </div>
+                </div>
+
+                {% include 'admin/user/fields.njk' %}
+            </form>
+
+        {% endblock %}
+        
+    </div>
+{% endblock container %}

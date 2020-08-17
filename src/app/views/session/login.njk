@@ -1,0 +1,41 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Login</title>
+{% endblock %}
+
+{% block container %}
+
+    {% block header %}
+        <a href="/">
+            <a href="/" class="logo-login"><img src="/assets/logo.png" alt="Foodfy"></a>
+        </a>
+    {% endblock %}
+    
+    {% if error %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+    
+    <div id="main-container">
+
+        {% block content %}
+
+            <form class="login" method="POST" action="/admin/login">
+                <h2>Iniciar Sessão</h2>
+
+                <div class="input-container">
+                    {% include 'session/fields.njk' %}
+
+                    <div class="link-button">
+                        <div class="items">
+                            <a href="#">Perdeu a senha ?</a>
+                            <button class="button">Acessar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        {% endblock %}
+        
+    </div>
+{% endblock container %}
