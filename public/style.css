@@ -9,6 +9,7 @@
     --admin-header-letter-color: #999999;
     --color-white: #FFFFFF;
     --color-error: #DC4747;
+    --link-button: #6558c3
 }
 
 
@@ -560,6 +561,10 @@ form .title-button,
     margin-bottom: 30px;
 }
 
+.button.delete {
+    background: var(--color-error);
+}
+
 .forms form .button.delete {
     position: absolute;
     top: 0;
@@ -875,60 +880,6 @@ button.add-preparation {
     color: var(--title-color);
 }
 
-/* Users Create*/
-.title-button .buttons {
-    display: flex;
-}
-
-.title-button .buttons button {
-    margin-right: 16px;
-    transition: 400ms
-}
-
-.title-button .buttons button:hover {
-    background-color: var(--dark-button);
-}
-
-.title-button .buttons a button {
-    background-color: #8A8A8A;
-    color: var(--color-white);
-}
-
-.title-button .buttons a button:hover {
-    background-color: #858383c7;
-}
-
-.fields-container {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-}
-
-.fields-container input[name="name"],
-.fields-container input[name="email"] {
-    width: 450px;
-    margin: 0 40px 0 0;
-    
-}
-
-.fields-container input[name="is_admin"] {
-    margin-top: 33px;
-}
-
-.fields-container label {
-    color: var(--title-color);
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.item .error {
-    background: var(--color-error);
-    max-width: 450px;
-    width: 100%;
-    margin: 8px 0;
-    border-radius: 4px;
-    padding: 2px 2px 2px 4px;
-}
-
 /* User Login */
 .logo-login  {
     display: flex;
@@ -1020,3 +971,118 @@ button.add-preparation {
     background: var(--color-error);
 }
 
+.message.succes {
+    background: #01B12A;
+}
+
+/* Users Create*/
+.title-button .buttons {
+    display: flex;
+}
+
+.title-button .buttons button {
+    margin-right: 16px;
+    transition: 400ms
+}
+
+.title-button .buttons button:hover {
+    background-color: var(--dark-button);
+}
+
+.title-button .buttons a button {
+    background-color: #8A8A8A;
+    color: var(--color-white);
+}
+
+.title-button .buttons a button:hover {
+    background-color: #858383c7;
+}
+
+.fields-container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+}
+
+.fields-container input[name="name"],
+.fields-container input[name="email"],
+.fields-container input[name="password"] {
+    width: 450px;
+    margin: 0 40px 0 0;
+    
+}
+
+.fields-container input[name="is_admin"],
+.item.password{
+    margin-top: 33px;
+}
+
+.fields-container label {
+    color: var(--title-color);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.item .error {
+    background: var(--color-error);
+    max-width: 450px;
+    width: 100%;
+    margin: 8px 0;
+    border-radius: 4px;
+    padding: 2px 2px 2px 4px;
+}
+
+
+/* Users list */ 
+
+#main-container .users-list .users {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr)
+}
+
+.users-list .users .user .info h3 {
+    margin-bottom: 4px;
+    font-family: Helvetica;
+    font-size: 18px;    
+    font-weight: 400;
+    line-height: 22px;
+    color: var(--title-color);
+}
+
+.users-list .users .user .info span {
+    font-family: Helvetica;
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--admin-header-letter-color);
+}
+
+.users-list .users .user .info .buttons {
+    display: flex;
+    align-items: center;
+    margin: 16px 0 52px 0; 
+}
+
+.users-list .users .user .info .buttons a{
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 16px;
+    color: var(--link-button);
+}
+
+.users-list .users .user .info .buttons form button {
+    background: none;
+    font-weight: bold;
+    font-size: 14px;
+    color: #F55A5A;
+    cursor: pointer;
+}
+
+/*User edit */
+#main-container .title-button {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 67px;
+}
+
+#main-container .title-button .button.delete:hover {
+    background: #d41f1f;
+}

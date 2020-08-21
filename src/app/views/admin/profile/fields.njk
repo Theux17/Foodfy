@@ -20,20 +20,13 @@
             onblur="Validate.apply(this, 'isEmail')"
         >            
     </div>
-
-
-    <div class="item">
+    <div class="item password">
+        <h4>Senha</h4>
         <input 
-            type="checkbox" 
-            name="is_admin" 
-            {%if value !== "" %} 
-                value="true"  
-            {% endif %} 
-            {% if user.is_admin %}
-                checked
-            {% endif %}
-        >
-        <label for="is_admin">Administrador</label>
+            type="password" 
+            name="password" 
+            placeholder="Digite a senha"
+        >            
     </div>
 
 </div>

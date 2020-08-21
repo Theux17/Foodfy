@@ -3,8 +3,12 @@ const routes = express.Router()
 
 const userController = require('../app/controllers/userController')
 const sessionController = require('../app/controllers/sessionController')
+const profileController = require('../app/controllers/profileController')
 
 const SessionValidator = require('../app/validators/session')
+const profileValidator = require('../app/validators/profile')
+const { createUsers, updateUser, checksIfTheUserIsAnAdmin } = require('../app/validators/users')
+
 
 const onlyUsers = require('../app/middlewares/session')
 
@@ -14,15 +18,15 @@ routes.post('/login', SessionValidator.login, sessionController.login)
 routes.post('/logout', sessionController.logout)
 
 // Rotas de perfil de um usuário logado
-// routes.get('/profile', ProfileController.index)
-// routes.put('/profile', ProfileController.put)
+routes.get('/profile', profileController.index)
+routes.put('/profile', profileValidator.update, profileController.put)
 
 // Rotas que o administrador irá acessar para gerenciar usuários
-// routes.get('/users', UserController.list)  
+routes.get('/users', onlyUsers, userController.list)  
 routes.get('/users/create', onlyUsers, userController.create) 
-// routes.post('/users', userController.post)
-// routes.get('/users/edit/:id', UserController.edit)
-// routes.put('/users', userController.put) 
-// routes.delete('/users', UserController.delete) 
+routes.post('/users', createUsers, userController.post)
+routes.get('/users/edit/:id', onlyUsers, checksIfTheUserIsAnAdmin, userController.edit)
+routes.put('/users', updateUser, userController.put) 
+routes.delete('/users', userController.delete) 
 
 module.exports = routes

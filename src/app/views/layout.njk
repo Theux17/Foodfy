@@ -29,7 +29,9 @@
 
     {% endblock %}
 
-    <script src="/scripts.js"></script>
+    {% block script %}
+        <script src="/scripts.js"></script>
+    {% endblock script %}
 </body>
     
 </html>

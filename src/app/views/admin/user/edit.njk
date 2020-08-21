@@ -1,0 +1,53 @@
+{%extends "layout.njk"%}
+{%import "admin/parts/profile-section.njk" as form %}
+{% block head %}
+    <title>Create Users</title>
+{% endblock %}
+
+{% block container %}
+
+    {% block header %}
+
+        {% include "admin/parts/header.njk" %}
+
+    {% endblock %}
+
+    {% if error %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+
+    {% if succes %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+
+    <div id="main-container">
+
+        {% block content %}
+            <div class="title-button">
+                <h2>Atualizar Usuário</h2>
+                <div class="buttons">
+                    {% if session.userId !== user.id %}
+                        <button class="button delete" type="submit" form="delete">Deletar</button>
+                    {% endif %}
+                    <button 
+                        class="button" 
+                        type="submit" 
+                        form="update"
+                    >Salvar</button>
+                </div>
+            </div>
+            {{ form.profileForm('update', 'users', user) }}
+
+        {% endblock %}
+    </div>
+{% endblock container %}
+
+{% block script %}
+    <script>
+        if (String(location.href).includes("PUT")) {
+            setTimeout(() => {
+                location.href = "/admin/users/edit/{{ user.id }}"
+            }, 2000)
+        }
+    </script>
+{% endblock script %}

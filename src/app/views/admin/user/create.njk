@@ -11,22 +11,30 @@
         {% include "admin/parts/header.njk" %}
 
     {% endblock %}
+
+        {% if error %}
+            {% include "admin/parts/messages.njk"%}
+        {% endif %}
+    
+        {% if succes %}
+            {% include "admin/parts/messages.njk"%}
+        {% endif %}
     
     <div id="main-container">
 
         {% block content %}
-
-            <form class="form-create" method="POST" action="/admin/users">
-                <div class="title-button">
-                    <h2>Criando Usuário</h2>
-                    <div class="buttons">
-                        <button class="button">Salvar</button>
-                        <a><button class="button">Cancelar</button></a>
+        
+                <form class="form-create" method="POST" action="/admin/users">
+                    <div class="title-button">
+                        <h2>Criando Usuário</h2>
+                        <div class="buttons">
+                            <button type="submit" class="button">Salvar</button>
+                            <a><button class="button">Cancelar</button></a>
+                        </div>
                     </div>
-                </div>
 
-                {% include 'admin/user/fields.njk' %}
-            </form>
+                    {% include 'admin/user/fields.njk' %}
+                </form>
 
         {% endblock %}
         

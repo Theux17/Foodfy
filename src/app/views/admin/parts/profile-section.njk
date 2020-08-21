@@ -1,0 +1,25 @@
+{% macro profileForm(formName, action, user) %}
+
+    <form id="{{ formName }}" method="POST" action="/admin/{{ action }}?_method=PUT">
+        {% include 'admin/user/fields.njk' %}
+        <input 
+            type="hidden" 
+            name="id" 
+            value="{{ user.id }}"
+        >
+    </form>
+
+    {% if session.userId !== user.id %}
+        <form method="post" action="/admin/users?_method=DELETE">
+            <input 
+                type="hidden" 
+                name="id" 
+                    value="{{ user.id }}"
+                >
+            </form>
+    {% endif %}
+
+{% endmacro %}
+
+{% macro buttons() %}
+{% endmacro %}

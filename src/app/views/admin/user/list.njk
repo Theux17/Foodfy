@@ -1,0 +1,74 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Users - Foodfy</title>
+{% endblock %}
+
+{% block container %}
+
+    {% block header %}
+
+        {% include "admin/parts/header.njk" %}
+
+    {% endblock %}
+
+    {% if error %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+
+    {% if succes %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+
+    <div id="main-container">
+
+        {% block content %}
+
+            <section class="users-list">
+
+                <div class="title-button index">
+                    <h2 class="title-admin">Usuários</h2>
+                    <a href="/admin/users/create"><button class="button">Novo</button></a>
+                </div>
+
+                <div class="users">
+
+                    {% for user in users %}
+                        {% if session.userId !== user.id %}
+                            <div class="user" >
+                                <div class="info">
+                                    <h3 class="name">{{user.name}}</h3>
+                                    <span>{{ user.email }}</span>
+                                    <div class="buttons">
+                                        <a href="/admin/users/edit/{{ user.id }}">Editar</a>
+                                        <form id="form-delete" action="/admin/users?_method=DELETE" method="POST">
+                                            <input type="hidden" name="id" value="{{ user.id }}">
+                                            <button type="submit">Remover</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+
+                </div>
+            </section>
+
+
+        {% endblock %}
+    </div>
+
+{%endblock container%}
+
+{% block script %}
+    <script>
+
+        if(String(location.href).includes("DELETE")){
+            setTimeout(() => {
+                location.href = "/admin/users"
+            }, 2000)
+        }
+    </script>
+{% endblock script %}
