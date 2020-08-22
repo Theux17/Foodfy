@@ -22,14 +22,17 @@ function checksIfUserAlreadyExists(user, body) {
 
 async function checksIfTheUserIsAnAdmin(req, res, next) {
     const id = req.params.id
-    //const admin = user.is_admin == true
+    const loggedUserId = req.session.userId
+    
     const user = await User.findOne({ where: { id } })
-console.log(user)
-    if (user.id == req.session.userId && user.is_admin == true ) {
-        return res.redirect('/admin/profile')
-    }
+   
+    if(!user) return res.redirect('/admin/users') 
 
-    req.user = user
+    if (user.id == loggedUserId && user.is_admin == true ) return res.redirect('/admin/profile')
+    
+    if(req.session.is_admin !== true && !user ) return res.redirect('/admin/users')
+    console.log(req.session.adminUser)
+    if(!req.session.is_admin === true) return res.redirect('/admin/users')
     next()
 }
 
@@ -40,6 +43,8 @@ async function createUsers(req, res, next) {
 
         const { email } = req.body
         const user = await User.findOne({ where: { email } })
+        
+        if(req.session.is_admin !== true) return res.redirect('/admin/users')
 
         const userAlreadyExists = checksIfUserAlreadyExists(user, req.body)
         if (userAlreadyExists) return res.render("admin/user/create", userAlreadyExists)

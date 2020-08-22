@@ -5,9 +5,11 @@ const methodOverride = require('method-override')
 const session = require('./config/session')
 
 const server = express()
+
 server.use(session)
-server.use((req, res, next) => {
+server.use(async (req, res, next) => {
     res.locals.session = req.session
+    res.locals.adminUser = req.session.is_admin
     next()
 })
 server.use(express.urlencoded({ extended: true }))

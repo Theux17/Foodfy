@@ -1,4 +1,5 @@
 {%extends "layout.njk"%}
+{%import "admin/parts/profile-section.njk" as form %}
 
 {% block head %}
     <title>Create Users</title>
@@ -33,10 +34,25 @@
                         </div>
                     </div>
 
-                    {% include 'admin/user/fields.njk' %}
+                    {%include "admin/user/fields.njk"%}
                 </form>
 
         {% endblock %}
         
     </div>
 {% endblock container %}
+
+{% block script %}
+    <script>
+        const formCreate = document.querySelector('.form-create')
+        const succes = document.querySelector('.message.succes')
+
+        if(succes){   
+            if(String(location.href).includes("users")){
+                setTimeout(() => {
+                    location.href = "/admin/users"
+                }, 3000)
+            }
+        }
+    </script>
+{% endblock script %}

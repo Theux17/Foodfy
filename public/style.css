@@ -975,6 +975,12 @@ button.add-preparation {
     background: #01B12A;
 }
 
+/* User */
+.container-header #profile-container {
+    display: flex;
+    justify-items: self-end;
+}
+
 /* Users Create*/
 .title-button .buttons {
     display: flex;

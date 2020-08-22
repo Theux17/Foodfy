@@ -28,7 +28,9 @@
 
                 <div class="title-button index">
                     <h2 class="title-admin">Usuários</h2>
-                    <a href="/admin/users/create"><button class="button">Novo</button></a>
+                    {% if adminUser === true %}
+                        <a href="/admin/users/create"><button class="button">Novo</button></a>
+                    {% endif %}
                 </div>
 
                 <div class="users">
@@ -39,13 +41,15 @@
                                 <div class="info">
                                     <h3 class="name">{{user.name}}</h3>
                                     <span>{{ user.email }}</span>
-                                    <div class="buttons">
-                                        <a href="/admin/users/edit/{{ user.id }}">Editar</a>
-                                        <form id="form-delete" action="/admin/users?_method=DELETE" method="POST">
-                                            <input type="hidden" name="id" value="{{ user.id }}">
-                                            <button type="submit">Remover</button>
-                                        </form>
-                                    </div>
+                                    {% if adminUser === true %}
+                                        <div class="buttons">
+                                            <a href="/admin/users/edit/{{ user.id }}">Editar</a>
+                                            <form id="form-delete" class="form-delete" action="/admin/users?_method=DELETE" method="POST">
+                                                <input type="hidden" name="id" value="{{ user.id }}">
+                                                <button type="submit">Remover</button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}
@@ -64,11 +68,11 @@
 
 {% block script %}
     <script>
-
         if(String(location.href).includes("DELETE")){
             setTimeout(() => {
                 location.href = "/admin/users"
             }, 2000)
         }
+
     </script>
 {% endblock script %}

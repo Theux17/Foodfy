@@ -13,17 +13,17 @@ const { createUsers, updateUser, checksIfTheUserIsAnAdmin } = require('../app/va
 const onlyUsers = require('../app/middlewares/session')
 
 // login/logout
-routes.get('/login', sessionController.loginForm)
+routes.get('/login',  sessionController.loginForm)
 routes.post('/login', SessionValidator.login, sessionController.login)
 routes.post('/logout', sessionController.logout)
 
 // Rotas de perfil de um usuário logado
-routes.get('/profile', profileController.index)
-routes.put('/profile', profileValidator.update, profileController.put)
+routes.get('/profile', onlyUsers, profileController.index)
+routes.put('/profile', onlyUsers, profileValidator.update, profileController.put)
 
 // Rotas que o administrador irá acessar para gerenciar usuários
 routes.get('/users', onlyUsers, userController.list)  
-routes.get('/users/create', onlyUsers, userController.create) 
+routes.get('/users/create', onlyUsers, createUsers, userController.create) 
 routes.post('/users', createUsers, userController.post)
 routes.get('/users/edit/:id', onlyUsers, checksIfTheUserIsAnAdmin, userController.edit)
 routes.put('/users', updateUser, userController.put) 

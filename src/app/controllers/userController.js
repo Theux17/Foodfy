@@ -34,7 +34,7 @@ module.exports = {
             })
 
             return res.render("admin/user/create", {
-                createdUser,
+                createdUserId: createdUser,
                 user: req.body,
                 succes: "Usuário cadastrado com sucesso! Entre no email cadastrado para obter a senha de acesso."
             })
