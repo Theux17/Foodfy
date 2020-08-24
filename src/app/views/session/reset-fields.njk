@@ -1,0 +1,41 @@
+    <div class="item">
+        <h4>Email</h4>
+
+        <input 
+        {% if  error %}
+            style="border: 1px solid #DC4747"
+        {% endif %}
+            type="email" 
+            name="email" 
+            placeholder="Digite o seu email" 
+            value="{{ user.email }}"
+            onblur="Validate.apply(this, 'isEmail')"
+        >
+    </div>
+
+    <div class="item">
+        <h4>Nova senha</h4>
+        <input 
+            {% if  error %}
+                style="border: 1px solid #DC4747"
+            {% endif %}
+            type="password" 
+            name="password" 
+            placeholder="Digite sua senha" 
+        >
+    </div>
+
+    
+    <div class="item">
+        <h4>Repita senha</h4>
+        <input 
+            {% if  error %}
+                style="border: 1px solid #DC4747"
+            {% endif %}
+            type="password" 
+            name="passwordRepeat" 
+            placeholder="Repita sua senha" 
+        >
+    </div>
+
+<input type="hidden" name="token" value="{{ token }}">

@@ -6,7 +6,7 @@ const chefsController = require("../app/controllers/chefsController")
 
 
 const { checksIfTheChefsFieldsAreEmpty, checksIfTheChefExists, checkForNewFilesAndUpdateFiles } = require('../app/validators/chefs')
-const onlyUsers = require('../app/middlewares/session')
+const { onlyUsers } = require('../app/middlewares/session')
 
 routes.get("/chefs", onlyUsers, chefsController.index)
 routes.get("/chefs/create", onlyUsers, chefsController.create)

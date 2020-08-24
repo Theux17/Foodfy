@@ -23,7 +23,7 @@ module.exports = {
         const values = [
             data.name,
             data.email,
-            data.password || token,
+            token,
             data.reset_token,
             data.reset_token_expires,
             data.is_admin || false

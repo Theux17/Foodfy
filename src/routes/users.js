@@ -10,12 +10,18 @@ const profileValidator = require('../app/validators/profile')
 const { createUsers, updateUser, checksIfTheUserIsAnAdmin } = require('../app/validators/users')
 
 
-const onlyUsers = require('../app/middlewares/session')
+const { onlyUsers, isLoggedRedirectToUsers } = require('../app/middlewares/session')
 
 // login/logout
-routes.get('/login',  sessionController.loginForm)
-routes.post('/login', SessionValidator.login, sessionController.login)
+routes.get('/login', isLoggedRedirectToUsers, sessionController.loginForm)
+routes.post('/login', isLoggedRedirectToUsers, SessionValidator.login, sessionController.login)
 routes.post('/logout', sessionController.logout)
+
+// reset password / forgot
+routes.get('/forgot-password', sessionController.forgotForm)
+routes.post('/forgot-password', SessionValidator.forgotPassword, sessionController.forgot)
+routes.get('/password-reset', sessionController.resetForm)
+routes.post('/password-reset', SessionValidator.resetPassword, sessionController.reset)
 
 // Rotas de perfil de um usuário logado
 routes.get('/profile', onlyUsers, profileController.index)

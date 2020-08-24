@@ -5,7 +5,7 @@ const multer = require('../app/middlewares/multer')
 const recipesAdminController = require('../app/controllers/recipesAdminController')
 const { checksIfTheRecipeFieldsAreEmpty, checkIfFilesAreRemovedAndUpdate } = require('../app/validators/recipesAdmin')
 
-const onlyUsers = require('../app/middlewares/session')
+const { onlyUsers } = require('../app/middlewares/session')
 
 routes.get("/recipes", onlyUsers, recipesAdminController.index)
 

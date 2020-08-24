@@ -47,7 +47,7 @@
     <script>
         if (String(location.href).includes("PUT")) {
             setTimeout(() => {
-                location.href = "/admin/users/edit/{{ user.id }}"
+                location.assign("/admin/users/edit/{{ user.id }}")
             }, 2000)
         }
     </script>

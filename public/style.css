@@ -888,26 +888,42 @@ button.add-preparation {
     margin: 35px 0 146px 0;
 }
 
-#main-container .login h2 {
+#main-container .login h2,
+#main-container .forgot h2 {
     text-align: center;
     margin-bottom: 35px;
 }
 
-#main-container .login .input-container {
+#main-container .login .input-container,
+#main-container .forgot {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-#main-container .login .input-container .item{
+#main-container .login .input-container .item,
+#main-container .forgot .input-container{
     display: flex;
     flex-direction: column;
     justify-self: center;
     align-self: center;
 }
 
-#main-container .login .item input{
+#main-container .login .item input,
+#main-container .forgot input{
     width: 450px;
+}
+
+#main-container .forgot button{
+    display: flex;
+    align-self: flex-end;
+    justify-content: center;
+    align-items: center;
+    transition: 400ms;
+}
+
+#main-container .forgot button:hover {
+    background: var(--dark-button);
 }
 
 #main-container .login .link-button  {
@@ -1091,4 +1107,49 @@ button.add-preparation {
 
 #main-container .title-button .button.delete:hover {
     background: #d41f1f;
+}
+
+/* Reset-password */
+#main-container .reset h2 {
+    text-align: center;
+}
+
+#main-container .reset {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#main-container .reset h2 {
+    text-align: center;
+}
+
+#main-container .reset .input-container {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+}
+
+#main-container .reset h2 {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+#main-container .reset .input-container input {
+    width: 500px;
+    margin-bottom: 35px;
+}
+
+#main-container .reset button {
+    display: flex;
+    align-self: flex-end;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    transition: 400ms;
+}
+
+#main-container .reset button:hover {
+    background: var(--dark-button);
 }

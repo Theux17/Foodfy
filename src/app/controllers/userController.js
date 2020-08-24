@@ -16,6 +16,7 @@ module.exports = {
         try {
             const id = await User.create(req.body)
             const createdUser = await User.findOne({ where: { id } })
+            
 
             await mailer.sendMail({
                 to: createdUser.email,
