@@ -18,8 +18,9 @@ module.exports = {
                 ingredients,
                 preparation,
                 information,
+                user_id,
                 created_at
-            ) VALUES($1, $2, $3, $4, $5, $6)
+            ) VALUES($1, $2, $3, $4, $5, $6, $7)
             RETURNING id 
         `
 
@@ -29,6 +30,7 @@ module.exports = {
             data.ingredients,
             data.preparation,
             data.information,
+            data.userId,
             date(Date.now()).iso
         ]
 
@@ -87,8 +89,8 @@ module.exports = {
         return db.query(`DELETE FROM recipes WHERE id = $1`, [ id ])
 
     },
-    async chefsSelectOptions (){
-        return db.query(`SELECT name, id FROM chefs`)
+    async chefsSelectOptions(){
+        return db.query(` SELECT name, id FROM chefs`)
     },
 
     async paginate(params){

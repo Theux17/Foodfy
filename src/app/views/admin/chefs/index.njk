@@ -19,8 +19,14 @@
             <section class="chefs-listing index">
 
                 <div class="title-button index">
-                    <h2 class="title-admin">Gerenciar chefs</h2>
-                    <a href="/admin/chefs/create"><button class="button" > Criar Chef </button></a>
+                    {% if adminUser === true %}
+                        <h2 class="title-admin" style="margin-bottom: 0" >Gerenciar chefs</h2>
+                    {%else%}
+                        <h2 style="margin-bottom: 0 ">Chefs</h2>
+                    {%endif%}
+                    {% if adminUser === true %}
+                        <a href="/admin/chefs/create"><button class="button" > Criar Chef </button></a>
+                    {%endif%}
                 </div>
 
                 <div class="chefs">
@@ -36,7 +42,9 @@
                             <div class="info">
                                 <h3 class="name">{{chef.name}}</h3>
                                 <span>
-                                    <a href="/admin/chefs/details/{{ chef.id }}">Visualizar</a>
+                                    {% if adminUser === true %}
+                                        <a href="/admin/chefs/details/{{ chef.id }}">Visualizar</a>
+                                    {%endif%}
                                 </span>
                             </div>
                         </div>

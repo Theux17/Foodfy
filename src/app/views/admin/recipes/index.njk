@@ -18,8 +18,14 @@
         {% block content %}
             
             <div class="title-button index">
-                <h2 class="title-admin">Gerenciar receitas</h2>
-                <a href="/admin/recipes/create"><button class="button" > Criar receita </button></a>
+                {% if adminUser === true %}
+                    <h2 class="title-admin">Gerenciar receitas</h2>
+                {%else%}
+                    <h2 class="title-admin">Receitas</h2>
+                {%endif%}
+                {% if adminUser === true %}
+                    <a href="/admin/recipes/create"><button class="button" > Criar receita </button></a>
+                {%endif%}
             </div>
 
             <section class="recipes-admin">
@@ -38,9 +44,11 @@
                         <div class="recipe-content">
                             <p class="title">{{recipe.title}}</p>
                             <p class="author">por {{recipe.chef_name}}</p>
-                            <span>
-                                <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
-                            </span>
+                            {% if adminUser === true %}
+                                <span>
+                                    <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+                                </span>
+                            {%endif%}
                         </div>
 
                     </div>

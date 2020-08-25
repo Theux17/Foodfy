@@ -23,6 +23,7 @@
                 </div>
 
                 {% include 'admin/recipes/fields.njk' %}
+                <input type="hidden" name="userId" value="{{ session.userId }}">
             </form>
 
         {% endblock %}

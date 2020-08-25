@@ -20,22 +20,6 @@ function checksIfUserAlreadyExists(user, body) {
     }
 }
 
-async function checksIfTheUserIsAnAdmin(req, res, next) {
-    const id = req.params.id
-    const loggedUserId = req.session.userId
-    
-    const user = await User.findOne({ where: { id } })
-   
-    if(!user) return res.redirect('/admin/users') 
-
-    if (user.id == loggedUserId && user.is_admin == true ) return res.redirect('/admin/profile')
-    
-    if(req.session.is_admin !== true && !user ) return res.redirect('/admin/users')
-    console.log(req.session.adminUser)
-    if(!req.session.is_admin === true) return res.redirect('/admin/users')
-    next()
-}
-
 async function createUsers(req, res, next) {
     try {
         const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body)
@@ -43,8 +27,6 @@ async function createUsers(req, res, next) {
 
         const { email } = req.body
         const user = await User.findOne({ where: { email } })
-        
-        if(req.session.is_admin !== true) return res.redirect('/admin/users')
 
         const userAlreadyExists = checksIfUserAlreadyExists(user, req.body)
         if (userAlreadyExists) return res.render("admin/user/create", userAlreadyExists)
@@ -83,7 +65,6 @@ async function updateUser(req, res, next) {
 }
 
 module.exports = {
-    checksIfTheUserIsAnAdmin,
     createUsers,
     updateUser
 }

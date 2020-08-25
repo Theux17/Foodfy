@@ -15,6 +15,17 @@ function checksIfTheRecipeFieldsAreEmpty(req, res, next) {
     next()
 }
 
+
+
+async function recipeDoesNotExist(req, res, next) {
+    let results = await Recipe.find(req.params.id)
+    const recipe = results.rows[0]
+
+    if(!recipe) return res.send("recipe not found!")
+
+    next()
+}
+
 async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
     const keys = Object.keys(req.body)
 
@@ -62,5 +73,6 @@ async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
 
 module.exports = {
     checksIfTheRecipeFieldsAreEmpty,
-    checkIfFilesAreRemovedAndUpdate
+    checkIfFilesAreRemovedAndUpdate,
+    recipeDoesNotExist
 }
