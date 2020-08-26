@@ -1,4 +1,5 @@
 const Recipe = require('../models/Recipe')
+const User = require('../models/User')
 const File = require('../models/File')
 
 function checksIfTheRecipeFieldsAreEmpty(req, res, next) {
@@ -24,6 +25,47 @@ async function recipeDoesNotExist(req, res, next) {
     if(!recipe) return res.send("recipe not found!")
 
     next()
+}
+
+async function userRecipes(req, res, next){
+    const userId = req.session.userId
+
+    let { page, limit } = req.query
+
+        page = page || 1
+        limit = limit || 4
+        let offset = limit * (page - 1)
+
+        const params = {
+            page,
+            limit,
+            offset,
+        }
+
+    
+    if(req.session.is_admin != true){
+        
+        const userRecipes = await User.userRecipes(userId, params)
+
+        results = await User.totalRecipes(req.session.userId)
+        const totalRecipes = results.rows[0].total
+
+        console.log(userRecipes.rows)
+        req.totalRecipes = totalRecipes
+        req.recipes = userRecipes.rows
+        
+        
+        return next()
+    }
+    
+    if(req.session.is_admin == true){
+        const results = await Recipe.paginate(params)
+        const recipes = results.rows
+        
+        req.recipes = recipes
+
+        return next()
+    }
 }
 
 async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
@@ -74,5 +116,6 @@ async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
 module.exports = {
     checksIfTheRecipeFieldsAreEmpty,
     checkIfFilesAreRemovedAndUpdate,
-    recipeDoesNotExist
+    recipeDoesNotExist,
+    userRecipes
 }
