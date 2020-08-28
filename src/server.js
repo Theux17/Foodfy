@@ -24,6 +24,7 @@ nunjucks.configure("src/app/views", {
     noCache: true
 })
 
+server.use( (req, res) => res.status(404).render("not-found") )
 
 server.listen(3000, function(req, res){    
     console.log("Server is running")

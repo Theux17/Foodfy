@@ -45,7 +45,7 @@ async function recipeDoesNotExist(req, res, next) {
     let results = await Recipe.find(req.params.id)
     const recipe = results.rows[0]
 
-    if (!recipe) return res.send("recipe not found!")
+    if (!recipe) return res.render("admin/recipes/recipe-not-found")
 
     next()
 }

@@ -21,7 +21,7 @@ function checksIfTheChefsFieldsAreEmpty(req, res, next) {
 async function checksIfTheChefExists( req, res, next){
     let results = await Chef.find(req.params.id)
     const chef = results.rows[0]
-    if (!chef) return res.send("Chef is not found!")
+    if (!chef) return res.render('admin/chefs/chef-not-found')
 
     req.chef = chef
     next()

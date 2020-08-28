@@ -7,7 +7,7 @@ const profileController = require('../app/controllers/profileController')
 
 const SessionValidator = require('../app/validators/session')
 const profileValidator = require('../app/validators/profile')
-const { createUsers, updateUser, checksIfTheUserIdIsTheSameAsTheSession } = require('../app/validators/users')
+const { createUsers, updateUser, checksIfTheUserIdIsTheSameAsTheSession, userDoesNotExist } = require('../app/validators/users')
 
 
 const { onlyUsers, isLoggedRedirectToUsers, isAdmin } = require('../app/middlewares/session')
@@ -31,7 +31,7 @@ routes.put('/profile', onlyUsers, profileValidator.update, profileController.put
 routes.get('/users', onlyUsers, userController.list)  
 routes.get('/users/create', onlyUsers, isAdmin, createUsers, userController.create) 
 routes.post('/users', createUsers, userController.post)
-routes.get('/users/edit/:id', onlyUsers, isAdmin, checksIfTheUserIdIsTheSameAsTheSession, userController.edit)
+routes.get('/users/edit/:id', onlyUsers, isAdmin, userDoesNotExist, checksIfTheUserIdIsTheSameAsTheSession, userController.edit)
 routes.put('/users', updateUser, userController.put) 
 routes.delete('/users', userController.delete) 
 

@@ -1,0 +1,29 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>Home</title>
+{% endblock %}
+
+{% block container %}
+<div id="main-container">
+
+    {% block header %}
+        <div class="header-container">
+            {%include "home-pages/parts/header.njk"%}
+        </div>
+    {% endblock %}
+
+    {% block content %}
+
+        <div class="short-presentation">
+            <h1>ERRO 404! Página não encontrada.</h1>
+            <img src="../../../assets/chef.png" alt="Chef">
+        </div>
+    {% endblock  %}
+
+</div>
+{% endblock container %}
+
+{% block footer %}
+    {%include "home-pages/parts/footer.njk"%}
+{% endblock %}

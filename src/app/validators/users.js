@@ -59,6 +59,14 @@ function checksIfTheUserIdIsTheSameAsTheSession(req, res, next){
     next()
 }
 
+async function userDoesNotExist(req, res, next) {
+    const user = await User.findOne({ where: {id: req.params.id} })
+
+    if (!user) return res.render("admin/user/user-not-found")
+
+    next()
+}
+
 async function updateUser(req, res, next) {
     const { email, id } = req.body
     const user = await User.findOne({ where: { email } })
@@ -74,5 +82,6 @@ async function updateUser(req, res, next) {
 module.exports = {
     createUsers,
     updateUser,
-    checksIfTheUserIdIsTheSameAsTheSession
+    checksIfTheUserIdIsTheSameAsTheSession,
+    userDoesNotExist
 }
