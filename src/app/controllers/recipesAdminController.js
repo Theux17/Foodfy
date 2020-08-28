@@ -14,12 +14,7 @@ module.exports = {
         }
         
         const recipes = req.recipes
-
-        const totalRecipes = req.totalRecipes
-        const pagination = {
-            total: Math.ceil(recipes[0].total || totalRecipes / limit),
-            page
-        }
+        const pagination = req.pagination
         
         const filesPromise = recipes.map(recipe => Recipe.files(recipe.id))
         results = await Promise.all(filesPromise)
@@ -43,24 +38,44 @@ module.exports = {
     },
 
     async post(req, res) {
-        
-        let results = await Recipe.create(req.body)
-        const recipeId = results.rows[0].id
+        try {
 
-        const filesPromise = req.files.map(file => File.create({ ...file, recipeId }))
-        results = await Promise.all(filesPromise)
+            let results = await Recipe.create(req.body)
+            const recipeId = results.rows[0].id
+            
+            const filesPromise = req.files.map(file => File.create({ ...file, recipeId }))
+            results = await Promise.all(filesPromise)
 
-        //pega o id dos arquivos
-        const filesId = results.map(file => Recipe.sendDataToRecipeFiles({ recipeId, fileId: file.rows[0].id }))
-        await Promise.all(filesId)
+            //pega o id dos arquivos
+            const filesId = results.map(file => Recipe.sendDataToRecipeFiles({ recipeId, fileId: file.rows[0].id }))
+            await Promise.all(filesId)
 
-        return res.redirect(`/admin/recipes/${recipeId}`)
+            results = await Recipe.files(recipeId)
+            let files = results.rows
+
+            files = files.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
+            
+            return res.render("admin/recipes/create", {
+                recipe: req.body,
+                files,
+                recipeId,
+                succes: "Receita cadastrada com sucesso"
+            })
+
+        }catch(err){
+            return res.render("admin/recipes/create", {
+                recipe: req.body,
+                chefsOptions,
+                error: "Por favor, selecione uma imagem!"
+            })
+        }
     },
 
     async show(req, res) {
-
-        let results = await Recipe.find(req.params.id)
-        const recipe = results.rows[0]
+        const recipe = req.recipe
 
         results = await Recipe.files(recipe.id)
 
@@ -71,26 +86,25 @@ module.exports = {
             src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
         }))
 
-        return res.render("admin/recipes//show", { recipe, recipeImage })
+        return res.render("admin/recipes/show", { recipe, recipeImage })
     },
 
     async edit(req, res) {
-
-        let results = await Recipe.find(req.params.id)
-        const recipe = results.rows[0]
+        const recipe = req.recipe
 
         // envia os chefs para a edição
         results = await Recipe.chefsSelectOptions()
         const chefsOptions = results.rows
 
         results = await Recipe.files(recipe.id)
-
+    
         let files = results.rows
 
         files = files.map(file => ({
             ...file,
             src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
         }))
+        
 
         return res.render("admin/recipes/edit", { recipe, chefsOptions, files })
     },
@@ -99,7 +113,24 @@ module.exports = {
 
         await Recipe.update(req.body)
 
-        return res.redirect(`/admin/recipes/${req.body.id}`)
+        let results = await Recipe.chefsSelectOptions()
+        const chefsOptions = results.rows
+
+        results = await Recipe.files(req.params.id)
+
+        let files = results.rows
+
+        files = files.map(file => ({
+            ...file,
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+        }))
+
+        return res.render("admin/recipes/edit", {
+            recipe: req.body,
+            files,
+            chefsOptions,
+            succes: "Atualizada com sucesso"
+        })
     },
 
     async delete(req, res) {
@@ -112,7 +143,9 @@ module.exports = {
             await Recipe.delete(req.body.id)
         }
 
-        return res.redirect("/admin/recipes")
+        return res.render("admin/recipes/edit", {    
+            succes: "Deletado com sucesso!"
+        })
 
     }
 }

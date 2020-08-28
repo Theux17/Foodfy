@@ -18,14 +18,8 @@
         {% block content %}
             
             <div class="title-button index">
-                {% if adminUser === true %}
                     <h2 class="title-admin">Gerenciar receitas</h2>
-                {%else%}
-                    <h2 class="title-admin">Receitas</h2>
-                {%endif%}
-                {% if adminUser === true %}
                     <a href="/admin/recipes/create"><button class="button" > Criar receita </button></a>
-                {%endif%}
             </div>
 
             <section class="recipes-admin">
@@ -44,11 +38,9 @@
                         <div class="recipe-content">
                             <p class="title">{{recipe.title}}</p>
                             <p class="author">por {{recipe.chef_name}}</p>
-                            {% if adminUser === true %}
-                                <span>
-                                    <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
-                                </span>
-                            {%endif%}
+                            <span>
+                               <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+                            </span>
                         </div>
 
                     </div>
@@ -57,8 +49,10 @@
             </section>
         {% endblock %}
 
-        <div class="pagination" data-page="{{ pagination.page }} " data-total="{{ pagination.total }} "></div>  
+        <div 
+            class="pagination" data-page="{{ pagination.page }} 
+            " data-total="{{ pagination.total }} "
+        ></div>  
 
-        <script src="/scripts.js"></script>
     </div>
 {% endblock container %}

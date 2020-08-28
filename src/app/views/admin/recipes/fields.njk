@@ -50,8 +50,9 @@
 <div class="item">
     <h4>Chef</h4>
     <select name="chef">
+        <option disabled hidden selected>Selecione um chef</option>
     {% for chef in chefsOptions %}
-        <option placeholder="Selecione um chef" value="{{chef.id}}" {% if recipe.chef_id == chef.id %} selected {%endif%}}>
+        <option placeholder="Selecione um chef" value="{{chef.id}}" {% if chef.id == recipe.chef_id %} selected {%endif%}}>
             {{ chef.name }}
         </option>
     {% endfor %}
@@ -116,8 +117,6 @@
                  
     <textarea 
         name="information" 
-        icols="30" 
-        rows="10"
         value="{{ recipe.information }}"
     >{{ recipe.information }}
 

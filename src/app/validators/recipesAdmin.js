@@ -2,68 +2,112 @@ const Recipe = require('../models/Recipe')
 const User = require('../models/User')
 const File = require('../models/File')
 
-function checksIfTheRecipeFieldsAreEmpty(req, res, next) {
+async function checksIfTheRecipeFieldsAreEmpty(req, res, next) {
     const keys = Object.keys(req.body)
 
+    let results = await Recipe.chefsSelectOptions()
+    const chefsOptions = results.rows
+
+    results = await Recipe.files(req.params.id)
+    let files = results.rows
+
+    files = files.map(file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+    }))
+
     for (key of keys) {
-        if (req.body[key] == "") {
-            return res.send("Please fill in all fields! ")
+        if (req.body[key] == "" && key != "removed_files" && key != "information") {
+            return res.render("admin/recipes/create", {
+                recipe: req.body,
+                files,
+                chefsOptions,
+                error: "Por favor, preencha todos os campos!"
+            })
         }
     }
 
-    if (req.files.length == 0) return res.send("Please, send at least one image")
+    results = await Recipe.files(req.body.id)
+    const filesCreate = results.rows
+
+    if (filesCreate.length == 0 && req.files.length == 0) return res.render("admin/recipes/create", {
+        recipe: req.body,
+        files: filesCreate,
+        chefsOptions,
+        error: "Por favor, insira uma imagem!"
+    })
 
     next()
 }
-
 
 
 async function recipeDoesNotExist(req, res, next) {
     let results = await Recipe.find(req.params.id)
     const recipe = results.rows[0]
 
-    if(!recipe) return res.send("recipe not found!")
+    if (!recipe) return res.send("recipe not found!")
 
     next()
 }
 
-async function userRecipes(req, res, next){
+async function checksIfRecipesIsUser(req, res, next){
+    let results = await Recipe.find(req.params.id)
+    const recipe = results.rows[0]
+
+    if(recipe.user_id != req.session.userId && req.session.is_admin != true) return res.redirect("/admin/recipes")
+
+    req.recipe = recipe
+    
+    return next()
+}
+
+async function userRecipes(req, res, next) {
     const userId = req.session.userId
 
     let { page, limit } = req.query
 
-        page = page || 1
-        limit = limit || 4
-        let offset = limit * (page - 1)
+    page = page || 1
+    limit = limit || 4
+    let offset = limit * (page - 1)
 
-        const params = {
-            page,
-            limit,
-            offset,
-        }
+    const params = {
+        page,
+        limit,
+        offset,
+    }
 
-    
-    if(req.session.is_admin != true){
-        
+
+    if (req.session.is_admin != true) {
+
         const userRecipes = await User.userRecipes(userId, params)
-
         results = await User.totalRecipes(req.session.userId)
         const totalRecipes = results.rows[0].total
 
-        console.log(userRecipes.rows)
+        const pagination = {
+            total: Math.ceil(totalRecipes / limit),
+            page
+        }
+
         req.totalRecipes = totalRecipes
         req.recipes = userRecipes.rows
-        
+        req.pagination = pagination
         
         return next()
+
     }
-    
-    if(req.session.is_admin == true){
+
+    if (req.session.is_admin == true) {
         const results = await Recipe.paginate(params)
         const recipes = results.rows
-        
-        req.recipes = recipes
 
+        const pagination = {
+            total: Math.ceil(recipes[0].total / limit),
+            page
+        }
+
+        req.recipes = recipes
+        req.pagination = pagination
+        
         return next()
     }
 }
@@ -71,9 +115,25 @@ async function userRecipes(req, res, next){
 async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
     const keys = Object.keys(req.body)
 
+    let results = await Recipe.chefsSelectOptions()
+    const chefsOptions = results.rows
+
+    const oldFiles = await Recipe.files(req.body.id)
+    let files = oldFiles.rows
+
+    files = files.map(file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+    }))
+
     for (key of keys) {
-        if (req.body[key] == "" && key != "removed_files") {
-            return res.send("Please fill in all fields! ")
+        if (req.body[key] == "" && key != "removed_files" && key != "information") {
+            return res.render("admin/recipes/edit", {
+                recipe: req.body,
+                files,
+                chefsOptions,
+                error: "Por favor, preencha todos os campos!"
+            })
         }
     }
 
@@ -89,10 +149,13 @@ async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
         await Promise.all(removedFilesPromise)
     }
 
-    const oldFiles = await Recipe.files(req.body.id)
-
     const checkThatThereIsNoImage = removedFiles.length <= 5 && req.files.length == 0 && oldFiles.rows.length == 0
-    if (checkThatThereIsNoImage) return res.send("Please, send at least one image")
+    if (checkThatThereIsNoImage) return res.render("admin/recipes/edit", {
+        recipe: req.body,
+        files,
+        chefsOptions,
+        error: "Por favor, selecione uma imagem!"
+    })
 
     if (req.files.length || removedFiles.length && oldFiles.rows.length != 0) {
 
@@ -117,5 +180,6 @@ module.exports = {
     checksIfTheRecipeFieldsAreEmpty,
     checkIfFilesAreRemovedAndUpdate,
     recipeDoesNotExist,
-    userRecipes
+    userRecipes,
+    checksIfRecipesIsUser
 }
