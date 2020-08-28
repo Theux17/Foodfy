@@ -14,8 +14,8 @@ routes.get("/chefs/create", onlyUsers, isAdmin, chefsController.create)
 routes.get("/chefs/details/:id", onlyUsers, isAdmin, checksIfTheChefExists, chefsController.show);
 routes.get("/chefs/edit/:id",  onlyUsers, isAdmin, checksIfTheChefExists, chefsController.edit);
 
-routes.post("/chefs", multer.array("avatar", 1), onlyUsers, checksIfTheChefsFieldsAreEmpty, chefsController.post);
-routes.put("/chefs", multer.array("avatar", 1), onlyUsers, checksIfTheChefsFieldsAreEmpty, checkForNewFilesAndUpdateFiles, chefsController.put);
+routes.post("/chefs", multer.array("avatar", 1), checksIfTheChefsFieldsAreEmpty, chefsController.post);
+routes.put("/chefs", multer.array("avatar", 1), checkForNewFilesAndUpdateFiles, chefsController.put);
 routes.delete("/chefs", chefsController.delete);
 
 module.exports = routes

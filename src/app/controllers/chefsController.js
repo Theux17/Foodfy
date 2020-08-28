@@ -36,7 +36,11 @@ module.exports = {
         let result = await Chef.create({ name, fileId, id })
         const chefId = result.rows[0].id
 
-        return res.redirect(`/chefs/details/${chefId}`)
+        return res.render("admin/chefs/create", { 
+            chef: req.body,
+            chefId,
+            succes: "Chef cadastrado com sucesso!"
+         })
 
     },
 
@@ -88,8 +92,24 @@ module.exports = {
     async put(req, res) {
         const avatarId = req.files.id
         await Chef.update({ ...req.body, fileId: avatarId })
+        
+        let results = await Chef.find(req.body.id)
+        const chef = results.rows[0]
 
-        return res.redirect(`/chefs/details/${req.body.id}`)
+        results = await Chef.files(chef.id)
+        
+        let chefsData = results.rows
+
+        chefsData = chefsData.map(file => ({
+            ...file,
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+        }))
+
+        return res.render('admin/chefs/edit', {
+            chef: req.body,
+            chefsData,
+            succes: "Chef atualizado com sucesso!"
+        })
     },
 
     async delete(req, res) {
@@ -100,8 +120,9 @@ module.exports = {
 
         await File.delete(fileId)
 
-
-        return res.redirect("/chefs")
+        return res.render('admin/chefs/edit', {
+            succes: "Chef deletado com sucesso!"
+        })
 
     }
 }

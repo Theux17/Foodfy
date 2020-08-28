@@ -11,6 +11,14 @@
         {% include "admin/parts/header.njk" %}
 
     {% endblock %}
+    
+    {% if error %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+        
+    {% if succes %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
 
     <div id="main-container">
 
@@ -20,7 +28,7 @@
                 
                     <h2>Editando chef</h2>
 
-                    <form class="form-delete" method="POST" action="/chefs?_method=DELETE">
+                    <form class="form-delete" method="POST" action="/admin/chefs?_method=DELETE">
                         
                         <button type="submit" class="button delete">Deletar</button>
                 
@@ -33,7 +41,7 @@
                     </form>
 
                     
-                    <form class= "form-update" method="POST" action="/chefs?_method=PUT" enctype="multipart/form-data">
+                    <form class= "form-update" method="POST" action="/admin/chefs?_method=PUT" enctype="multipart/form-data">
                     
                         <input type="hidden" name="id" value="{{ chef.id }}">
 
@@ -79,3 +87,24 @@
     </div>
 
 {% endblock container %}
+
+{% block script %}
+    <script>
+        const succes = document.querySelector('.message.succes')
+        if(succes){   
+            if(String(location.href).includes("chefs")){
+                setTimeout(() => {
+                    location.assign("/admin/chefs/details/{{ chef.id }}")
+                }, 2000)
+            }
+        }
+
+        if(succes){   
+            if(String(location.href).includes("DELETE")){
+                setTimeout(() => {
+                    location.assign("/admin/chefs")
+                }, 1000)
+            }
+        }
+    </script>
+{% endblock script %}

@@ -12,13 +12,21 @@
 
     {% endblock %}
 
+    {% if error %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+    
+    {% if succes %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+
     <div id="main-container">
 
         {% block content %}
 
             <section class="create-chef">
                 
-                <form class="chef-form" method="POST" action="/chefs" enctype="multipart/form-data">
+                <form class="chef-form" method="POST" action="/admin/chefs" enctype="multipart/form-data">
                     <div class="title-button">
                         <h2>Criando chef</h2>
                         <button class="button" type="submit">Salvar chef</button>
@@ -29,7 +37,7 @@
                     <input 
                         type="text" 
                         name="name" 
-                        value= "{{ name }}" 
+                        value= "{{ chef.name }}" 
                     >
                 
                     <span>Avatar</span>
@@ -56,3 +64,18 @@
 
     </div>
 {% endblock container%}
+
+{% block script %}
+    <script>
+        const succes = document.querySelector('.message.succes')
+
+        if(succes){   
+            if(String(location.href).includes("chefs")){
+                setTimeout(() => {
+                    location.assign("/admin/chefs/details/{{ chefId }}")
+                }, 2000)
+            }
+        }
+
+    </script>
+{% endblock script %}

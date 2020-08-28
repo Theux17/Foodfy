@@ -20,7 +20,6 @@ async function isAdmin(req, res, next) {
     if(user.is_admin != true)
     return res.redirect('/admin/profile')
 
-    console.log(user.is_admin)
     next()
 }
 

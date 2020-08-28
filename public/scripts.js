@@ -194,7 +194,7 @@ if (pagination) {
 const formDelete = document.querySelector(".form-delete")
 
 function checkBeforeDeletingTheRecipe(event) {
-    const confirmation = confirm("Deseja deletar a receita criada ?")
+    const confirmation = confirm("Deseja deletar ?")
     if (!confirmation) return event.preventDefault()
 }
 

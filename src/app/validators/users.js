@@ -52,6 +52,13 @@ async function createUsers(req, res, next) {
     }
 }
 
+function checksIfTheUserIdIsTheSameAsTheSession(req, res, next){
+    const { id } = req.params
+    if(id == req.session.userId) return res.redirect('/admin/profile')
+
+    next()
+}
+
 async function updateUser(req, res, next) {
     const { email, id } = req.body
     const user = await User.findOne({ where: { email } })
@@ -66,5 +73,6 @@ async function updateUser(req, res, next) {
 
 module.exports = {
     createUsers,
-    updateUser
+    updateUser,
+    checksIfTheUserIdIsTheSameAsTheSession
 }
