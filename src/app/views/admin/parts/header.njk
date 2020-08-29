@@ -1,23 +1,30 @@
 <div class="container-header">
 
+
     <header class="admin-header">
 
-        <a href="/"><img src="/assets/logo-admin.png " alt="Logo"></a>
-        
         <nav >
+            <a href="/"><img src="/assets/logo-admin.png " alt="Logo"></a>
+            
             <ul class="admin">
                 <li><a class="" href="/admin/recipes">Receitas</a></li>
                 <li><a href="/admin/chefs">Chefs</a></li>
                 <li><a href="/admin/users">Usuários</a></li>
-                <li><a href="/admin/profile">Perfil</a></li>                    
+                <li><a href="/admin/profile">Perfil</a></li>
+            </ul>  
+        </nav>
+        
+        <nav class="profile-container">
+
+            <ul>
                 <li>
                     <form action="/admin/logout" method="POST">
                         <button type="submit">Sair</button>
                     </form>
                 </li>
             </ul>
+
         </nav>
-    
     </header>
 
 </div>
