@@ -50,14 +50,14 @@ async function recipeDoesNotExist(req, res, next) {
     next()
 }
 
-async function checksIfRecipesIsUser(req, res, next){
+async function checksIfRecipesIsUser(req, res, next) {
     let results = await Recipe.find(req.params.id)
     const recipe = results.rows[0]
 
-    if(recipe.user_id != req.session.userId && req.session.is_admin != true) return res.redirect("/admin/recipes")
+    if (recipe.user_id != req.session.userId && req.session.is_admin != true) return res.redirect("/admin/recipes")
 
     req.recipe = recipe
-    
+
     return next()
 }
 
@@ -80,25 +80,34 @@ async function userRecipes(req, res, next) {
     if (req.session.is_admin != true) {
 
         const userRecipes = await User.userRecipes(userId, params)
-        results = await User.totalRecipes(req.session.userId)
+
+        if (userRecipes.rows.length == 0) return res.render('admin/recipes/index', {
+            error: "Nenhuma receita cadastrada por aqui!"
+        })
+
+        const results = await User.totalRecipes(req.session.userId)
         const totalRecipes = results.rows[0].total
+
+
 
         const pagination = {
             total: Math.ceil(totalRecipes / limit),
             page
         }
 
+
         req.totalRecipes = totalRecipes
         req.recipes = userRecipes.rows
         req.pagination = pagination
-        
+
         return next()
 
     }
 
-    if (req.session.is_admin == true) {
-        const results = await Recipe.paginate(params)
-        const recipes = results.rows
+    const results = await Recipe.paginate(params)
+    const recipes = results.rows
+
+    if (req.session.is_admin == true && recipes.length != 0) {
 
         const pagination = {
             total: Math.ceil(recipes[0].total / limit),
@@ -107,9 +116,28 @@ async function userRecipes(req, res, next) {
 
         req.recipes = recipes
         req.pagination = pagination
-        
+
         return next()
     }
+
+    if (recipes.length == 0) {
+
+        if (recipes.length == 0) return res.render('admin/recipes/index', {
+            error: "Nenhuma receita cadastrada por aqui!"
+        })
+
+        const pagination = {
+            total: Math.ceil(0 / limit),
+            page
+        }
+
+        req.recipes = recipes
+        req.pagination = pagination
+
+        return next()
+    }
+
+
 }
 
 async function checkIfFilesAreRemovedAndUpdate(req, res, next) {

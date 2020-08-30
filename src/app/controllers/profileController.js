@@ -3,6 +3,7 @@ module.exports = {
     async index(req, res){
         const id = req.session.userId
         const user = await User.findOne({where: {id}})
+        
         return res.render("admin/profile/index", {user})
     },
     async put(req, res) {

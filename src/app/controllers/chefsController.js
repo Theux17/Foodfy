@@ -25,23 +25,27 @@ module.exports = {
     },
 
     async post(req, res) {
+        try {
 
-        const { filename, path } = req.files[0]
+            const { filename, path } = req.files[0]
 
-        const file = await File.create({ filename, path })
-        const fileId = file.rows[0].id
+            const file = await File.create({ filename, path })
+            const fileId = file.rows[0].id
+            
+            const {name } = req.body
+            
+            let result = await Chef.create(name, fileId)
+            const chefId = result.rows[0].id
+            
+            return res.render("admin/chefs/create", {
+                chef: req.body,
+                chefId,
+                succes: "Chef cadastrado com sucesso!"
+            })
 
-        const { id, name } = req.body
-
-        let result = await Chef.create({ name, fileId, id })
-        const chefId = result.rows[0].id
-
-        return res.render("admin/chefs/create", { 
-            chef: req.body,
-            chefId,
-            succes: "Chef cadastrado com sucesso!"
-         })
-
+        }catch(err){
+            console.error(err)
+        }
     },
 
     async show(req, res) {
@@ -73,9 +77,9 @@ module.exports = {
     },
 
     async edit(req, res) {
-        
+
         const { chef } = req
-        
+
         results = await Chef.files(chef.id)
 
         let chefsData = results.rows
@@ -92,12 +96,12 @@ module.exports = {
     async put(req, res) {
         const avatarId = req.files.id
         await Chef.update({ ...req.body, fileId: avatarId })
-        
+
         let results = await Chef.find(req.body.id)
         const chef = results.rows[0]
 
         results = await Chef.files(chef.id)
-        
+
         let chefsData = results.rows
 
         chefsData = chefsData.map(file => ({

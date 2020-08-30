@@ -10,7 +10,7 @@ module.exports = {
         GROUP BY chefs.id `)
 
     },
-    async create({name, fileId}) {
+    async create(name, fileId) {
 
 
         const query = `
@@ -18,7 +18,7 @@ module.exports = {
                 name,
                 file_id,
                 created_at
-            ) VALUES($1, $2, $3 )
+            ) VALUES($1, $2, $3)
             RETURNING id 
             `
 

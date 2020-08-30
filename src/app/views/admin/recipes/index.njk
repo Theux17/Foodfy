@@ -13,6 +13,10 @@
 
         {% endblock %}
 
+    {% if error %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
+
     <div id="main-container">
 
         {% block content %}
@@ -56,3 +60,17 @@
 
     </div>
 {% endblock container %}
+
+{% block script %}
+    <script>
+        const error = document.querySelector('.message.error')
+
+        if(error){   
+            if(String(location.href).includes("recipes")){
+                setTimeout(() => {
+                    error.remove()
+                }, 3000)
+            }
+        }
+    </script>
+{% endblock script %}

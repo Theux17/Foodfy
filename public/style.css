@@ -1094,13 +1094,16 @@ button.add-preparation {
     background-color: var(--dark-button);
 }
 
-.title-button.admin .buttons a button {
+.title-button.admin .buttons a.button.back  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #8A8A8A;
     color: var(--color-white);
     font-family: Helvetica;
 }
 
-.title-button .buttons a button:hover{
+.title-button.admin .buttons a.button.back:hover{
     background-color: #858383c7;
 }
 
