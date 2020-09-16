@@ -52,7 +52,7 @@
     <select name="chef">
         <option disabled hidden selected>Selecione um chef</option>
     {% for chef in chefsOptions %}
-        <option placeholder="Selecione um chef" value="{{chef.id}}" {% if chef.id == recipe.chef_id %} selected {%endif%}}>
+        <option placeholder="Selecione um chef" value="{{chef.id}}" {% if chef.id == recipe.chef_id %} selected {%endif%}}>         
             {{ chef.name }}
         </option>
     {% endfor %}
