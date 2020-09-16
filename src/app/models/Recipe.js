@@ -1,7 +1,12 @@
 const db = require('../../config/db')
-const { date } = require("../../lib/utils")
+
+const Base = require('./Base')
+
+Base.init({ table: 'recipes' })
 
 module.exports = {
+    ...Base,
+    
     async all() {
         return db.query(`
         SELECT recipes.*, chefs.name AS chef_name 
@@ -10,50 +15,7 @@ module.exports = {
         ORDER BY created_at DESC `)
 
     },
-    async create(data) {
-        const query = `
-            INSERT INTO recipes(
-                chef_id,
-                title,
-                ingredients,
-                preparation,
-                information,
-                user_id,
-                created_at
-            ) VALUES($1, $2, $3, $4, $5, $6, $7)
-            RETURNING id 
-        `
 
-        const values = [
-            data.chef,
-            data.title,
-            data.ingredients,
-            data.preparation,
-            data.information,
-            data.userId,
-            date(Date.now()).iso
-        ]
-
-        return db.query(query, values)
-    },
-    async find(id){
-        return db.query(`
-        SELECT recipes. *, chefs.name AS chef_name 
-        FROM recipes 
-        LEFT JOIN chefs ON (recipes.chef_id = chefs.id )
-        WHERE recipes.id = $1`, [ id ] )
-    },
-    chefsAll(id, callback){
-
-        db.query(`
-        SELECT chefs.name AS chef_name
-        FROM chefs
-        WHERE id = $1`, [ id ] ,function(err, results){
-            if (err) throw `Database Error! ${err}`
-            
-            callback(results.rows)
-        })
-    },
     async findBy(filter){
         return db.query(`
         SELECT recipes.*, chefs.name AS chef_name
@@ -64,31 +26,6 @@ module.exports = {
         `)
     },
 
-    async update(data){
-        const query = ` 
-            UPDATE recipes SET 
-            chef_id=($1),
-            title=($2),
-            ingredients=($3),
-            preparation=($4),
-            information=($5)
-            WHERE id = $6
-        `
-        const values = [
-            data.chef,
-            data.title,
-            data.ingredients,
-            data.preparation,
-            data.information,
-            data.id
-        ]
-
-        return db.query(query, values )
-    },
-    async delete(id){
-        return db.query(`DELETE FROM recipes WHERE id = $1`, [ id ])
-
-    },
     async chefsSelectOptions(){
         return db.query(` SELECT name, id FROM chefs`)
     },
@@ -125,14 +62,6 @@ module.exports = {
 
         return db.query(query, value)
     },
-
-    async files(id) {
-        return db.query(`
-        SELECT * 
-        FROM recipe_files
-        LEFT JOIN files ON (recipe_files.file_id = files.id)
-        WHERE recipe_files.recipe_id = $1
-    `, [id])},
 
     async deleteDataToRecipeFiles(id){
         return db.query(`

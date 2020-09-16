@@ -3,47 +3,41 @@ const User = require('../models/User')
 const File = require('../models/File')
 
 async function checksIfTheRecipeFieldsAreEmpty(req, res, next) {
-    const keys = Object.keys(req.body)
+    try {
+        const keys = Object.keys(req.body)
 
-    let results = await Recipe.chefsSelectOptions()
-    const chefsOptions = results.rows
+        let results = await Recipe.chefsSelectOptions()
+        const chefsOptions = results.rows
 
-    results = await Recipe.files(req.params.id)
-    let files = results.rows
+        for (key of keys) {
+            if (req.body[key] == "" || req.body.chef == undefined && key != "removed_files" && key != "information") {
+                return res.render("admin/recipes/create", {
+                    recipe: req.body,
+                    chefsOptions,
+                    error: "Por favor, preencha todos os campos!"
+                })
+            }
 
-    files = files.map(file => ({
-        ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-    }))
 
-    for (key of keys) {
-        if (req.body[key] == "" && key != "removed_files" && key != "information") {
-            return res.render("admin/recipes/create", {
-                recipe: req.body,
-                files,
-                chefsOptions,
-                error: "Por favor, preencha todos os campos!"
-            })
         }
+
+        if (req.files.length == 0 && !req.files.fieldname) return res.render("admin/recipes/create", {
+            recipe: req.body,
+            chefsOptions,
+            error: "Por favor, insira uma imagem!"
+        })
+
+        console.log(req.files[0])
+
+        next()
+    } catch (error) {
+        console.error(error)
     }
-
-    results = await Recipe.files(req.body.id)
-    const filesCreate = results.rows
-
-    if (filesCreate.length == 0 && req.files.length == 0) return res.render("admin/recipes/create", {
-        recipe: req.body,
-        files: filesCreate,
-        chefsOptions,
-        error: "Por favor, insira uma imagem!"
-    })
-
-    next()
 }
 
 
 async function recipeDoesNotExist(req, res, next) {
-    let results = await Recipe.find(req.params.id)
-    const recipe = results.rows[0]
+    let recipe = await Recipe.findOne({ where: { id: req.params.id } })
 
     if (!recipe) return res.render("admin/recipes/recipe-not-found")
 
@@ -51,8 +45,7 @@ async function recipeDoesNotExist(req, res, next) {
 }
 
 async function checksIfRecipesIsUser(req, res, next) {
-    let results = await Recipe.find(req.params.id)
-    const recipe = results.rows[0]
+    let recipe = await Recipe.findOne({ where: { id: req.params.id } })
 
     if (recipe.user_id != req.session.userId && req.session.is_admin != true) return res.redirect("/admin/recipes")
 
@@ -137,7 +130,6 @@ async function userRecipes(req, res, next) {
         return next()
     }
 
-
 }
 
 async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
@@ -146,7 +138,7 @@ async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
     let results = await Recipe.chefsSelectOptions()
     const chefsOptions = results.rows
 
-    const oldFiles = await Recipe.files(req.body.id)
+    const oldFiles = await Recipe.files('recipe_files', 'recipe_id', req.body.id)
     let files = oldFiles.rows
 
     files = files.map(file => ({
@@ -191,12 +183,7 @@ async function checkIfFilesAreRemovedAndUpdate(req, res, next) {
         const totalFiles = oldFiles.rows.length + req.files.length
 
         if (totalFiles <= 5) {
-            const filesPromise = req.files.map(file => File.create({ ...file, recipeId: req.body.id }))
-            const files = await Promise.all(filesPromise)
-
-            // Pega o id dos files
-            const filesId = files.map(file => Recipe.sendDataToRecipeFiles({ recipeId: req.body.id, fileId: file.rows[0].id }))
-            await Promise.all(filesId)
+            return next()
         }
     }
 

@@ -19,8 +19,11 @@ function checksIfTheChefsFieldsAreEmpty(req, res, next) {
 }
 
 async function checksIfTheChefExists( req, res, next){
-    let results = await Chef.find(req.params.id)
-    const chef = results.rows[0]
+    const {id} = req.params
+    let result = await Chef.find(id)
+
+    const chef = result.rows[0]
+
     if (!chef) return res.render('admin/chefs/chef-not-found')
 
     req.chef = chef
@@ -28,12 +31,12 @@ async function checksIfTheChefExists( req, res, next){
 }
 
 async function checkForNewFilesAndUpdateFiles(req, res, next){
-    let result = await Chef.files(req.body.id)
+    let result = await Chef.files('chefs', 'id', req.body.id)
     const avatarId = result.rows[0].id
 
     if (req.files[0]) {
         const { filename, path } = req.files[0]
-        await File.update({ filename, path, id: avatarId })
+        await File.update(avatarId, { name: filename, path })
     }
 
     req.files.id = avatarId

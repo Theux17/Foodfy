@@ -4,28 +4,33 @@ const Chef = require("../models/Chef")
 module.exports = {
     async home(req, res) {
 
-        let results = await Recipe.all()
-        const recipes = results.rows
+        try {
+            let results = await Recipe.all()
+            const recipes = results.rows
 
-        let lastRecipes = []
+            let lastRecipes = []
 
-        for(recipe of recipes ){
-            if(lastRecipes.length < 6){
-                lastRecipes.push(recipe)
+            for (recipe of recipes) {
+                if (lastRecipes.length < 6) {
+                    lastRecipes.push(recipe)
+                }
             }
-        }    
-        
-        const filesPromise = recipes.map(recipe => Recipe.files(recipe.id))
-        results = await Promise.all(filesPromise)
 
-        let recipesImage = results.map(result => result.rows[0])
-        recipesImage = recipesImage.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            const filesPromise = recipes.map(recipe => Recipe.files('recipe_files', 'recipe_id', recipe.id))
+            results = await Promise.all(filesPromise)
 
-        }))
+            let recipesImage = results.map(result => result.rows[0])
+            recipesImage = recipesImage.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
 
-        return res.render("home-pages/home", { recipes: lastRecipes, recipesImage })
+            }))
+
+            return res.render("home-pages/home", { recipes: lastRecipes, recipesImage })
+
+        } catch (error) {
+            console.error(error)
+        }
     },
 
     about(req, res) {
@@ -44,53 +49,66 @@ module.exports = {
     },
 
     async recipesAll(req, res) {
+        try {
 
-        let results = await Recipe.all()
-        const recipes = results.rows
+            let results = await Recipe.all()
+            const recipes = results.rows
 
-        const filesPromise = recipes.map(recipe => Recipe.files(recipe.id))
-        results = await Promise.all(filesPromise)
+            const filesPromise = recipes.map(recipe => Recipe.files('recipe_files', 'recipe_id', recipe.id))
+            results = await Promise.all(filesPromise)
 
-        let recipesImage = results.map(result => result.rows[0])
-        recipesImage = recipesImage.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            let recipesImage = results.map(result => result.rows[0])
+            recipesImage = recipesImage.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
 
-        }))
+            }))
 
-        return res.render("home-pages/recipes", { recipes, recipesImage })
+            return res.render("home-pages/recipes", { recipes, recipesImage })
+
+        } catch (error) {
+            console.error(error)
+        }
     },
 
     async recipes(req, res) {
-        const { recipe } = req
+        try {
+            const { recipe } = req
 
-        let result = await Recipe.files(recipe.id)
-        
-        let recipeImages = result.rows
-        recipeImages = recipeImages.map(file => ({
-            ...file, 
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-        }))
-        
+            let result = await Recipe.files('recipe_files', 'recipe_id', recipe.id)
 
-        return res.render("home-pages/information", { recipe, recipeImages })
+            let recipeImages = result.rows
+            recipeImages = recipeImages.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
+
+            return res.render("home-pages/information", { recipe, recipeImages })
+
+        } catch (error) {
+            console.error(error)
+        }
 
     },
 
     async chefs(req, res) {
-        let results = await Chef.all()
-        const chefs = results.rows
+        try {
+            let results = await Chef.all()
+            const chefs = results.rows
 
-        const chefsPromise = chefs.map(chef => Chef.files(chef.id))
-        results = await Promise.all(chefsPromise)
+            const chefsPromise = chefs.map(chef => Chef.files('chefs', 'id', chef.id))
+            results = await Promise.all(chefsPromise)
 
-        let chefsAvatar = results.map(result => result.rows[0])
-        
-        chefsAvatar = chefsAvatar.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`            
-        }))
+            let chefsAvatar = results.map(result => result.rows[0])
 
-        return res.render("home-pages/chefs", { chefs, chefsAvatar })
+            chefsAvatar = chefsAvatar.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
+
+            return res.render("home-pages/chefs", { chefs, chefsAvatar })
+        } catch (error) {
+            console.error(error)
+        }
     }
 }

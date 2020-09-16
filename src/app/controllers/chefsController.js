@@ -1,3 +1,5 @@
+const { unlinkSync } = require('fs')
+
 const Chef = require("../models/Chef")
 const Recipe = require("../models/Recipe")
 const File = require("../models/File")
@@ -7,7 +9,7 @@ module.exports = {
         let results = await Chef.all()
         const chefs = results.rows
 
-        const chefsPromise = chefs.map(chef => Chef.files(chef.id))
+        const chefsPromise = chefs.map(chef => Chef.files('chefs', 'id', chef.id))
         results = await Promise.all(chefsPromise)
 
         let chefsAvatar = results.map(result => result.rows[0])
@@ -29,100 +31,116 @@ module.exports = {
 
             const { filename, path } = req.files[0]
 
-            const file = await File.create({ filename, path })
-            const fileId = file.rows[0].id
-            
-            const {name } = req.body
-            
-            let result = await Chef.create(name, fileId)
-            const chefId = result.rows[0].id
-            
+            const fileId = await File.create({ name: filename, path })
+
+            let { name, file_id } = req.body
+
+            file_id = fileId
+
+            const chefId = await Chef.create({ name, file_id })
+
             return res.render("admin/chefs/create", {
                 chef: req.body,
                 chefId,
                 succes: "Chef cadastrado com sucesso!"
             })
 
-        }catch(err){
+        } catch (err) {
             console.error(err)
         }
     },
 
     async show(req, res) {
-        const { chef } = req
+        try {
+            const { chef } = req
 
-        results = await Chef.files(chef.id)
-        let chefAvatar = results.rows
+            let results = await Chef.files('chefs','id', chef.id)
+            let chefAvatar = results.rows
 
-        chefAvatar = chefAvatar.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-        }))
+            chefAvatar = chefAvatar.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
 
-        results = await Chef.recipesAll(chef.id)
-        const recipes = results.rows
+            const recipes = await Recipe.findAll({ where: { chef_id: chef.id } })
 
-        const filesPromise = recipes.map(recipe => Recipe.files(recipe.id))
-        results = await Promise.all(filesPromise)
+            const filesPromise = recipes.map(recipe => Recipe.files('recipe_files', 'recipe_id', recipe.id))
+            results = await Promise.all(filesPromise)
 
-        // Pega os dados do arquvivo da receita e transforma em um array
-        let recipeImage = results.map(result => result.rows[0])
+            // Pega os dados do arquvivo da receita e transforma em um array
+            let recipeImage = results.map(result => result.rows[0])
 
-        recipeImage = recipeImage.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-        }))
+            recipeImage = recipeImage.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
 
-        return res.render("admin/chefs/details", { chef, recipes, chefAvatar, recipeImage })
+            return res.render("admin/chefs/details", { chef, recipes, chefAvatar, recipeImage })
+        } catch (error) {
+            console.error(error)
+        }
     },
 
     async edit(req, res) {
 
-        const { chef } = req
+        try {
+            const { chef } = req
 
-        results = await Chef.files(chef.id)
+            results = await Chef.files('chefs', 'id', chef.id)
 
-        let chefsData = results.rows
+            let chefsData = results.rows
+            chefsData = chefsData.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
 
-        chefsData = chefsData.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-        }))
+            return res.render("admin/chefs/edit", { chef, chefsData })
+        } catch (error) {
+            console.error(error)
+        }
 
-        return res.render("admin/chefs/edit", { chef, chefsData })
     },
 
-
     async put(req, res) {
-        const avatarId = req.files.id
-        await Chef.update({ ...req.body, fileId: avatarId })
+        try {
+            const avatarId = req.files.id
 
-        let results = await Chef.find(req.body.id)
-        const chef = results.rows[0]
+            const { name, id } = req.body
+            await Chef.update(id, { name, file_id: avatarId })
+            
+            let chef = await Chef.findOne({where: { id } })
+            
+            results = await Chef.files('chefs', 'id', chef.id)
 
-        results = await Chef.files(chef.id)
+            let chefsData = results.rows
 
-        let chefsData = results.rows
+            chefsData = chefsData.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
 
-        chefsData = chefsData.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-        }))
+            return res.render('admin/chefs/edit', {
+                chef: req.body,
+                chefsData,
+                succes: "Chef atualizado com sucesso!"
+            })
 
-        return res.render('admin/chefs/edit', {
-            chef: req.body,
-            chefsData,
-            succes: "Chef atualizado com sucesso!"
-        })
+        } catch (error) {
+            console.error(error)
+        }
     },
 
     async delete(req, res) {
-        let result = await Chef.files(req.body.id)
-        const fileId = result.rows[0].id
-
+        const files = await Chef.files('chefs', 'id', req.body.id)
         await Chef.delete(req.body.id)
 
-        await File.delete(fileId)
+        files.rows.map(file => {
+            try {
+                unlinkSync(file.path)
+            } catch (error) {
+                console.error(error)
+            }
+        })
 
         return res.render('admin/chefs/edit', {
             succes: "Chef deletado com sucesso!"

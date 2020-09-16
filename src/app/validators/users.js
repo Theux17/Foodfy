@@ -31,9 +31,9 @@ async function createUsers(req, res, next) {
         const userAlreadyExists = checksIfUserAlreadyExists(user, req.body)
         if (userAlreadyExists) return res.render("admin/user/create", userAlreadyExists)
 
-        const users = await User.allUsers()
+        const users = await User.findAll()
 
-        users.rows.map(user => {
+        users.map(user => {
             if (user.email == email) return res.render("admin/user/create", {
                 createdUser: user,
                 user: req.body,

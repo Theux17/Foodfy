@@ -3,9 +3,9 @@ const { compare } = require('bcryptjs')
 const User = require('../models/User')
 
 async function update(req, res, next) {
-    const { email, password } = req.body
+    const { id, password } = req.body
     
-    const user = await User.findOne({where: { email } })
+    const user = await User.findOne({where: { id } })
 
     if(password == "") return res.render("admin/profile/index", {
         user: req.body,
@@ -13,7 +13,7 @@ async function update(req, res, next) {
     })
 
     if(!user){
-        return res.render("profile/index", {
+        return res.render("admin/profile/index", {
             user: req.body,
             error: "Usuário não cadastrado!"
         })

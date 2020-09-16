@@ -1,12 +1,21 @@
-const User = require('../models/User')
+const crypto = require('crypto')
+const { hash }= require('bcryptjs')
+const { unlinkSync } = require('fs')
+
 const mailer = require('../../lib/mailer')
+const User = require('../models/User')
+const Recipe = require('../models/Recipe')
 
 module.exports = {
     async list(req, res) {
-        const results = await User.allUsers()
-        const users = results.rows
+        try {
+            const users = await User.findAll()
 
-        return res.render("admin/user/list", { users })
+            return res.render("admin/user/list", { users })
+
+        } catch (error) {
+            console.error(error)
+        }
     },
     create(req, res) {
         return res.render("admin/user/create")
@@ -14,9 +23,25 @@ module.exports = {
 
     async post(req, res) {
         try {
-            const id = await User.create(req.body)
-            const createdUser = await User.findOne({ where: { id } })
+            let { name, email, password, reset_token, reset_token_expires, is_admin } = req.body
+
+            password = crypto.randomBytes(5).toString("hex")
             
+            is_admin = is_admin || false
+            reset_token = ""
+            reset_token_expires = ""
+
+            const userId = await User.create({ 
+                name, 
+                email, 
+                password: await hash(password, 8), 
+                reset_token, 
+                reset_token_expires, 
+                is_admin 
+            })
+            
+
+            const createdUser = await User.findOne({ where: { id: userId } })
 
             await mailer.sendMail({
                 to: createdUser.email,
@@ -24,7 +49,7 @@ module.exports = {
                 subject: 'Acesse a plataforma',
                 html: `
                     <h2>Acesse a plataforma</h2>
-                    <p>Para ter acesso a plataforma, disponibilizamos a seguinte senha de acesso: ${createdUser.password}</p>
+                    <p>Seja Bem vindo ${createdUser.name}! Para ter acesso a plataforma disponibilizamos a seguinte senha de acesso: <strong>${password}</strong></p>
                     <br>
                     <p>
                         <a href="http://localhost:3000/admin/login">
@@ -33,6 +58,7 @@ module.exports = {
                     </p>
                 `
             })
+
 
             return res.render("admin/user/create", {
                 createdUserId: createdUser,
@@ -49,10 +75,15 @@ module.exports = {
         }
     },
     async edit(req, res) {
-        const { id } = req.params
-        const user = await User.findOne({ where: { id } })
-
-        return res.render("admin/user/edit", { user })
+        try {
+            const { id } = req.params
+            const user = await User.findOne({ where: { id } })
+            
+            return res.render("admin/user/edit", { user })
+            
+        } catch (error) {
+            console.error(error)
+        }
     },
     async put(req, res) {
         try {
@@ -80,9 +111,18 @@ module.exports = {
 
     async delete(req, res) {
         try {
+            
+            let recipes = await Recipe.findAll({ where: {user_id: req.body.id} })
+            const allFilesPromise = recipes.map( recipe => Recipe.files('recipe_files', 'recipe_id', recipe.id))
+            
             await User.delete(req.body.id)
-            const results = await User.allUsers()
-            const users = results.rows
+            
+            let promiseResults = await Promise.all(allFilesPromise)
+            promiseResults.map(results => {
+                results.rows.map(file => unlinkSync(file.path))
+            })
+            
+            const users = await User.findAll()
 
             return res.render("admin/user/list", {
                 users,
