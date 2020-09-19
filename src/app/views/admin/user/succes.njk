@@ -1,0 +1,41 @@
+{%extends "layout.njk"%}
+
+{% block head %}
+    <title>success</title>
+{% endblock %}
+
+{% block container %}
+<div id="main-container">
+
+    {% block header %}
+
+    {% endblock %}
+
+    {% block content %}
+
+        <div class="container-success">
+            <div class="lottie-animation"></div>
+            <p>{{ message }}</p>
+
+            <span class="button"><a href="{{ location }}">Clique aqui para voltar</a></span>
+        </div>
+
+    {% endblock  %}
+
+</div>
+
+<script src="/lottie.min.js"></script>
+
+<script>
+    const element = document.querySelector(".lottie-animation")
+    lottie.loadAnimation({
+        container: element, // the dom element that will contain the animation
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: '/28435-fc-success-rays.json' // the path to the animation json
+    })
+
+</script>
+{% endblock container %}
+
