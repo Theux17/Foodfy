@@ -7,10 +7,7 @@ async function update(req, res, next) {
     
     const user = await User.findOne({where: { id } })
 
-    if(password == "") return res.render("admin/profile/index", {
-        user: req.body,
-        error: "Insira a senha!"
-    })
+    if(password == "") return res.send("Insira a senha")
 
     if(!user){
         return res.render("admin/profile/index", {

@@ -5,21 +5,16 @@ function checksIfTheChefsFieldsAreEmpty(req, res, next) {
     const keys = Object.keys(req.body)
 
     for (key of keys) {
-        if (req.body[key] == "") return res.render('admin/chefs/create', {
-            chef: req.body,
-            error: "Por favor, preencha todos os campos."
-        })
+        if (req.body[key] == "") return res.send("Por favor, preencha todos os campos.")
+
+        if (req.files == 0) return res.send("Por favor, insira uma imagem.")
     }
 
-    if (req.files == 0) return res.render('admin/chefs/create', {
-        chef: req.body,
-        error: "Por favor, insira uma imagem."
-    })
     next()
 }
 
-async function checksIfTheChefExists( req, res, next){
-    const {id} = req.params
+async function checksIfTheChefExists(req, res, next) {
+    const { id } = req.params
     let result = await Chef.find(id)
 
     const chef = result.rows[0]
@@ -30,7 +25,7 @@ async function checksIfTheChefExists( req, res, next){
     next()
 }
 
-async function checkForNewFilesAndUpdateFiles(req, res, next){
+async function checkForNewFilesAndUpdateFiles(req, res, next) {
     let result = await Chef.files('chefs', 'id', req.body.id)
     const avatarId = result.rows[0].id
 

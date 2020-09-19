@@ -1,22 +1,19 @@
 const { compare } = require('bcryptjs')
 const User = require('../models/User')
 
-function checksIfTheChefsFieldsAreEmpty(body) {
+function checksIfTheChefsFieldsAreEmpty(body, res) {
     const keys = Object.keys(body)
 
     for (key of keys) {
         if (body[key] == "") {
-            return {
-                user: body,
-                error: "Por favor, preencha todos os campos!"
-            }
+            return res.send("Por favor, preencha todos os campos!")
         }
     }
 }
 
 async function login(req, res, next) {
-    const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body)
-    if(fillAllFields) return res.render("session/login", fillAllFields)
+    const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body, res)
+    if(fillAllFields) return fillAllFields
 
     const { email, password } = req.body
 
@@ -40,8 +37,8 @@ async function login(req, res, next) {
 }
 
 async function forgotPassword(req, res, next){
-    const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body)
-    if(fillAllFields) return res.render("session/forgot-password", fillAllFields)
+    const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body, res)
+    if(fillAllFields) return fillAllFields
 
     const { email } = req.body
 
@@ -60,8 +57,8 @@ async function forgotPassword(req, res, next){
 }
 
 async function resetPassword(req, res, next){
-    const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body)
-    if(fillAllFields) return res.render("session/reset-password", fillAllFields)
+    const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body, res)
+    if(fillAllFields) return fillAllFields
 
     const { email, password, passwordRepeat, token } = req.body
     

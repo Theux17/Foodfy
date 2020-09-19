@@ -1,15 +1,11 @@
 const User = require('../models/User')
 
-function checksIfTheChefsFieldsAreEmpty(body) {
+function checksIfTheChefsFieldsAreEmpty(body, res) {
     const keys = Object.keys(body)
 
     for (key of keys) {
-        if (body[key] == "") {
-            return {
-                user: body,
-                error: "Por favor, preencha todos os campos!"
-            }
-        }
+        if (body[key] == "") 
+            return res.send("Por favor, preencha todos os campos!")
     }
 }
 
@@ -22,7 +18,7 @@ function checksIfUserAlreadyExists(user, body) {
 
 async function createUsers(req, res, next) {
     try {
-        const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body)
+        const fillAllFields = checksIfTheChefsFieldsAreEmpty(req.body, res)
         if (fillAllFields) return res.render('admin/user/create', fillAllFields)
 
         const { email } = req.body
@@ -39,10 +35,7 @@ async function createUsers(req, res, next) {
                 user: req.body,
                 error: "Usuário já cadastrado!"
             })
-            if (!user) return res.render("admin/user/create", {
-                user: req.body,
-                succes: "Usuário cadastrado com sucesso! Entre no email cadastrado para obter a senha de acesso."
-            })
+       
         })
 
         next()
