@@ -11,16 +11,9 @@
         {% include "admin/parts/header.njk" %}
 
     {% endblock %}
-
-
-        {% if error %}
-            {% include "admin/parts/messages.njk"%}
-        {% endif %}
-    
-        {% if succes %}
-            {% include "admin/parts/messages.njk"%}
-        {% endif %}
-
+    {% if error %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
     <div id="main-container">
 
         {% block content %}
@@ -31,8 +24,8 @@
                 
                 <form class= "form-update" method="POST" action="/admin/recipes/{{ recipe.id }}/?_method=PUT" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="{{ recipe.id }}">
-                    
-                    <button class="button save">Salvar receita</button>
+                
+                    <button class="button save" onclick="Validate.allFieldsRecipes(event)">Salvar receita</button>
                 
                     {% include 'admin/recipes/fields.njk' %} 
                 </form>
@@ -40,7 +33,7 @@
                 {%if adminUser == true%}
                     <form class="form-delete" method="POST" action="/admin/recipes/?_method=DELETE">
                         
-                        <button type="submit" class="button delete">Deletar</button>
+                        <button type="submit" class="button delete" onclick="deleteSomething(event)">Deletar</button>
                         
                         <input type="hidden" name="id" value="{{ recipe.id }}">
 
@@ -53,26 +46,3 @@
     </div>
 {% endblock container %}
 
-{% block script %}
-    <script>
-        const succes = document.querySelector('.message.succes')
-
-        if(succes){   
-            if(String(location.href).includes("recipes")){
-                setTimeout(() => {
-                    location.assign("/admin/recipes/{{ recipe.id }}")
-                }, 3000)
-            }
-        }
-
-        const formDeleteRecipe = document.querySelector('.form-delete')
-
-        
-            if(String(location.href).includes("DELETE")){
-                setTimeout(() => {
-                    location.assign("/admin/recipes")
-                }, 1000)
-            }
-
-    </script>
-{% endblock script %}

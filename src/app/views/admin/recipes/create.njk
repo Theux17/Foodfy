@@ -12,14 +12,9 @@
 
     {% endblock %}
 
-        {% if error %}
-            {% include "admin/parts/messages.njk"%}
-        {% endif %}
-    
-        {% if succes %}
-            {% include "admin/parts/messages.njk"%}
-        {% endif %}
-    
+    {% if error %}
+        {% include "admin/parts/messages.njk"%}
+    {% endif %}
     <div id="main-container">
 
         {% block content %}
@@ -27,7 +22,7 @@
             <form class="form-create" method="POST" action="/admin/recipes" enctype="multipart/form-data">
                 <div class="title-button">
                     <h2>Criando receita</h2>
-                    <button class="button">Salvar receita</button>
+                    <button class="button" onclick="Validate.allFieldsRecipes(event)">Salvar receita</button>
                 </div>
 
                 {% include 'admin/recipes/fields.njk' %}
@@ -38,17 +33,3 @@
         
     </div>
 {% endblock container %}
-
-{% block script %}
-    <script>
-        const succes = document.querySelector('.message.succes')
-
-        if(succes){   
-            if(String(location.href).includes("recipes")){
-                setTimeout(() => {
-                    location.assign("/admin/recipes/{{ recipeId }}")
-                }, 3000)
-            }
-        }
-    </script>
-{% endblock script %}

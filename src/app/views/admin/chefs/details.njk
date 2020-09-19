@@ -31,7 +31,11 @@
                     {% endfor %}
                 </div>
 
-                <h3>Receitas</h3>
+                {% if chef.total_recipes == 0 %}
+                    <h3>Nenhuma receita por aqui</h3>
+                {%else%}
+                    <h3>Receitas</h3>
+                {% endif %}
 
                 <div class="recipes-details">
 

@@ -29,6 +29,7 @@
                         class="button" 
                         type="submit" 
                         form="update"
+                        onclick="Validate.allFieldsUser(event)"
                     >Salvar</button>
                 </div>
             </div>
@@ -45,13 +46,3 @@
         {% endblock %}
     </div>
 {% endblock container %}
-
-{% block script %}
-    <script>
-        if (String(location.href).includes("PUT")) {
-            setTimeout(() => {
-                location.href = "/admin/profile"
-            }, 2000)
-        }
-    </script>
-{% endblock script %}

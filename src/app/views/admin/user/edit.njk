@@ -16,11 +16,6 @@
     {% if error %}
         {% include "admin/parts/messages.njk"%}
     {% endif %}
-
-    {% if succes %}
-        {% include "admin/parts/messages.njk"%}
-    {% endif %}
-
     <div id="main-container">
 
         {% block content %}
@@ -28,7 +23,7 @@
             <div class="title-button">
                 <h2>Atualizar Usuário</h2>
                 <div class="buttons">
-                        <button class="button delete" type="submit" form="form-delete">Deletar</button>
+                        <button class="button delete" type="submit" form="form-delete" onclick="deleteSomething(event)">Deletar</button>
                     <button 
                         class="button" 
                         type="submit" 
@@ -42,13 +37,3 @@
         {% endblock %}
     </div>
 {% endblock container %}
-
-{% block script %}
-    <script>
-        if (String(location.href).includes("PUT")) {
-            setTimeout(() => {
-                location.assign("/admin/users/edit/{{ user.id }}")
-            }, 2000)
-        }
-    </script>
-{% endblock script %}

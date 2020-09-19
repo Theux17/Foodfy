@@ -17,10 +17,6 @@
             {% include "admin/parts/messages.njk"%}
         {% endif %}
     
-        {% if succes %}
-            {% include "admin/parts/messages.njk"%}
-        {% endif %}
-    
     <div id="main-container">
 
         {% block content %}
@@ -29,7 +25,7 @@
                     <div class="title-button admin">
                         <h2>Criando Usuário</h2>
                         <div class="buttons">
-                            <button type="submit" class="button">Salvar</button>
+                            <button type="submit" class="button" onclick="Validate.allFieldsUser(event)">Salvar</button>
                             <a href="/admin/users" class="button back">Cancelar</a>
                         </div>
                     </div>
@@ -41,18 +37,3 @@
         
     </div>
 {% endblock container %}
-
-{% block script %}
-    <script>
-        const formCreate = document.querySelector('.form-create')
-        const succes = document.querySelector('.message.succes')
-
-        if(succes){   
-            if(String(location.href).includes("users")){
-                setTimeout(() => {
-                    location.assign("/admin/users")
-                }, 3000)
-            }
-        }
-    </script>
-{% endblock script %}

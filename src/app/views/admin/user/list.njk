@@ -16,10 +16,6 @@
         {% include "admin/parts/messages.njk"%}
     {% endif %}
 
-    {% if succes %}
-        {% include "admin/parts/messages.njk"%}
-    {% endif %}
-
     <div id="main-container">
 
         {% block content %}
@@ -46,7 +42,7 @@
                                             <a href="/admin/users/edit/{{ user.id }}">Editar</a>
                                             <form id="form-delete" class="form-delete" action="/admin/users?_method=DELETE" method="POST">
                                                 <input type="hidden" name="id" value="{{ user.id }}">
-                                                <button type="submit">Remover</button>
+                                                <button type="submit" onclick="deleteSomething(event)">Remover</button>
                                             </form>
                                         </div>
                                     {% endif %}
@@ -60,19 +56,7 @@
                 </div>
             </section>
 
-
         {% endblock %}
     </div>
 
 {%endblock container%}
-
-{% block script %}
-    <script>
-        if(String(location.href).includes("DELETE")){
-            setTimeout(() => {
-                location.assign("/admin/users")
-            }, 2000)
-        }
-
-    </script>
-{% endblock script %}
