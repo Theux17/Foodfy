@@ -69,20 +69,7 @@ module.exports = {
 
             await filesId.map(id => Recipe.sendDataToRecipeFiles({ recipeId, fileId: id }))
 
-            results = await Recipe.files('recipe_files', 'recipe_id', recipeId)
-
-            let files = results.rows
-            files = files.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            }))
-
-            return res.render("admin/recipes/create", {
-                recipe: req.body,
-                files,
-                recipeId,
-                succes: "Receita cadastrada com sucesso"
-            })
+            return res.redirect(`/admin/recipes/${recipeId}`)
 
         } catch (err) {
             const chefsOptions = await Recipe.chefsSelectOptions()
@@ -117,7 +104,7 @@ module.exports = {
     async edit(req, res) {
         try {
             const recipe = req.recipe
-            
+
             let results = await Recipe.chefsSelectOptions()
             const chefsOptions = results.rows
             
@@ -128,7 +115,7 @@ module.exports = {
                 ...file,
                 src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
             }))
-            
+
             return res.render("admin/recipes/edit", { recipe, chefsOptions, files })
             
         } catch (error) {
@@ -144,18 +131,27 @@ module.exports = {
 
             await filesId.map(id => Recipe.sendDataToRecipeFiles({ recipeId: req.body.id, fileId: id }))
 
-
+            if (req.body.removed_files) {
+                const removedFiles = req.body.removed_files.split(",")
+                const lastIndex = removedFiles.length - 1
+                removedFiles.splice(lastIndex, 1)
+    
+                // remove o id da foto da tabela recipe_files/files
+                let removedFilesPromise = removedFiles.map(id => Recipe.deleteDataToRecipeFiles(id))
+                removedFilesPromise = removedFiles.map(id => File.delete(id))
+    
+                await Promise.all(removedFilesPromise)
+            }  
+            
             await Recipe.update(req.body.id, {
                 chef_id: req.body.chef,
                 title: req.body.title,
                 ingredients: `{${req.body.ingredients}}`,
                 preparation: `{${req.body.preparation}}`,
                 information: req.body.information,
-                user_id: req.body.user_id
             })
 
             let results = await Recipe.chefsSelectOptions()
-            const chefsOptions = results.rows
 
             results = await Recipe.files('recipe_files', 'recipe_id', req.params.id)
 
@@ -165,12 +161,9 @@ module.exports = {
                 src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
             }))
 
-            return res.render("admin/recipes/edit", {
-                recipe: req.body,
-                files,
-                chefsOptions,
-                succes: "Atualizada com sucesso"
-            })
+            const recipe = await Recipe.findOne({ where: { id: req.params.id} })
+
+            return res.redirect(`/admin/recipes/${recipe.id}`)
 
         } catch (error) {
             console.error(error);
@@ -192,9 +185,7 @@ module.exports = {
 
             }
 
-            return res.render("admin/recipes/edit", {
-                succes: "Deletado com sucesso!"
-            })
+            return res.redirect('/admin/recipes')
 
         } catch (error) {
 

@@ -49,10 +49,8 @@ module.exports = {
                 `
             })
 
+            return res.render("admin/user/succes", {message:"Verifque o seu email para resetar a senha.", location: "/admin/login" })
 
-            return res.render("session/forgot-password", {
-                succes: "Verifque o seu email para resetar a senha."
-            })
         }catch(err){
             return res.render('session/forgot-password', {
                 user: req.body,
@@ -76,10 +74,7 @@ module.exports = {
                 reset_token_expires: ""
             })
             
-            return res.render("session/reset-password", {
-                user: req.body,
-                succes: "Nova senha cadastrada com sucesso!"
-            })
+            return res.render("admin/user/succes", {message: "Nova senha cadastrada com sucesso!", location:"/admin/login"})
 
         } catch (err) {
             return res.render('session/reset-password', {

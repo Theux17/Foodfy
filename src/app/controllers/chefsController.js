@@ -39,11 +39,7 @@ module.exports = {
 
             const chefId = await Chef.create({ name, file_id })
 
-            return res.render("admin/chefs/create", {
-                chef: req.body,
-                chefId,
-                succes: "Chef cadastrado com sucesso!"
-            })
+            return res.redirect(`/admin/chefs/details/${chefId}`)
 
         } catch (err) {
             console.error(err)
@@ -109,21 +105,8 @@ module.exports = {
             await Chef.update(id, { name, file_id: avatarId })
             
             let chef = await Chef.findOne({where: { id } })
-            
-            results = await Chef.files('chefs', 'id', chef.id)
-
-            let chefsData = results.rows
-
-            chefsData = chefsData.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            }))
-
-            return res.render('admin/chefs/edit', {
-                chef: req.body,
-                chefsData,
-                succes: "Chef atualizado com sucesso!"
-            })
+                    
+            return res.redirect(`/admin/chefs/details/${chef.id}`)
 
         } catch (error) {
             console.error(error)
@@ -142,9 +125,6 @@ module.exports = {
             }
         })
 
-        return res.render('admin/chefs/edit', {
-            succes: "Chef deletado com sucesso!"
-        })
-
+        return res.redirect('/admin/chefs')
     }
 }

@@ -13,9 +13,6 @@ module.exports = {
             name
         })
 
-        return res.render("admin/profile/index", {
-            user: req.body,
-            succes: "Atualizado com sucesso!"
-        })
+        return res.render("admin/user/succes", {message: "Atualizado com sucesso!"})
     }
 }

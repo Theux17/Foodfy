@@ -40,7 +40,6 @@ module.exports = {
                 is_admin 
             })
             
-
             const createdUser = await User.findOne({ where: { id: userId } })
 
             await mailer.sendMail({
@@ -59,12 +58,9 @@ module.exports = {
                 `
             })
 
+            const message = "Usuário cadastrado com sucesso! Entre no email cadastrado para obter a senha de acesso."
 
-            return res.render("admin/user/create", {
-                createdUserId: createdUser,
-                user: req.body,
-                succes: "Usuário cadastrado com sucesso! Entre no email cadastrado para obter a senha de acesso."
-            })
+            return res.render("admin/user/succes", {message, location: "/admin/users"})
 
         } catch (err) {
             console.error(err)
@@ -95,10 +91,7 @@ module.exports = {
                 is_admin: is_admin || false
             })
 
-            return res.render("admin/user/edit", {
-                succes: "Usuário atualizado com sucesso!",
-                user: req.body
-            })
+            return res.render("admin/user/succes", { message:  "Atualizado com sucesso!" })
 
         } catch (err) {
             console.error(err)
@@ -122,12 +115,7 @@ module.exports = {
                 results.rows.map(file => unlinkSync(file.path))
             })
             
-            const users = await User.findAll()
-
-            return res.render("admin/user/list", {
-                users,
-                succes: "Usuário deletado com sucesso!"
-            })
+            return res.redirect("/admin/users")
         } catch (err) {
             console.error(err)
             return res.render("admin/user/list", {
