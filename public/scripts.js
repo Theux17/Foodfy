@@ -190,30 +190,22 @@ if (pagination) {
     createPagination(pagination)
 }
 
-//Confirma se quer deletar o chef e a receita
-const formDelete = document.querySelector(".form-delete")
-
-function checkBeforeDeletingTheRecipe(event) {
-    const confirmation = confirm("Deseja deletar ?")
-    if (!confirmation) return event.preventDefault()
-}
-
-if (formDelete) {
-    formDelete.addEventListener("submit", checkBeforeDeletingTheRecipe)
-}
 
 // Verifica se o chef tem receita
-const chef = document.querySelector("#chef")
-
 function checksTheTotalRecipes(totalRecipes) {
+    const deleteChefButton = document.querySelector(".form-delete.chef button")
     if (totalRecipes >= 1) {
-        formDelete.addEventListener("submit", function () {
-            return event.preventDefault(alert("O chef não pode ser deletado pois ainda possui receitas cadastradas! Delete as receitas antes de deletar o chef."))
+        deleteChefButton.addEventListener("click", () => {
+            return event.preventDefault(alert("O chef não pode ser deletado pois ainda possui receitas cadastrada. Delete as receitas antes de deletar o chef."))
+        })
+    } else {
+        deleteChefButton.addEventListener("click", () => {
+            return message("Deletado com sucesso!", "succes")
         })
     }
 }
 
-
+const chef = document.querySelector("#chef")
 if (chef) {
     const totalRecipes = +chef.dataset.total_recipes
     checksTheTotalRecipes(totalRecipes)
@@ -342,10 +334,6 @@ const PhotosUpload = {
 
     UpdateInputFiles() {
         PhotosUpload.input.files = PhotosUpload.getAllFiles()
-    },
-
-    checkThatThereIsNoImage() {
-
     }
 }
 
@@ -363,26 +351,38 @@ const ImageGallery = {
     }
 },
 
-Lightbox = {
-    target: document.querySelector(".lightbox-target"),
-    image: document.querySelector(".lightbox-target img"),
-    closeButton: document.querySelector(".lightbox-target a.lightbox-close"),
-    open() {
-        Lightbox.target.style.opacity = 1
-        Lightbox.target.style.top = 0
-        Lightbox.target.style.bottom = 0
-        Lightbox.closeButton.style.top = 0
-    },
+    Lightbox = {
+        target: document.querySelector(".lightbox-target"),
+        image: document.querySelector(".lightbox-target img"),
+        closeButton: document.querySelector(".lightbox-target a.lightbox-close"),
+        open() {
+            Lightbox.target.style.opacity = 1
+            Lightbox.target.style.top = 0
+            Lightbox.target.style.bottom = 0
+            Lightbox.closeButton.style.top = 0
+        },
 
-    close() {
-        Lightbox.target.style.opacity = 0
-        Lightbox.target.style.top = "-100%"
-        Lightbox.target.style.bottom = "initial"
-        Lightbox.closeButton.style.top = "-80px"
+        close() {
+            Lightbox.target.style.opacity = 0
+            Lightbox.target.style.top = "-100%"
+            Lightbox.target.style.bottom = "initial"
+            Lightbox.closeButton.style.top = "-80px"
 
+        }
     }
-}
 
+
+function message(messageToTheUser, type) {
+    let message = document.createElement('div')
+    message.classList.add('message')
+    message.classList.add(`${type}`)
+    message.style.position = "fixed"
+    document.querySelector("body").append(message)
+    message.innerHTML = `${messageToTheUser}`
+    return setTimeout(() => {
+        message.remove()
+    }, 6000);
+}
 const Validate = {
     apply(input, func) {
         Validate.clearErrors(input)
@@ -390,14 +390,14 @@ const Validate = {
         let results = Validate[func](input.value)
         input.value = results.value
 
-        if(results.error) {
+        if (results.error) {
             input.style.border = '1px solid #FF3131'
             Validate.displayError(input, results.error)
         } else { input.style.border = '1px solid #DDDDDD' }
 
     },
 
-    displayError(input, error){
+    displayError(input, error) {
         const div = document.createElement("div")
         div.classList.add('error')
         div.innerHTML = error
@@ -406,22 +406,115 @@ const Validate = {
 
     },
 
-    clearErrors(input){
+    clearErrors(input) {
         const errorDiv = input.parentNode.querySelector(".error")
 
         return errorDiv ? errorDiv.remove() : false
     },
 
-    isEmail(value){
+    isEmail(value) {
         let error = null
 
         const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
-        if(!value.match(emailFormat)) error = "Email inválido" 
+        if (!value.match(emailFormat)) error = "Email inválido"
 
         return {
-            error, 
+            error,
             value
+        }
+    },
+    allFieldsRecipes(event) {
+        const photo = document.querySelector('#photos-preview .photo img')
+        const items = document.querySelectorAll('.item input[type="text"]')
+        const select = document.querySelector('.item select')
+        const option = select.options[select.selectedIndex].value
+
+        if (photo == null) {
+            message("Por favor, coloque uma imagem!", "error")
+
+            return event.preventDefault()
+        }
+
+        for (item of items) {
+            if (item.value == "" || option == "") {
+                message("Por favor, preencha todos os campos!", "error")
+
+                return event.preventDefault()
+            }
+        }
+
+
+        return message("Operação realizada com sucesso!", "succes")
+    },
+    allFieldsChefs(event) {
+        const file = document.querySelector('input#avatar-input')
+        const name = document.querySelector('input[type="text"]')
+
+        if (name.value == "") {
+            message("Por favor, insira o nome do chef.", "error")
+            return event.preventDefault()
+        }
+
+        if (file.value == "") {
+            message("Por favor, coloque o avatar do chef.", "error")
+
+            return event.preventDefault()
+        }
+
+        return message("Operação realizada com sucesso!", "succes")
+    },
+    allFieldsUser(event) {
+        const name = document.querySelector('input[name="name"')
+        const email = document.querySelector(' input[name="email"]')
+        const password = document.querySelector(' input[name="password"]')
+
+        if (email && password) {
+
+            if (email.value == "" || password.value == "") {
+                message("Por favor, preencha os campos que faltam.", "error")
+                return event.preventDefault()
+            }
+        }
+
+        if (name.value == "" || email.value == "") {
+            message("Por favor, preencha os campos que faltam.", "error")
+            return event.preventDefault()
+        }
+    },
+    allResetPasswordFields(event){
+        const email = document.querySelector(' input[type="email"]')
+        const password = document.querySelector(' input[type="password"]')
+        const passwordRepeat = document.querySelector('input[name="passwordRepeat"]')
+
+        if(email.value == ""){
+            message("Por favor, coloque o seu email.", "error")
+            return event.preventDefault()
+        }
+
+        if(email.value == "" || password.value == "" || passwordRepeat.value == ""){
+            message("Por favor, preencha os campos que faltam.", "error")
+            return event.preventDefault()
+        }
+
+        if(password.value != passwordRepeat.value){
+            message("A senha e a repetição da senha não são iguais.", "error")
+            return event.preventDefault()
         }
     }
 }
+
+function deleteSomething(event) {
+    const forms = document.querySelectorAll("form")
+
+    const confirmation = confirm("Deseja deletar ?")
+    if (!confirmation) return event.preventDefault()
+
+    for (form of forms) {
+        if (form.action.includes("DELETE") && confirmation) {
+
+            return message("Deletado com sucesso!", "error")
+        }
+    }
+}
+
