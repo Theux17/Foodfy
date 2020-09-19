@@ -72,6 +72,6 @@ module.exports = {
         return db.query(`
             DELETE FROM recipe_files WHERE recipe_files.recipe_id = $1`, [id])
     }
-  
+
     
 }
