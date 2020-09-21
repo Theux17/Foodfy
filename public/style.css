@@ -1149,7 +1149,7 @@ button.add-preparation {
 #main-container .users-list .users {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 268px
+    grid-column-gap: 217px
 }
 
 .users-list .users .user .info h3 {
