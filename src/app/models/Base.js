@@ -99,7 +99,7 @@ const Base = {
             LEFT JOIN files ON (${table}.file_id = files.id)
             WHERE ${table}.${column} = ${id}
             `
-            
+         
             return db.query(query)
         } catch (error) {
             console.error(error)

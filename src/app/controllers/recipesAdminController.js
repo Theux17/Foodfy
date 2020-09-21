@@ -2,6 +2,7 @@ const { unlinkSync } = require('fs')
 
 const Recipe = require("../models/Recipe")
 const File = require('../models/File')
+const LoadImages = require('../services/LoadImages')
 
 module.exports = {
     async index(req, res) {
@@ -19,14 +20,7 @@ module.exports = {
             const recipes = req.recipes
             const pagination = req.pagination
 
-            const filesPromise = recipes.map(recipe => Recipe.files('recipe_files', 'recipe_id', recipe.id))
-            results = await Promise.all(filesPromise)
-
-            let recipesImage = results.map(file => file.rows[0])
-            recipesImage = recipesImage.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            }))
+            const recipesImage = await LoadImages.getAllImages(Recipe, 'recipe_files', 'recipe_id', recipes)
 
             return res.render("admin/recipes/index", { recipes, pagination, params, recipesImage })
 
@@ -85,14 +79,7 @@ module.exports = {
         try {
             const recipe = req.recipe
 
-            results = await Recipe.files('recipe_files', 'recipe_id', recipe.id)
-
-            let recipeImage = results.rows
-
-            recipeImage = recipeImage.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            }))
+            const recipeImage = await LoadImages.getSomeImages(Recipe, 'recipe_files', 'recipe_id', recipe.id)
 
             return res.render("admin/recipes/show", { recipe, recipeImage })
         } catch (error) {
@@ -107,14 +94,8 @@ module.exports = {
 
             let results = await Recipe.chefsSelectOptions()
             const chefsOptions = results.rows
-            
-            results = await Recipe.files('recipe_files', 'recipe_id', recipe.id)
-            
-            let files = results.rows
-            files = files.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            }))
+
+            const files = await LoadImages.getSomeImages(Recipe, 'recipe_files', 'recipe_id', recipe.id) 
 
             return res.render("admin/recipes/edit", { recipe, chefsOptions, files })
             
@@ -150,16 +131,6 @@ module.exports = {
                 preparation: `{${req.body.preparation}}`,
                 information: req.body.information,
             })
-
-            let results = await Recipe.chefsSelectOptions()
-
-            results = await Recipe.files('recipe_files', 'recipe_id', req.params.id)
-
-            files = results.rows
-            files = files.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            }))
 
             const recipe = await Recipe.findOne({ where: { id: req.params.id} })
 

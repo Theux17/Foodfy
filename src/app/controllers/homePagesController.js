@@ -1,9 +1,10 @@
 const Recipe = require("../models/Recipe")
 const Chef = require("../models/Chef")
 
+const LoadImages = require('../services/LoadImages')
+
 module.exports = {
     async home(req, res) {
-
         try {
             let results = await Recipe.all()
             const recipes = results.rows
@@ -16,15 +17,7 @@ module.exports = {
                 }
             }
 
-            const filesPromise = recipes.map(recipe => Recipe.files('recipe_files', 'recipe_id', recipe.id))
-            results = await Promise.all(filesPromise)
-
-            let recipesImage = results.map(result => result.rows[0])
-            recipesImage = recipesImage.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-
-            }))
+            const recipesImage = await LoadImages.getAllImages(Recipe ,'recipe_files', 'recipe_id', recipes)
 
             return res.render("home-pages/home", { recipes: lastRecipes, recipesImage })
 
@@ -54,15 +47,7 @@ module.exports = {
             let results = await Recipe.all()
             const recipes = results.rows
 
-            const filesPromise = recipes.map(recipe => Recipe.files('recipe_files', 'recipe_id', recipe.id))
-            results = await Promise.all(filesPromise)
-
-            let recipesImage = results.map(result => result.rows[0])
-            recipesImage = recipesImage.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-
-            }))
+            const recipesImage = await LoadImages.getAllImages(Recipe ,'recipe_files', 'recipe_id', recipes)
 
             return res.render("home-pages/recipes", { recipes, recipesImage })
 
@@ -75,13 +60,7 @@ module.exports = {
         try {
             const { recipe } = req
 
-            let result = await Recipe.files('recipe_files', 'recipe_id', recipe.id)
-
-            let recipeImages = result.rows
-            recipeImages = recipeImages.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            }))
+            const recipeImages = await LoadImages.getSomeImages(Recipe ,'recipe_files', 'recipe_id', recipe.id)
 
             return res.render("home-pages/information", { recipe, recipeImages })
 
@@ -96,16 +75,8 @@ module.exports = {
             let results = await Chef.all()
             const chefs = results.rows
 
-            const chefsPromise = chefs.map(chef => Chef.files('chefs', 'id', chef.id))
-            results = await Promise.all(chefsPromise)
-
-            let chefsAvatar = results.map(result => result.rows[0])
-
-            chefsAvatar = chefsAvatar.map(file => ({
-                ...file,
-                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            }))
-
+            const chefsAvatar = await LoadImages.getAllImages(Chef, 'chefs', 'id', chefs)
+           
             return res.render("home-pages/chefs", { chefs, chefsAvatar })
         } catch (error) {
             console.error(error)
