@@ -14,7 +14,7 @@ module.exports = {
             return res.render("admin/user/list", { users })
 
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao listar os usuários!" })
         }
     },
     create(req, res) {
@@ -63,10 +63,9 @@ module.exports = {
             return res.render("admin/user/succes", {message, location: "/admin/users"})
 
         } catch (err) {
-            console.error(err)
             return res.render("admin/user/create", {
                 user: req.body,
-                error: "Aconteceu algum erro!"
+                error: "Erro inesperado ao criar um novo usuário"
             })
         }
     },
@@ -78,7 +77,7 @@ module.exports = {
             return res.render("admin/user/edit", { user })
             
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao entrar na página de editar o usuário!" })
         }
     },
     async put(req, res) {
@@ -94,9 +93,8 @@ module.exports = {
             return res.render("admin/user/succes", { message:  "Atualizado com sucesso!" })
 
         } catch (err) {
-            console.error(err)
             return res.render("admin/user/edit", {
-                error: "Algum erro aconteceu!",
+                error: "Erro inesperado ao atualizar o usuário",
                 user: req.body
             })
         }
@@ -117,9 +115,8 @@ module.exports = {
             
             return res.redirect("/admin/users")
         } catch (err) {
-            console.error(err)
             return res.render("admin/user/list", {
-                error: "Algum erro aconteceu!"
+                error: "Erro inesperado ao deletar o usuário!"
             })
         }
     }

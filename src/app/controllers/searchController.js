@@ -21,7 +21,7 @@ module.exports = {
             }
 
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao buscar a receita!" })            
         }
     }
 

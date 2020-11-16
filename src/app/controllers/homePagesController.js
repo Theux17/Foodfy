@@ -22,7 +22,7 @@ module.exports = {
             return res.render("home-pages/home", { recipes: lastRecipes, recipesImage })
 
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro ao listar as receitas de destaque!" })
         }
     },
 
@@ -33,7 +33,7 @@ module.exports = {
     async recipesAll(req, res) {
         try {
 
-            let results = await Recipe.all()
+            let results = await Recipe.aldasl()
             const recipes = results.rows
 
             const recipesImage = await LoadImages.getAllImages(Recipe ,'recipe_files', 'recipe_id', recipes)
@@ -41,7 +41,7 @@ module.exports = {
             return res.render("home-pages/recipes", { recipes, recipesImage })
 
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro ao listar todas as receitas!" })
         }
     },
 
@@ -54,7 +54,7 @@ module.exports = {
             return res.render("home-pages/information", { recipe, recipeImages })
 
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro ao listar todas as receitas!" })
         }
 
     },
@@ -68,7 +68,7 @@ module.exports = {
            
             return res.render("home-pages/chefs", { chefs, chefsAvatar })
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro ao listar os chefs!" })
         }
     }
 }

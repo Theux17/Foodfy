@@ -15,10 +15,20 @@
 
     {% block content %}
 
-        <div class="short-presentation">
-            <h1>ERRO 404! Página não encontrada.</h1>
-            <img src="../../../assets/chef.png" alt="Chef">
-        </div>
+        {% if not error %}
+        
+            <div class="short-presentation">
+                <h1>ERRO 404! Página não encontrada.</h1>
+                <img src="../../../assets/chef.png" alt="Chef">
+            </div>
+        {%endif%}
+
+        {% if error %}
+            <div class="short-presentation content">
+                <h1>{{ error }}</h1>
+                <img src="../../../assets/chef.png" alt="Chef">
+            </div>
+        {% endif %}
     {% endblock  %}
 
 </div>

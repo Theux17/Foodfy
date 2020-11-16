@@ -25,7 +25,7 @@ module.exports = {
             return res.render("admin/recipes/index", { recipes, pagination, params, recipesImage })
 
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao listar as receitas!" })
         }
     },
 
@@ -38,7 +38,7 @@ module.exports = {
             return res.render("admin/recipes/create", { chefsOptions })
 
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao entrar na página de cadastrar uma nova receita!" })            
         }
     },
 
@@ -83,7 +83,7 @@ module.exports = {
 
             return res.render("admin/recipes/show", { recipe, recipeImage })
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao mostrar a receita!" })            
         }
 
     },
@@ -100,7 +100,7 @@ module.exports = {
             return res.render("admin/recipes/edit", { recipe, chefsOptions, files })
             
         } catch (error) {
-            console.error(error);
+            return res.render("not-found", { error: "Erro inesperado ao entrar na página de editar a receita!" })
         }
     },
 
@@ -137,8 +137,7 @@ module.exports = {
             return res.redirect(`/admin/recipes/${recipe.id}`)
 
         } catch (error) {
-            console.error(error);
-
+            return res.render("not-found", { error: "Erro inesperado ao atualizar a receita!" })
         }
     },
 
@@ -159,7 +158,7 @@ module.exports = {
             return res.redirect('/admin/recipes')
 
         } catch (error) {
-
+            return res.render("not-found", { error: "Erro inesperado ao deletar a receita!" })
         }
 
     }

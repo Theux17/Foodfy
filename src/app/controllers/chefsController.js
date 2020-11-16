@@ -7,12 +7,17 @@ const LoadImages = require("../services/LoadImages")
 
 module.exports = {
     async index(req, res) {
-        let results = await Chef.all()
-        const chefs = results.rows
+        try {
+            let results = await Chef.all()
+            const chefs = results.rows
 
-        const chefsAvatar = await LoadImages.getAllImages(Recipe, 'chefs', 'id', chefs)
+            const chefsAvatar = await LoadImages.getAllImages(Recipe, 'chefs', 'id', chefs)
 
-        return res.render("admin/chefs/index", { chefs, chefsAvatar })
+            return res.render("admin/chefs/index", { chefs, chefsAvatar })
+
+        } catch (error) {
+            return res.render("not-found", { error: "Erro ao listar todos os chefs!" })
+        }
     },
 
     create(req, res) {
@@ -35,7 +40,7 @@ module.exports = {
             return res.redirect(`/admin/chefs/details/${chefId}`)
 
         } catch (err) {
-            console.error(err)
+            return res.render("not-found", { error: "Erro inesperado ao cadastrar um novo chef!" })
         }
     },
 
@@ -51,7 +56,7 @@ module.exports = {
 
             return res.render("admin/chefs/details", { chef, recipes, chefAvatar, recipeImage })
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao mostrar o chef!" })
         }
     },
 
@@ -64,7 +69,7 @@ module.exports = {
 
             return res.render("admin/chefs/edit", { chef, chefsData })
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao entrar na página de editar o chef!" })
         }
 
     },
@@ -81,22 +86,27 @@ module.exports = {
             return res.redirect(`/admin/chefs/details/${chef.id}`)
 
         } catch (error) {
-            console.error(error)
+            return res.render("not-found", { error: "Erro inesperado ao atualizar o chef!" })
         }
     },
 
     async delete(req, res) {
-        const files = await Chef.files('chefs', 'id', req.body.id)
-        await Chef.delete(req.body.id)
+        try {
 
-        files.rows.map(file => {
-            try {
-                unlinkSync(file.path)
-            } catch (error) {
-                console.error(error)
-            }
-        })
+            const files = await Chef.files('chefs', 'id', req.body.id)
+            await Chef.delete(req.body.id)
 
-        return res.redirect('/admin/chefs')
+            files.rows.map(file => {
+                try {
+                    unlinkSync(file.path)
+                } catch (error) {
+                    console.error(error)
+                }
+            })
+
+            return res.redirect('/admin/chefs')
+        } catch (error) {
+            return res.render("not-found", { error: "Erro inesperado ao deletar o chef!" })
+        }
     }
 }
