@@ -72,22 +72,25 @@
     {% if recipe %}
         <div id="ingredients">
             {% for ingredient in recipe.ingredients %}
-                <div class="ingredient">
+                <div class="ingredient container">
                     <input 
                     type="text" 
                     name="ingredients[]" 
                     value="{{ ingredient }}" 
                     placeholder="Ingredientes"/>
+                    <button type="button" class="remove-ingredient" onClick="removeIngredient(event)">remover</button>
                 </div>
             {% endfor %}
         </div>
     {%else %}
         <div class="ingredient" id="ingredients">
-            <input type="text" name="ingredients[]"/>
+            <div class="ingredient container">
+                <input type="text" name="ingredients[]"/>
+                <button type="button" class="remove-ingredient" onClick="removeIngredient(event)">remover</button>
+            </div>
         </div>
     {% endif %}
     <button type="button" class="add-ingredient">adicionar novo ingrediente</button>
-
 </div>
 
 <div class="item">
@@ -95,14 +98,18 @@
     {% if recipe %}
         <div id="preparations">
             {% for preparation in recipe.preparation %}
-                <div class="preparation">
+                <div class="preparation container">
                     <input type="text" name="preparation[]" value="{{ preparation }}">
+                    <button type="button" class="remove-preparation" onClick="removePreparation(event)">remover</button>
                 </div>
             {% endfor %}
         </div>
         {%else%}
         <div class="preparation" id="preparations">
-            <input type="text" name="preparation[]">
+            <div class="preparation container">
+                <input type="text" name="preparation[]">
+                <button type="button" class="remove-preparation" onClick="removePreparation(event)">remover</button>
+            </div>
         </div>
     {% endif %}
 

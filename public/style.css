@@ -508,13 +508,8 @@ main h2 {
 
 }
 
-
 .container-header header {
     width: 100%;
-}
-
-.title-admin {
-    margin-bottom: 30px;
 }
 
 .recipes-admin {
@@ -671,7 +666,14 @@ select{
     font-size: 16px;
 }
 
+#ingredients .container,
+#preparations .container { 
+    display: flex;
+}
+
 button.add-ingredient,
+button.remove-ingredient,
+button.remove-preparation,
 button.add-preparation {
     background: none;
     font-size: 16px;
@@ -679,6 +681,12 @@ button.add-preparation {
     color: var(--button-color);
     margin-bottom: 30px;
     cursor: pointer;
+}
+
+button.remove-ingredient,
+button.remove-preparation {
+    margin: 0 0 12px 12px;
+    color: var(--color-error);
 }
 
 .create-chef .chef-form span,
