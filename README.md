@@ -10,7 +10,7 @@
 </h2>
 
 ## Sobre
-Projeto ainda em desenvolvimento! <strong>Foodfy</strong> é uma aplicação aonde um(a) chef pode se cadastrar colocando o seu nome e o seu avatar, após se cadastrar, o(a) chef pode cadastrar uma receita, o usuário também pode pesquisar por receitas e ver os chefs cadastrados.
+Foodfy é uma aplicação aonde um(a) chef pode se cadastrar colocando o seu nome e o seu avatar, após se cadastrar, o(a) chef pode cadastrar uma receita, o usuário também pode pesquisar por receitas e ver os chefs cadastrados.
 
 ---
 ## Tecnologias Utilizadas 
